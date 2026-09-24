@@ -8,7 +8,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Notas">
-<meta name="theme-color" content="#000000" id="metaThemeColor">
 <meta name="mobile-web-app-capable" content="yes">
 <style>
   :root {
@@ -1638,7 +1637,7 @@
   /* --- Pantalla falsa de "Llamando..." --- */
   #telLlamando {
     position: fixed; inset: 0; z-index: 500;
-    background: #1a1a1a url('https://fabioelmago.github.io/Numeria-app/llamada.png') center center / cover no-repeat;
+    background: #1a1a1a;
     display: none; flex-direction: column; align-items: center;
     color: #fff; font-family: -apple-system, sans-serif;
     padding-top: calc(env(safe-area-inset-top, 20px) + 90px);
@@ -2005,7 +2004,7 @@
 <div id="telefonoScreen">
   <span id="telHora" style="position:fixed; top:0; left:0; width:44px; height:44px; opacity:0; z-index:999;"></span>
 
-  <div class="tel-panels" style="padding-top: env(safe-area-inset-top, 0px);">
+  <div class="tel-panels">
 
     <!-- Favoritos -->
     <div class="tel-panel" id="telPanelFavoritos">
