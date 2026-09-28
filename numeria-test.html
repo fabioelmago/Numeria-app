@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Test</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Test">
+<style>
+html,body{margin:0;background:#000;color:#fff;font-family:-apple-system,sans-serif}
+#strip{position:fixed;top:0;left:0;right:0;height:0;background:#f00;z-index:99;pointer-events:none}
+#info{position:fixed;left:8px;right:8px;top:90px;z-index:100;font:11px/1.35 monospace;color:#0f0;background:rgba(0,0,0,.85);padding:6px;border:1px solid #0f0;white-space:pre-wrap;pointer-events:none}
+#btns{position:fixed;left:0;right:0;bottom:0;z-index:100;display:flex;flex-wrap:wrap;gap:6px;padding:8px 8px 30px;background:#111}
+button{flex:1 0 28%;padding:12px 4px;font-size:14px;border-radius:8px;border:0;background:#333;color:#fff}
+#scroll{position:absolute;inset:0;overflow-y:auto;padding:200px 16px 300px}
+.item{padding:14px;margin:8px 0;background:#1c1c1e;border-radius:10px}
+</style></head><body>
+<div id="strip"></div>
+<div id="info"></div>
+<div id="scroll"><h1 style="margin-top:0">Texto arriba</h1>
+<script>for(var i=1;i<=40;i++)document.write('<div class="item">Elemento '+i+' (haz scroll)</div>')</script></div>
+<div id="btns">
+<button data-h="0px">Sin franja</button><button data-h="1px">1px</button><button data-h="2px">2px</button>
+<button data-h="4px">4px</button><button data-h="5px">5px</button><button data-h="10px">10px</button>
+<button data-h="env(safe-area-inset-top)">safe-area</button><button data-h="60px">60px</button>
+<button id="ov">overflow body scroll</button>
+</div>
+<script>
+var st=document.getElementById('strip');
+document.querySelectorAll('[data-h]').forEach(function(b){b.onclick=function(){st.style.height=b.dataset.h;upd()}});
+document.getElementById('ov').onclick=function(){var s=document.getElementById('scroll');
+ if(s.style.position==='static'){s.style.position='absolute';document.body.style.overflow='';}else{s.style.position='static';s.style.overflow='visible';s.style.inset='auto';document.body.style.overflow='auto';}upd()};
+var p=document.createElement('div');p.style.cssText='position:fixed;top:0;height:env(safe-area-inset-top,0px);width:1px;visibility:hidden';document.body.appendChild(p);
+function upd(){var vv=window.visualViewport||{};
+document.getElementById('info').textContent='TEST v1 | franja: '+st.style.height+'\n'+
+'standalone: '+navigator.standalone+' | display-mode: '+matchMedia('(display-mode: standalone)').matches+'\n'+
+'safe-top: '+p.getBoundingClientRect().height+' | innerH: '+innerHeight+' | vvH: '+vv.height+' | offTop: '+vv.offsetTop+'\n'+
+'scrollY: '+scrollY+' | scroll div: '+document.getElementById('scroll').scrollTop}
+upd();setInterval(upd,500);
+</script></body></html>
