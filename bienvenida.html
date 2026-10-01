@@ -1377,6 +1377,8 @@ body.onb #onb{display:block}
 #onb.kb .os p{font-size:14.5px;line-height:1.42;margin-bottom:12px}
 #onb.kb .btns{padding-top:4px}
 #onb.kb .btn2{height:38px;margin-top:2px}
+/* barra opaca (iOS no deja transparente): el fondo arranca en el color exacto de la barra y se abre en un degradado largo */
+.nosb .amb::before{content:"";position:absolute;left:0;right:0;top:0;height:230px;z-index:3;pointer-events:none;background:linear-gradient(to bottom,#07070B 0,rgba(7,7,11,.97) 14%,rgba(7,7,11,.86) 28%,rgba(7,7,11,.66) 44%,rgba(7,7,11,.42) 60%,rgba(7,7,11,.2) 76%,rgba(7,7,11,.07) 90%,rgba(7,7,11,0) 100%)}
 </style>
 <div id="onb" aria-live="polite">
  <button id="obk" type="button" aria-label="Atrás"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Atrás</button>
@@ -1503,7 +1505,8 @@ body.onb #onb{display:block}
   function save(k,v){ try{ localStorage.setItem(k,v) }catch(e){} }
   function leave(){
     var o=document.body; o.style.transition='opacity .45s ease'; o.style.opacity='0';
-    setTimeout(function(){ location.replace('numeria.html') },480);
+    var to='numeria.html'; try{to=localStorage.getItem('numeria_ret')||to}catch(e){}
+    setTimeout(function(){ location.replace(to) },480);
   }
   window.__numLeave=leave;
   function wait(btn,txt,ms,fn){
@@ -1585,4 +1588,8 @@ body.onb #onb{display:block}
   if(window.__onbPending)window.onbStart();
 })();
 </script>
+<script>(function(){try{var st=navigator.standalone===true||window.NUM_FORCE_STANDALONE;
+var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;height:0;visibility:hidden;padding-top:env(safe-area-inset-top,0px)';
+document.documentElement.appendChild(d);var t=parseFloat(getComputedStyle(d).paddingTop)||0;d.remove();
+window.__sat=t;if(st&&t===0)document.documentElement.classList.add('nosb')}catch(e){}})();</script>
 </body></html>

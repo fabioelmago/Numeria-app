@@ -1,0 +1,15 @@
+{
+  "name": "Notas B",
+  "short_name": "Notas B",
+  "id": "/Numeria-app/b",
+  "start_url": "./numeria-b.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07070B",
+  "theme_color": "#07070B",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ]
+}
