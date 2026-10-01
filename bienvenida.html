@@ -1373,7 +1373,7 @@ body.onb #onb{display:block}
 /* fondo "C": la aurora real nace del negro de la barra del sistema (#07070B) y se funde suave hasta el 34% de la pantalla.
    Es solo fondo (z-index -1): no tapa capsulas ni contenido. */
 html.nosb #bg{-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.000) 2.0%,rgba(0,0,0,0.028) 5.2%,rgba(0,0,0,0.104) 8.4%,rgba(0,0,0,0.216) 11.6%,rgba(0,0,0,0.352) 14.8%,rgba(0,0,0,0.500) 18.0%,rgba(0,0,0,0.648) 21.2%,rgba(0,0,0,0.784) 24.4%,rgba(0,0,0,0.896) 27.6%,rgba(0,0,0,0.972) 30.8%,rgba(0,0,0,1.000) 34.0%,#000 100%);mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.000) 2.0%,rgba(0,0,0,0.028) 5.2%,rgba(0,0,0,0.104) 8.4%,rgba(0,0,0,0.216) 11.6%,rgba(0,0,0,0.352) 14.8%,rgba(0,0,0,0.500) 18.0%,rgba(0,0,0,0.648) 21.2%,rgba(0,0,0,0.784) 24.4%,rgba(0,0,0,0.896) 27.6%,rgba(0,0,0,0.972) 30.8%,rgba(0,0,0,1.000) 34.0%,#000 100%)}
-.os.inp{overflow:hidden;bottom:auto;height:var(--onbh,100%)}
+.os.inp{overflow:hidden;overflow:clip;bottom:auto;height:var(--onbh,100%)}
 /* pantallas con campo: el bloque se coloca por JS (place) para que el ultimo campo quede sobre el teclado; al abrirlo nada se mueve */
 .os.inp .mid{margin:0 0 auto}
 body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
@@ -1594,13 +1594,29 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
     else if(window.innerHeight>baseH){ baseH=window.innerHeight } else return;
     place();
   });
-  /* si iOS intenta desplazar la pantalla o el contenedor al enfocar un campo, se devuelve a su sitio */
+  /* Salto al tocar un campo: iOS desplaza la pantalla para "mostrar" el campo aunque ya se vea.
+     1) Al tocar un campo sin foco, lo enfocamos nosotros con preventScroll: el teclado sale y nada se desplaza.
+     2) Si aun asi iOS desplaza algo (p. ej. con las flechas de la barrita del teclado), se compensa en el mismo
+        evento, sin esperas, para que no se vea un sube-baja. */
+  document.addEventListener('touchend',function(e){
+    var t=e.target; if(!(t&&t.matches&&t.matches('#onb input'))||t===document.activeElement||t.disabled)return;
+    e.preventDefault();
+    try{ t.focus({preventScroll:true}) }catch(_){ t.focus() }
+    try{ var n=t.value.length; t.setSelectionRange(n,n) }catch(_){}
+  },{passive:false});
   function pin(){ if(window.scrollY||window.scrollX)window.scrollTo(0,0); document.querySelectorAll('#onb .os.inp').forEach(function(sc){ if(sc.scrollTop)sc.scrollTop=0 }) }
-  document.addEventListener('focusin',function(e){ if(e.target&&e.target.matches&&e.target.matches('#onb input')){ pin(); requestAnimationFrame(pin); setTimeout(pin,60); setTimeout(pin,300) } });
+  document.addEventListener('focusin',function(e){ if(e.target&&e.target.matches&&e.target.matches('#onb input'))pin() });
   document.querySelectorAll('#onb .os.inp').forEach(function(sc){ sc.addEventListener('scroll',function(){ if(sc.scrollTop)sc.scrollTop=0 }) });
+  window.addEventListener('scroll',function(){ if(document.body.classList.contains('onb'))pin() },{passive:true});
+  /* si iOS mueve la "ventana visible" hacia arriba, el contenido se desplaza lo mismo hacia abajo y se queda quieto en pantalla */
+  if(window.visualViewport){
+    var vv=window.visualViewport;
+    var vfix=function(){ if(!document.body.classList.contains('onb')){ document.body.style.transform=''; return }
+      var o=Math.round(vv.offsetTop||0); document.body.style.transform=o>0?'translate3d(0,'+o+'px,0)':'' };
+    vv.addEventListener('scroll',vfix); vv.addEventListener('resize',vfix);
+  }
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(place);
   setTimeout(place,50);setTimeout(place,600);
-  if(window.visualViewport)window.visualViewport.addEventListener('scroll',pin);
   if(window.__onbPending)window.onbStart();
 })();
 </script>
