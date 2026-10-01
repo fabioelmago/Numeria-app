@@ -1369,9 +1369,11 @@ body.onb #onb{display:block}
 #obk:active{transform:scale(.96)}
 #obk svg{width:18px;height:18px}
 /* pantallas con campo: contenido anclado arriba (el campo queda siempre sobre el teclado) y nada se recoloca al abrirlo */
+/* borde de la barra del sistema: el fondo nace del mismo color de la barra y se aclara suave (sin tramo solido) */
+html.nosb body::after{content:"";position:fixed;top:0;left:0;right:0;height:96px;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,#07070B 0,rgba(7,7,11,.86) 10%,rgba(7,7,11,.70) 20%,rgba(7,7,11,.46) 35%,rgba(7,7,11,.26) 50%,rgba(7,7,11,.12) 65%,rgba(7,7,11,.04) 80%,rgba(7,7,11,0) 100%)}
 .os.inp{overflow:hidden}
 /* en reposo centrado; al tocar un campo sube suave (solo transform) lo justo para quedar sobre el teclado */
-.os.inp .mid{transition:transform .3s cubic-bezier(.32,.72,0,1);will-change:transform}
+.os.inp .mid{margin:0 0 auto}
 body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
 /* cifras: todas del mismo alto y ancho (Raleway trae cifras de estilo antiguo por defecto) */
 .os,.os input{font-variant-numeric:lining-nums tabular-nums;-webkit-font-feature-settings:"lnum" 1,"tnum" 1;font-feature-settings:"lnum" 1,"tnum" 1}
@@ -1567,26 +1569,22 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
   ['#o-token','#o-email','#o-tel','#o-code','#o-pass'].forEach(function(q){
     var el=$(q); el.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); var b=el.closest('.in').querySelector('.btn'); if(b)b.click() } });
   });
-  /* campo tocado: el bloque sube con animacion hasta quedar sobre el teclado y su barrita (solo transform, nada cambia de tamano) */
-  var shift=0;
-  function limitY(){ var sb=Math.max(0,(screen.height||0)-window.innerHeight); return .594*(screen.height||window.innerHeight)-18-sb }
-  function lift(inp){
-    var sc=inp.closest('.os'); if(!sc||!sc.classList.contains('inp'))return;
-    var mid=sc.querySelector('.mid'), ins=sc.querySelectorAll('input'), last=ins[ins.length-1];
-    if(sc._base==null||sc._h!==window.innerHeight){
-      var pt=mid.style.transform,ptr=mid.style.transition; mid.style.transition='none'; mid.style.transform='none';
-      var err=sc.querySelector('.err');
-      sc._base=last.getBoundingClientRect().bottom+(err?Math.max(0,err.getBoundingClientRect().height||0):0); sc._h=window.innerHeight;
-      mid.style.transform=pt; void mid.offsetWidth; mid.style.transition=ptr;
-    }
-    shift=Math.min(0,Math.round(limitY()-sc._base));
-    mid.style.transform=shift?'translateY('+shift+'px)':'';
+  /* pantallas con campo: el bloque se coloca UNA vez (al cargar / girar) para que el ultimo campo quede sobre el teclado y su barrita.
+     Despues no se mueve nada al tocar un campo: iOS no hace scroll propio y no hay saltos. */
+  function place(){
+    var target=window.innerHeight-427;
+    document.querySelectorAll('#onb .os.inp').forEach(function(sc){
+      var mid=sc.querySelector('.mid'),ins=sc.querySelectorAll('input'),last=ins[ins.length-1]; if(!mid||!last)return;
+      mid.style.marginTop='0px';
+      var b0=last.getBoundingClientRect().bottom;
+      mid.style.marginTop=Math.max(0,Math.round(target-b0))+'px';
+    });
   }
-  function drop(){ shift=0; document.querySelectorAll('#onb .os.inp .mid').forEach(function(m){m.style.transform=''}) }
-  document.addEventListener('pointerdown',function(e){ var t=e.target; if(t&&t.matches&&t.matches('#onb input'))lift(t) },true);
-  document.addEventListener('focusin',function(e){ var t=e.target; if(t&&t.matches&&t.matches('#onb input'))lift(t) });
-  document.addEventListener('focusout',function(){ setTimeout(function(){ var a=document.activeElement; if(!(a&&a.matches&&a.matches('#onb input')))drop() },90) });
-  window.__lift=lift; window.__drop=drop;
+  window.__place=place;
+  window.addEventListener('resize',place);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(place);
+  setTimeout(place,50);setTimeout(place,600);
+  if(window.visualViewport)window.visualViewport.addEventListener('scroll',function(){ if(window.scrollY)window.scrollTo(0,0) });
   if(window.__onbPending)window.onbStart();
 })();
 </script>
