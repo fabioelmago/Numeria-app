@@ -1370,7 +1370,9 @@ body.onb #onb{display:block}
 #obk svg{width:18px;height:18px}
 /* pantallas con campo: contenido anclado arriba (el campo queda siempre sobre el teclado) y nada se recoloca al abrirlo */
 .os.inp{overflow:hidden}
-.os.inp .mid{margin:0 0 auto;padding:clamp(0px,2vh,18px) 0 14px}
+/* en reposo centrado; al tocar un campo sube suave (solo transform) lo justo para quedar sobre el teclado */
+.os.inp .mid{transition:transform .3s cubic-bezier(.32,.72,0,1);will-change:transform}
+body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
 /* cifras: todas del mismo alto y ancho (Raleway trae cifras de estilo antiguo por defecto) */
 .os,.os input{font-variant-numeric:lining-nums tabular-nums;-webkit-font-feature-settings:"lnum" 1,"tnum" 1;font-feature-settings:"lnum" 1,"tnum" 1}
 </style>
@@ -1565,6 +1567,26 @@ body.onb #onb{display:block}
   ['#o-token','#o-email','#o-tel','#o-code','#o-pass'].forEach(function(q){
     var el=$(q); el.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); var b=el.closest('.in').querySelector('.btn'); if(b)b.click() } });
   });
+  /* campo tocado: el bloque sube con animacion hasta quedar sobre el teclado y su barrita (solo transform, nada cambia de tamano) */
+  var shift=0;
+  function limitY(){ var sb=Math.max(0,(screen.height||0)-window.innerHeight); return .594*(screen.height||window.innerHeight)-18-sb }
+  function lift(inp){
+    var sc=inp.closest('.os'); if(!sc||!sc.classList.contains('inp'))return;
+    var mid=sc.querySelector('.mid'), ins=sc.querySelectorAll('input'), last=ins[ins.length-1];
+    if(sc._base==null||sc._h!==window.innerHeight){
+      var pt=mid.style.transform,ptr=mid.style.transition; mid.style.transition='none'; mid.style.transform='none';
+      var err=sc.querySelector('.err');
+      sc._base=last.getBoundingClientRect().bottom+(err?Math.max(0,err.getBoundingClientRect().height||0):0); sc._h=window.innerHeight;
+      mid.style.transform=pt; void mid.offsetWidth; mid.style.transition=ptr;
+    }
+    shift=Math.min(0,Math.round(limitY()-sc._base));
+    mid.style.transform=shift?'translateY('+shift+'px)':'';
+  }
+  function drop(){ shift=0; document.querySelectorAll('#onb .os.inp .mid').forEach(function(m){m.style.transform=''}) }
+  document.addEventListener('pointerdown',function(e){ var t=e.target; if(t&&t.matches&&t.matches('#onb input'))lift(t) },true);
+  document.addEventListener('focusin',function(e){ var t=e.target; if(t&&t.matches&&t.matches('#onb input'))lift(t) });
+  document.addEventListener('focusout',function(){ setTimeout(function(){ var a=document.activeElement; if(!(a&&a.matches&&a.matches('#onb input')))drop() },90) });
+  window.__lift=lift; window.__drop=drop;
   if(window.__onbPending)window.onbStart();
 })();
 </script>
