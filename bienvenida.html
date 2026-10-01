@@ -1,9 +1,11 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<link rel="manifest" href="manifest.json"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#07070B"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><script>(function(){var h=location.hash,st=navigator.standalone===true;window.NUM_MODE=h==="#tutorial"?"tutorial":(h==="#test"?"full":(st?"full":"install"));if(h==="#test")window.NUM_FORCE_STANDALONE=1})();</script></head><body><title>Tutorial Numeria</title>
+<link rel="manifest" href="manifest.json"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#07070B"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><script>(function(){var h=location.hash,st=navigator.standalone===true;window.NUM_MODE=h==="#tutorial"?"tutorial":(h==="#test"?"full":(st?"full":"install"));if(h==="#test")window.NUM_FORCE_STANDALONE=1})();</script></head><body><div id="iosTopStrip" aria-hidden="true"></div><title>Tutorial Numeria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* franja real fixed (igual que en la app): fija el color de la barra del sistema y oculta la rayita de blur de iOS */
+#iosTopStrip{position:fixed;top:0;left:0;right:0;height:5px;background:#07070B;z-index:2147483647;pointer-events:none}
 /* Concepto: la portada viva de Numeria como escenario. Detras del iPhone la luz espectral
    cambia de esquina en disparos aleatorios; el punto verde del logo se enciende como una bombilla a la vez. */
 :root{
