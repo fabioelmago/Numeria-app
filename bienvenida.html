@@ -1370,11 +1370,11 @@ body.onb #onb{display:block}
 #obk.on{opacity:1;pointer-events:auto}
 #obk:active{transform:scale(.96)}
 #obk svg{width:18px;height:18px}
-/* pantallas con campo: contenido anclado arriba (el campo queda siempre sobre el teclado) y nada se recoloca al abrirlo */
-/* borde de la barra del sistema: el fondo nace del mismo color de la barra y se aclara suave (sin tramo solido) */
-html.nosb body::after{content:"";position:fixed;top:0;left:0;right:0;height:170px;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,#07070B 0%,rgba(7,7,11,0.95) 10%,rgba(7,7,11,0.86) 20%,rgba(7,7,11,0.74) 30%,rgba(7,7,11,0.6) 40%,rgba(7,7,11,0.46) 50%,rgba(7,7,11,0.33) 60%,rgba(7,7,11,0.21) 70%,rgba(7,7,11,0.11) 80%,rgba(7,7,11,0.04) 90%,rgba(7,7,11,0) 100%)}
-.os.inp{overflow:hidden}
-/* en reposo centrado; al tocar un campo sube suave (solo transform) lo justo para quedar sobre el teclado */
+/* fondo "C": la aurora real nace del negro de la barra del sistema (#07070B) y se funde suave hasta el 34% de la pantalla.
+   Es solo fondo (z-index -1): no tapa capsulas ni contenido. */
+html.nosb #bg{-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.000) 2.0%,rgba(0,0,0,0.028) 5.2%,rgba(0,0,0,0.104) 8.4%,rgba(0,0,0,0.216) 11.6%,rgba(0,0,0,0.352) 14.8%,rgba(0,0,0,0.500) 18.0%,rgba(0,0,0,0.648) 21.2%,rgba(0,0,0,0.784) 24.4%,rgba(0,0,0,0.896) 27.6%,rgba(0,0,0,0.972) 30.8%,rgba(0,0,0,1.000) 34.0%,#000 100%);mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.000) 2.0%,rgba(0,0,0,0.028) 5.2%,rgba(0,0,0,0.104) 8.4%,rgba(0,0,0,0.216) 11.6%,rgba(0,0,0,0.352) 14.8%,rgba(0,0,0,0.500) 18.0%,rgba(0,0,0,0.648) 21.2%,rgba(0,0,0,0.784) 24.4%,rgba(0,0,0,0.896) 27.6%,rgba(0,0,0,0.972) 30.8%,rgba(0,0,0,1.000) 34.0%,#000 100%)}
+.os.inp{overflow:hidden;bottom:auto;height:var(--onbh,100%)}
+/* pantallas con campo: el bloque se coloca por JS (place) para que el ultimo campo quede sobre el teclado; al abrirlo nada se mueve */
 .os.inp .mid{margin:0 0 auto}
 body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
 /* cifras: todas del mismo alto y ancho (Raleway trae cifras de estilo antiguo por defecto) */
@@ -1567,14 +1567,17 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
     $('#o-err-pass').textContent='';
     wait($('#o-b-pass'),'Verificando…',800,function(){show('tglisto')});
   });
-  $('#o-nombre').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); $('#o-email').focus() } });
+  $('#o-nombre').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); $('#o-email').focus({preventScroll:true}) } });
   ['#o-token','#o-email','#o-tel','#o-code','#o-pass'].forEach(function(q){
     var el=$(q); el.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); var b=el.closest('.in').querySelector('.btn'); if(b)b.click() } });
   });
   /* pantallas con campo: el bloque se coloca UNA vez (al cargar / girar) para que el ultimo campo quede sobre el teclado y su barrita.
      Despues no se mueve nada al tocar un campo: iOS no hace scroll propio y no hay saltos. */
   function place(){
-    var target=window.innerHeight-427;
+    if(typing())return;
+    window.__placed=true;
+    document.documentElement.style.setProperty('--onbh',baseH+'px');
+    var target=baseH-427;
     document.querySelectorAll('#onb .os.inp').forEach(function(sc){
       var mid=sc.querySelector('.mid'),ins=sc.querySelectorAll('input'),last=ins[ins.length-1]; if(!mid||!last)return;
       mid.style.marginTop='0px';
@@ -1583,10 +1586,21 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
     });
   }
   window.__place=place;
-  window.addEventListener('resize',place);
+  /* altura de referencia: la mayor vista con el mismo ancho. Si iOS encoge la ventana con el teclado, se ignora. */
+  var lastW=window.innerWidth, baseH=window.innerHeight;
+  function typing(){ var a=document.activeElement; return !!(a&&a.matches&&a.matches('#onb input')) }
+  window.addEventListener('resize',function(){
+    if(window.innerWidth!==lastW){ lastW=window.innerWidth; baseH=window.innerHeight }
+    else if(window.innerHeight>baseH){ baseH=window.innerHeight } else return;
+    place();
+  });
+  /* si iOS intenta desplazar la pantalla o el contenedor al enfocar un campo, se devuelve a su sitio */
+  function pin(){ if(window.scrollY||window.scrollX)window.scrollTo(0,0); document.querySelectorAll('#onb .os.inp').forEach(function(sc){ if(sc.scrollTop)sc.scrollTop=0 }) }
+  document.addEventListener('focusin',function(e){ if(e.target&&e.target.matches&&e.target.matches('#onb input')){ pin(); requestAnimationFrame(pin); setTimeout(pin,60); setTimeout(pin,300) } });
+  document.querySelectorAll('#onb .os.inp').forEach(function(sc){ sc.addEventListener('scroll',function(){ if(sc.scrollTop)sc.scrollTop=0 }) });
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(place);
   setTimeout(place,50);setTimeout(place,600);
-  if(window.visualViewport)window.visualViewport.addEventListener('scroll',function(){ if(window.scrollY)window.scrollTo(0,0) });
+  if(window.visualViewport)window.visualViewport.addEventListener('scroll',pin);
   if(window.__onbPending)window.onbStart();
 })();
 </script>
