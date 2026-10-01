@@ -1,5 +1,18 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<link rel="manifest" href="manifest.json"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#07070B"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><script>(function(){var h=location.hash,st=navigator.standalone===true;window.NUM_MODE=h==="#tutorial"?"tutorial":(h==="#test"?"full":(st?"full":"install"));if(h==="#test")window.NUM_FORCE_STANDALONE=1})();</script></head><body><div id="iosTopStrip" aria-hidden="true"></div><title>Tutorial Numeria</title>
+<link rel="manifest" href="manifest.json"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#07070B"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><script>(function(){var h=location.hash,st=navigator.standalone===true;window.NUM_MODE=h==="#tutorial"?"tutorial":(h==="#test"?"full":(st?"full":"install"));if(h==="#test")window.NUM_FORCE_STANDALONE=1})();</script><script>/* Altura fija de la app: se mide al abrir (antes de ningun teclado). iOS 26 puede cambiar despues la altura
+   que informa (tras cerrar el teclado) y eso descuadraba el tutorial. Solo se vuelve a medir si cambia el ancho (girar). */
+(function(){var st=navigator.standalone===true||window.NUM_FORCE_STANDALONE,t0=Date.now(),W=window.innerWidth;
+function typing(){var a=document.activeElement;return !!(a&&a.tagName==='INPUT')}
+function calc(){var h=window.innerHeight,sh=screen.height||h;
+  /* en la app instalada la zona visible es la pantalla menos la barra de estado (20-62 pt); si no cuadra, 59 pt */
+  if(st){var b=sh-h; if(!(b>=20&&b<=62))h=sh-59}
+  return Math.round(h)}
+function set(){var h=calc();window.__appH=h;document.documentElement.style.setProperty('--apph',h+'px');if(window.__place)window.__place()}
+set();
+window.addEventListener('resize',function(){
+  if(window.innerWidth!==W){W=window.innerWidth;set();return}
+  if(Date.now()-t0<1500&&!typing())set();  /* ajuste inicial de iOS al arrancar */
+});})();</script></head><body><div id="iosTopStrip" aria-hidden="true"></div><title>Tutorial Numeria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1304,20 +1317,7 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
 })();
 </script>
 
-<script>
-/* app instalada en iOS: el alto "100%" se queda corto -> usar el alto real de pantalla */
-(function(){
-  function fix(){
-    try{
-      var st=navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
-      if(window.NUM_EMB||!st||window.innerHeight<=window.innerWidth)return;
-      var d=screen.height-window.innerHeight;
-      if(d>0&&d<=140){var h=screen.height+'px';document.documentElement.style.height=h;document.body.style.height=h;window.dispatchEvent(new Event('resize'))}
-    }catch(e){}
-  }
-  fix();window.addEventListener('load',fix);window.addEventListener('orientationchange',function(){setTimeout(fix,300)});
-})();
-</script>
+<!-- (quitado: forzaba el alto de pantalla completa, valido solo con barra transparente; en modo barra opaca cortaba 59 pt por abajo) -->
 <style>
 /* ===== v8: registro / activacion (primera vez) ===== */
 html,body,.stage{touch-action:manipulation}
@@ -1327,7 +1327,7 @@ input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:d
 .bigname{display:none!important}
 .ghost{margin-top:10px}
 body.onb .top,body.onb .copy,body.onb .zone,body.onb .foot,body.onb #fx{visibility:hidden}
-#onb{position:fixed;left:0;top:0;width:100%;height:100%;z-index:30;display:none;overflow:hidden}
+#onb{position:fixed;left:0;top:0;width:100%;height:var(--apph,100%);z-index:30;display:none;overflow:hidden}
 body.onb #onb{display:block}
 .os{position:absolute;inset:0;opacity:0;pointer-events:none;overflow-y:auto;-webkit-overflow-scrolling:touch;
   transform:translateY(-10px);filter:blur(6px);
@@ -1384,6 +1384,7 @@ html.nosb #bg{-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,
 .os.inp .mid{margin:0 0 auto}
 body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
 /* cifras: todas del mismo alto y ancho (Raleway trae cifras de estilo antiguo por defecto) */
+html,body{height:var(--apph,100%)}
 .os,.os input{font-variant-numeric:lining-nums tabular-nums;-webkit-font-feature-settings:"lnum" 1,"tnum" 1;font-feature-settings:"lnum" 1,"tnum" 1}
 </style>
 <div id="onb" aria-live="polite">
@@ -1600,8 +1601,8 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
   function place(){
     if(typing())return;
     window.__placed=true;
-    document.documentElement.style.setProperty('--onbh',baseH+'px');
-    var target=baseH-427;
+    var H=window.__appH||window.innerHeight, target=H-427;
+    document.documentElement.style.setProperty('--onbh',H+'px');
     document.querySelectorAll('#onb .os.inp').forEach(function(sc){
       var mid=sc.querySelector('.mid'),ins=sc.querySelectorAll('input'),last=ins[ins.length-1]; if(!mid||!last)return;
       mid.style.marginTop='0px';
@@ -1610,14 +1611,7 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
     });
   }
   window.__place=place;
-  /* altura de referencia: la mayor vista con el mismo ancho. Si iOS encoge la ventana con el teclado, se ignora. */
-  var lastW=window.innerWidth, baseH=window.innerHeight;
   function typing(){ var a=document.activeElement; return !!(a&&a.matches&&a.matches('#onb input')) }
-  window.addEventListener('resize',function(){
-    if(window.innerWidth!==lastW){ lastW=window.innerWidth; baseH=window.innerHeight }
-    else if(window.innerHeight>baseH){ baseH=window.innerHeight } else return;
-    place();
-  });
   /* Salto al tocar un campo: iOS desplaza la pantalla para "mostrar" el campo aunque ya se vea.
      1) Al tocar un campo sin foco, lo enfocamos nosotros con preventScroll: el teclado sale y nada se desplaza.
      2) Si aun asi iOS desplaza algo (p. ej. con las flechas de la barrita del teclado), se compensa en el mismo
