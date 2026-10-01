@@ -1329,8 +1329,14 @@ input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:d
 body.onb .top,body.onb .copy,body.onb .zone,body.onb .foot,body.onb #fx{visibility:hidden}
 #onb{position:fixed;left:0;top:0;width:100%;height:100%;z-index:30;display:none;overflow:hidden}
 body.onb #onb{display:block}
-.os{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .38s ease;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.os.on{opacity:1;pointer-events:auto}
+.os{position:absolute;inset:0;opacity:0;pointer-events:none;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  transform:translateY(-10px);filter:blur(6px);
+  transition:opacity .24s ease,transform .3s cubic-bezier(.4,0,.6,1),filter .24s ease}
+.os.on{opacity:1;pointer-events:auto;transform:none;filter:none;
+  transition:opacity .5s cubic-bezier(.2,.7,.2,1) .22s,transform .6s cubic-bezier(.2,.7,.2,1) .22s,filter .5s ease .22s}
+.os.pre{transform:translateY(16px);transition:none}
+/* primera pantalla: sin retraso */
+.os.now{transition-delay:0s!important}
 .os .in{max-width:460px;min-height:100%;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 64px) 22px calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;flex-direction:column}
 .os .mid{margin:auto 0;padding:14px 0;display:flex;flex-direction:column;gap:0}
 .os .ic{width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);display:grid;place-items:center;margin-bottom:20px;color:#fff}
@@ -1492,8 +1498,13 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
   var ORDER=['install','token','datos','confirm','final','tgintro','tgtel','tgcode','tgpass','tglisto'];
   function show(id){
     var n=$('#os-'+id); if(!n||n===cur)return;
+    var first=!cur;
     if(cur)cur.classList.remove('on');
-    n.scrollTop=0; n.classList.add('on'); cur=n; setBack(id);
+    n.scrollTop=0;
+    /* la que entra parte de un poco mas abajo; la que sale se va hacia arriba con desenfoque */
+    n.classList.add('pre'); if(first)n.classList.add('now'); void n.offsetWidth;
+    n.classList.remove('pre'); n.classList.add('on'); cur=n; setBack(id);
+    if(first)setTimeout(function(){ n.classList.remove('now') },900);
     var a=document.activeElement; if(a&&a.blur&&a.closest&&a.closest('#onb'))a.blur();
   }
   var BACK={datos:'token',confirm:'datos',tgtel:'tgintro',tgcode:'tgtel',tgpass:'tgcode'};
@@ -1513,8 +1524,21 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
     setTimeout(function(){ busy=false; btn.disabled=false; btn.textContent=t0; fn() },ms);
   }
   function finish(){
-    var o=$('#onb'); o.style.transition='opacity .5s ease'; o.style.opacity='0';
-    setTimeout(function(){ document.body.classList.remove('onb'); o.style.display='none'; __T.BG.mode('cover'); __T.go0(0) },520);
+    var o=$('#onb'), st=document.querySelector('.stage');
+    var a=document.activeElement; if(a&&a.blur)a.blur();
+    /* por si iOS dejo la vista desplazada tras usar el teclado */
+    document.body.style.transform=''; window.scrollTo(0,0);
+    o.style.transition='opacity .7s ease,filter .7s ease,transform .8s cubic-bezier(.4,0,.2,1)';
+    o.style.opacity='0'; o.style.filter='blur(10px)'; o.style.transform='scale(.97)';
+    setTimeout(function(){
+      __T.BG.mode('cover'); __T.go0(0);
+      if(st){ st.style.transition='none'; st.style.opacity='0'; void st.offsetWidth; }
+      document.body.classList.remove('onb');
+      document.body.style.transform=''; window.scrollTo(0,0);
+      if(st){ st.style.transition='opacity 1.1s cubic-bezier(.2,.7,.2,1)'; st.style.opacity='1' }
+      try{ __T.BG.fire(true) }catch(_){}
+      setTimeout(function(){ o.style.display='none'; if(st){ st.style.transition=''; st.style.opacity='' } },1200);
+    },520);
   }
   window.onbStart=function(){
     __T.layout(); __T.BG.mode('calm');
@@ -1581,7 +1605,7 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
     document.querySelectorAll('#onb .os.inp').forEach(function(sc){
       var mid=sc.querySelector('.mid'),ins=sc.querySelectorAll('input'),last=ins[ins.length-1]; if(!mid||!last)return;
       mid.style.marginTop='0px';
-      var b0=last.getBoundingClientRect().bottom;
+      var b0=last.getBoundingClientRect().bottom-sc.getBoundingClientRect().top;
       mid.style.marginTop=Math.max(0,Math.round(target-b0))+'px';
     });
   }
@@ -1606,6 +1630,7 @@ body.onb{position:fixed;left:0;top:0;width:100%;overflow:hidden}
   },{passive:false});
   function pin(){ if(window.scrollY||window.scrollX)window.scrollTo(0,0); document.querySelectorAll('#onb .os.inp').forEach(function(sc){ if(sc.scrollTop)sc.scrollTop=0 }) }
   document.addEventListener('focusin',function(e){ if(e.target&&e.target.matches&&e.target.matches('#onb input'))pin() });
+  document.addEventListener('focusout',function(){ setTimeout(function(){ if(!typing()){ pin(); if(window.visualViewport&&!(window.visualViewport.offsetTop>0))document.body.style.transform='' } },60) });
   document.querySelectorAll('#onb .os.inp').forEach(function(sc){ sc.addEventListener('scroll',function(){ if(sc.scrollTop)sc.scrollTop=0 }) });
   window.addEventListener('scroll',function(){ if(document.body.classList.contains('onb'))pin() },{passive:true});
   /* si iOS mueve la "ventana visible" hacia arriba, el contenido se desplaza lo mismo hacia abajo y se queda quieto en pantalla */
