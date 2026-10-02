@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Notas</title>
 <link rel="apple-touch-icon" href="icon-notas.png">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Notas">
@@ -46,6 +47,8 @@
   html, body {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   html, body {
@@ -181,9 +184,21 @@
     font-weight: 700;
   }
 
+  /* Los digitos NUNCA cambian de aspecto: el numero capturado y lo que se
+     escriba despues heredan color, tamano y peso del texto normal de la nota. */
   .texto-pantomima {
-    font-size: 17px;
-    font-weight: 400;
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Por si iOS detectara el numero como telefono/fecha y lo convirtiera en enlace */
+  #body a, .body-display a,
+  #body a[x-apple-data-detectors], .body-display a[x-apple-data-detectors] {
+    color: inherit !important;
+    font: inherit !important;
+    letter-spacing: inherit !important;
+    text-decoration: none !important;
+    pointer-events: none;
   }
 
   #body:empty::before {
@@ -194,13 +209,10 @@
   #body.hidden { display: none; }
 
   .numero-real {
-    font-size: 30px;
-    font-weight: 700;
-    color: #FFCC00;
-    text-decoration: underline;
-    text-decoration-color: #FFCC00;
-    text-decoration-thickness: 4px;
-    letter-spacing: -1px;
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    letter-spacing: inherit;
   }
 
   .body-display {
@@ -570,58 +582,109 @@
 
   .instr-phone-mini.with-kb .instr-phone-pill { display: none; }
 
+  /* ===== Lista de notas (medida sobre captura real de Notas, iOS 26) =====
+     Todas las cotas en pt de pantalla; la pagina empieza 59 pt por debajo
+     (barra de estado del sistema), asi que cabecera = 54 pt de alto. */
   .notes-list-screen {
+    --nl-bg: #000000;                       /* fondo de la lista */
+    --nl-bar: #0A0A0A;                      /* tono plano de la cabecera de cristal sobre negro */
+    --nl-glass: rgba(16, 16, 16, 0.61);
+    --nl-hairline: rgba(255, 255, 255, 0.11);
+    --nl-dim: rgba(235, 235, 245, 0.6);     /* texto secundario de iOS */
+    --nl-card: #1C1C1D;
+    --nl-sep: #38383A;
+    --nl-btn: rgba(255, 255, 255, 0.17);
+    --nl-capsule: rgba(75, 75, 78, 0.64);
+    --nl-sab: env(safe-area-inset-bottom, 0px);
     display: none;
     position: fixed;
     inset: 0;
-    background: var(--bg);
+    /* Este color es el que lee la franja superior (#iosTopStrip). El fondo
+       real de la lista lo pinta .notes-list-scroll, que ocupa toda la pantalla. */
+    background-color: var(--nl-bg);
     z-index: 60;
     flex-direction: column;
+  }
+
+  .notes-list-screen:has(.notes-list-topbar.glass) { background-color: var(--nl-bar); }
+
+  body.light-mode .notes-list-screen {
+    --nl-bg: #EFEFF4;
+    --nl-bar: #F9F9FB;
+    --nl-glass: rgba(255, 255, 255, 0.62);
+    --nl-hairline: rgba(60, 60, 67, 0.18);
+    --nl-dim: rgba(60, 60, 67, 0.6);
+    --nl-card: #FFFFFF;
+    --nl-sep: rgba(60, 60, 67, 0.2);
+    --nl-btn: #FFFFFF;
+    --nl-capsule: rgba(255, 255, 255, 0.72);
   }
 
   .notes-list-screen.show { display: flex; }
 
   .notes-list-topbar {
-    position: sticky;
-    top: 0;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 54px;
     z-index: 10;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    padding: calc(env(safe-area-inset-top, 20px) + 8px) 16px 16px 16px;
-    margin-bottom: -16px;
+    padding: 0 20px;
   }
 
+  /* Cabecera de cristal: el contenido pasa desenfocado por detras y termina
+     en una linea fina (sin banda de degradado). */
   .notes-list-topbar::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.04) 55%, rgba(0,0,0,0) 100%);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: var(--nl-glass);
+    backdrop-filter: blur(22px) saturate(1.6);
+    -webkit-backdrop-filter: blur(22px) saturate(1.6);
+    border-bottom: 0.5px solid var(--nl-hairline);
     opacity: 0;
-    transition: opacity 0.28s ease;
+    transition: opacity 0.18s ease;
   }
 
-  .notes-list-topbar.scrolled::before {
+  /* La zona del reloj solo puede ser un color plano: el borde superior del
+     cristal se funde con ese mismo tono para que se lea como una sola pieza. */
+  .notes-list-topbar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 18px;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(180deg, var(--nl-bar) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+
+  .notes-list-topbar.glass::before,
+  .notes-list-topbar.glass::after {
     opacity: 1;
   }
 
-  body.light-mode .notes-list-topbar::before {
-    background: linear-gradient(180deg, rgba(239,239,244,0.14) 0%, rgba(239,239,244,0.04) 55%, rgba(239,239,244,0) 100%);
+  .notes-list-topbar .back {
+    background-color: var(--nl-btn);
+    flex-shrink: 0;
   }
+
+  .notes-list-topbar .back svg { width: 12px; height: 19px; right: 1.5px; }
 
   .notes-list-topbar-title {
     position: absolute;
     left: 50%;
-    top: calc(env(safe-area-inset-top, 20px) + 10px);
+    top: 2.7px;
+    max-width: calc(100% - 148px);
     transform: translate(-50%, 4px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1px;
+    gap: 0;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
@@ -629,20 +692,25 @@
   }
 
   .notes-list-topbar-title-main {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
     color: var(--text);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .notes-list-topbar-title-sub {
     display: flex;
     align-items: center;
-    gap: 3px;
-    font-size: 12px;
-    color: var(--text-dim);
+    gap: 7px;
+    font-size: 15px;
+    line-height: 20px;
+    color: var(--nl-dim);
   }
 
-  .notes-list-topbar-title-sub svg { width: 11px; height: 11px; flex-shrink: 0; }
+  .notes-list-topbar-title-sub svg { width: 23px; height: 18px; margin: -1px 0 0 0; flex-shrink: 0; }
 
   .notes-list-topbar.scrolled .notes-list-topbar-title {
     opacity: 1;
@@ -650,7 +718,7 @@
   }
 
   .notes-list-bigtitle {
-    padding: 4px 16px 14px 16px;
+    padding: 4px 12px 14px 12px;
   }
 
   .notes-list-title-main {
@@ -679,56 +747,67 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
-    padding: 0 16px 92px 16px;
+    background: var(--nl-bg);
+    /* 54 = alto de la cabecera (el contenido pasa por detras de ella) */
+    padding: 54px 20px calc(var(--nl-sab) + 72px) 20px;
   }
 
   .notes-section-title {
     color: var(--text);
-    font-size: 26px;
-    font-weight: 700;
-    margin: 18px 4px 8px 4px;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 600;
+    margin: 27.5px 0 9.8px 0;
   }
 
   .notes-section-title:first-child { margin-top: 4px; }
 
   .notes-group {
-    background: var(--pill-bg);
-    border-radius: 20px;
+    background: var(--nl-card);
+    border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
 
-  body.light-mode .notes-list-screen { background: #EFEFF4; }
-  body.light-mode .notes-group { background: #FFFFFF; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-  body.light-mode .notes-list-topbar .back { background: #FFFFFF; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-  body.light-mode .notes-search-bar { background: rgba(120,120,128,0.16); }
-  body.light-mode .notes-list-footer .compose-btn { background: rgba(120,120,128,0.16); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  body.light-mode .notes-group { box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  body.light-mode .notes-list-topbar .back { box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 
   .notes-row {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    padding: 12px 14px;
-    border-bottom: 0.5px solid rgba(128,128,128,0.25);
+    min-height: 80.4px;
+    padding: 9.5px 20px 8.9px 28px;
   }
 
-  .notes-row:last-child { border-bottom: none; }
+  /* Separador fino con sangria, como en iOS (no llega a los bordes de la tarjeta) */
+  .notes-row:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 28px;
+    right: 20px;
+    bottom: 0;
+    height: 0.67px;
+    background: var(--nl-sep);
+    pointer-events: none;
+  }
 
   .notes-row-title {
     color: var(--text);
     font-size: 17px;
-    font-weight: 700;
+    line-height: 22px;
+    font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .notes-row-sub {
-    color: var(--text-dim);
-    font-size: 14px;
-    margin-top: 3px;
-    white-space: nowrap;
+    color: var(--nl-dim);
+    font-size: 15px;
+    line-height: 20px;
+    white-space: pre;          /* conserva los dos espacios entre fecha y texto */
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -736,45 +815,66 @@
   .notes-row-folder {
     display: flex;
     align-items: center;
-    gap: 4px;
-    color: var(--text-dim);
-    font-size: 13px;
-    margin-top: 4px;
+    gap: 1.9px;
+    color: var(--nl-dim);
+    font-size: 15px;
+    line-height: 20px;
   }
 
-  .notes-row-folder svg { width: 13px; height: 11px; }
+  .notes-row-folder svg { width: 16px; height: 16px; flex-shrink: 0; }
 
+  /* Barra inferior: capsula de cristal flotante + boton redondo de nota nueva */
   .notes-list-footer {
     position: absolute;
-    left: 0; right: 0; bottom: 0;
+    left: 0; right: 0;
+    bottom: max(12px, calc(var(--nl-sab) - 6px));
     z-index: 10;
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 16px env(safe-area-inset-bottom, 4px) 16px;
+    padding: 0 28px;
+  }
+
+  .notes-search-bar,
+  .notes-list-footer .compose-btn {
+    height: 48px;
+    background: var(--nl-capsule);
+    backdrop-filter: blur(18px) saturate(1.6);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
+    border: 0.5px solid rgba(255, 255, 255, 0.10);
+    box-shadow:
+      inset 0 0.5px 0 rgba(255, 255, 255, 0.30),
+      inset 0 -0.5px 0 rgba(255, 255, 255, 0.22),
+      0 0 0 0.5px rgba(0, 0, 0, 0.45),
+      0 6px 20px rgba(0, 0, 0, 0.28);
   }
 
   .notes-search-bar {
     flex: 1;
+    min-width: 0;
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(120,120,128,0.18);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 12px;
-    padding: 10px 14px;
-    color: var(--text-dim);
-    font-size: 16px;
+    gap: 8.5px;
+    border-radius: 24px;
+    padding: 0 11.3px 0 10.5px;
+    color: var(--nl-dim);
+    font-size: 17px;
   }
 
-  .notes-search-bar svg:first-child { width: 18px; height: 18px; flex-shrink: 0; }
-  .notes-search-bar span { flex: 1; }
-  .notes-search-bar svg:last-child { width: 20px; height: 20px; flex-shrink: 0; }
+  .notes-search-bar svg:first-child { width: 21px; height: 21px; flex-shrink: 0; color: var(--text); }
+  .notes-search-bar span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .notes-search-bar svg:last-child { width: 23.5px; height: 23.5px; flex-shrink: 0; color: var(--text); }
 
-  .notes-list-footer .compose-btn { background: rgba(120,120,128,0.18); }
+  .notes-list-footer .compose-btn { width: 48px; flex-shrink: 0; }
+  .notes-list-footer .compose-btn svg { width: 27.5px; height: 27.5px; position: relative; top: -0.8px; }
 
-  #notesListMenuBtn svg { width: 22px; height: 5px; stroke: none; fill: var(--text); right: 0; }
+  body.light-mode .notes-search-bar,
+  body.light-mode .notes-list-footer .compose-btn {
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  #notesListMenuBtn svg { width: 20px; height: 4.3px; stroke: none; fill: var(--text); right: 0; }
 
   .activation-screen {
     display: none;
@@ -1380,6 +1480,16 @@
   .tel-panel.show { visibility: visible; pointer-events: auto; }
 
   /* --- Teclado (dial pad) --- */
+  /* Adaptacion a otros iPhone: el diseno de referencia es el del 15 Pro Max (430 x 907).
+     En pantallas mas pequenas el script del principio del <body> pone la clase "tel-esc"
+     en <html> y la escala en --tks; el panel se dibuja a tamano de referencia y se encoge
+     entero (numero, teclas, boton verde, borrar y sus posiciones guardadas, que siguen
+     siendo px del Pro Max). En el Pro Max NO se pone la clase: nada de esto se aplica. */
+  html.tel-esc #telPanelTeclado {
+    right: auto; bottom: auto;
+    width: calc(100% / var(--tks, 1)); height: calc(100% / var(--tks, 1));
+    transform: scale(var(--tks, 1)); transform-origin: 0 0;
+  }
   .tel-numero-zona {
     flex-shrink: 0;
     display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
@@ -1589,10 +1699,12 @@
   .tel-filtro-opt.active { background: rgba(120,120,128,0.4); }
 
   .tel-list-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 0 20px; }
-  #telPanelFavoritos .tel-list-scroll { padding-top: calc(150px - var(--sbh, 59px)); }
-  #telPanelBuzon .tel-list-scroll { padding-top: calc(150px - var(--sbh, 59px)); }
-  #telPanelContactos .tel-list-scroll { padding-top: calc(156px - var(--sbh, 59px)); }
-  #telPanelRecientes .tel-list-scroll { padding-top: calc(210px - var(--sbh, 59px)); }
+  /* La cabecera mide lo mismo en todos los iPhone (la pagina empieza DEBAJO de la barra
+     de estado), asi que el hueco es fijo: los valores del 15 Pro Max (150/156/210 - 59). */
+  #telPanelFavoritos .tel-list-scroll { padding-top: 91px; }
+  #telPanelBuzon .tel-list-scroll { padding-top: 91px; }
+  #telPanelContactos .tel-list-scroll { padding-top: 97px; }
+  #telPanelRecientes .tel-list-scroll { padding-top: 151px; }
 
   .tel-fade-top, .tel-fade-bottom {
     position: absolute; left: 0; right: 0;
@@ -1676,7 +1788,7 @@
   .tel-llamando-lienzo .tel-llamando-numero { position: absolute; left: 0; right: 0; top: 14.8%; margin: 0; text-align: center; }
   .tel-llamando-colgar-zona { position: absolute; left: 50%; top: 84.6%; width: 21%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; }
   #telLlamando .tel-llamando-titulo { font-size: 26px; font-weight: 500; }
-  #telLlamando .tel-llamando-numero { font-size: 17px; color: rgba(255,255,255,0.55); margin-top: 6px; }
+  #telLlamando .tel-llamando-numero { font-size: calc(17px * var(--llk, 1)); color: rgba(255,255,255,0.55); margin-top: 6px; }
   .tel-llamando-grid {
     margin-top: auto; width: 100%; max-width: 360px;
     padding: 0 30px calc(env(safe-area-inset-bottom, 20px) + 30px) 30px; box-sizing: border-box;
@@ -1808,14 +1920,46 @@
 <body>
 <div id="iosTopStrip" aria-hidden="true"></div>
 <script>
-/* Altura real de la barra de estado (en modo "default" env(safe-area-inset-top) vale 0) */
+/* Altura real de la barra de estado (en modo "default" env(safe-area-inset-top) vale 0)
+   y escala del Modo Teclado para iPhone distintos del 15 Pro Max.
+   Se mide al cargar; despues solo se vuelve a medir si cambia el ANCHO (girar) o durante
+   los primeros 1,5 s (ajuste inicial de iOS). Asi, si iOS informa de otra altura al abrir
+   o cerrar el teclado, nada salta. */
 (function(){
-  function setSbh(){
-    var v=Math.round((screen.height||0)-(window.innerHeight||0));
-    if(!(v>=20&&v<=62)) v=59;
-    document.documentElement.style.setProperty('--sbh', v+'px');
+  var de=document.documentElement, t0=Date.now(), W=window.innerWidth;
+  var REF_W=430, REF_H=907; /* 15 Pro Max: ancho y alto del panel (873 visibles + 34 de zona inferior) */
+  function escribiendo(){var a=document.activeElement;return !!(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.isContentEditable));}
+  function zonaInferior(){
+    try{
+      var p=document.createElement('div');
+      p.style.cssText='position:fixed;left:0;bottom:0;width:0;visibility:hidden;pointer-events:none;height:env(safe-area-inset-bottom, 0px)';
+      document.body.appendChild(p); var h=p.offsetHeight||0; document.body.removeChild(p); return h;
+    }catch(e){return 0;}
   }
-  setSbh(); window.addEventListener('resize', setSbh);
+  function medir(){
+    var ih=window.innerHeight||0, sh=screen.height||0, w=window.innerWidth||0;
+    var v=Math.round(sh-ih), ok=(v>=20&&v<=62);
+    if(!ok) v=59;
+    de.style.setProperty('--sbh', v+'px');
+    /* alto visible fiable: el que da iOS si cuadra con la barra de estado; si no, pantalla - 59 */
+    var vh=ok?ih:((navigator.standalone===true&&sh)?sh-59:ih);
+    var s=Math.min(w/REF_W,(vh+zonaInferior())/REF_H);
+    /* El 15 Pro Max (430 de ancho) y los que quedan practicamente igual o mas grandes no se tocan */
+    if(w===REF_W||!(s<0.985)) s=1;
+    if(s<0.8) s=0.8;
+    if(s<1){ de.style.setProperty('--tks', String(Math.round(s*10000)/10000)); de.classList.add('tel-esc'); }
+    else { de.style.removeProperty('--tks'); de.classList.remove('tel-esc'); }
+    /* la imagen de "Llamando..." ocupa el ancho entero: el numero la acompana */
+    var k=w/REF_W;
+    if(w===REF_W||!(k>0)) de.style.removeProperty('--llk');
+    else de.style.setProperty('--llk', String(Math.round(Math.max(0.8,Math.min(1.1,k))*10000)/10000));
+  }
+  medir();
+  window.addEventListener('load', function(){ if(!escribiendo()) medir(); });
+  window.addEventListener('resize', function(){
+    if(window.innerWidth!==W){ W=window.innerWidth; medir(); return; }
+    if(Date.now()-t0<1500&&!escribiendo()) medir();
+  });
 })();
 </script>
 
@@ -2015,7 +2159,7 @@
     </div>
     <div class="notes-list-topbar-title">
       <div class="notes-list-topbar-title-main" id="notesListTopbarMain">Todo (iCloud)</div>
-      <div class="notes-list-topbar-title-sub"><svg viewBox="0 0 24 24" fill="none"><path d="M6.5 17a4 4 0 01-.5-7.97A5.5 5.5 0 0116.5 8a4.5 4.5 0 01.9 8.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span id="notesListTopbarSub">Espacio lleno</span></div>
+      <div class="notes-list-topbar-title-sub"><svg viewBox="0 0 24 24" fill="none" preserveAspectRatio="none"><path d="M6.5 17a4 4 0 01-.5-7.97A5.5 5.5 0 0116.5 8a4.5 4.5 0 01.9 8.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span id="notesListTopbarSub">Espacio lleno</span></div>
     </div>
     <div class="back" id="notesListMenuBtn">
       <svg viewBox="6 -43 75 16" fill="currentColor"><path d="M72.7051-27.6855C76.9043-27.6855 80.2734-31.0547 80.2734-35.2539C80.2734-39.4531 76.9043-42.8223 72.7051-42.8223C68.5547-42.8223 65.1367-39.4531 65.1367-35.2539C65.1367-31.0547 68.5547-27.6855 72.7051-27.6855Z"/><path d="M43.5547-27.6855C47.7539-27.6855 51.123-31.0547 51.123-35.2539C51.123-39.4531 47.7539-42.8223 43.5547-42.8223C39.3555-42.8223 35.9863-39.4531 35.9863-35.2539C35.9863-31.0547 39.3555-27.6855 43.5547-27.6855Z"/><path d="M14.4043-27.6855C18.6035-27.6855 21.9727-31.0547 21.9727-35.2539C21.9727-39.4531 18.6035-42.8223 14.4043-42.8223C10.2051-42.8223 6.83594-39.4531 6.83594-35.2539C6.83594-31.0547 10.2051-27.6855 14.4043-27.6855Z"/></svg>
@@ -2673,6 +2817,13 @@
   const HUELLA_KEY = 'numeria_huella';
 
   function obtenerLicencia() {
+    // Si este dispositivo se registro de verdad con el registro nuevo (bienvenida.html
+    // marca 'numeria_lic_real'), se usa SU licencia y su propio Telegram.
+    // Si no, en modo pruebas se sigue usando la clave de pruebas de siempre.
+    try {
+      const guardada = localStorage.getItem(LICENCIA_KEY) || '';
+      if (guardada && localStorage.getItem('numeria_lic_real') === '1') return guardada;
+    } catch (e) {}
     if (MODO_PRUEBAS) return 'NUM-TEST-0001';
     return localStorage.getItem(LICENCIA_KEY) || '';
   }
@@ -3230,6 +3381,8 @@
 
   notesListScroll.addEventListener('scroll', () => {
     notesListTopbar.classList.toggle('scrolled', notesListScroll.scrollTop > 40);
+    // Solo visual: el cristal de la cabecera aparece en cuanto hay contenido debajo.
+    notesListTopbar.classList.toggle('glass', notesListScroll.scrollTop > 2);
   });
 
   function contarPalabras(texto) {
@@ -6063,6 +6216,8 @@
     ['telLlamando','show'],['notesListScreen','show'],['telefonoScreen','show'],['app',null]
   ];
   function color(){
+    /* pantalla de instalacion en Safari: mismo tono oscuro que el fundido de esa pantalla */
+    if(document.body.classList.contains('num-inst')) return 'rgb(7, 7, 11)';
     for(var i=0;i<orden.length;i++){
       var el=document.getElementById(orden[i][0]);
       if(!el) continue;
@@ -6108,6 +6263,7 @@
     f.style.cssText='position:fixed;left:0;top:0;width:100%;height:100%;border:0;z-index:9500;background:#07070B';
     f.src='bienvenida.html';
     document.body.appendChild(f);
+    document.body.classList.add('num-inst');
   }
 })();
 </script>

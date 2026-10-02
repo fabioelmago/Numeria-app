@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<link rel="manifest" href="manifest.json"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#07070B"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><script>(function(){var h=location.hash,st=navigator.standalone===true;window.NUM_MODE=h==="#tutorial"?"tutorial":(h==="#test"?"full":(st?"full":"install"));if(h==="#test")window.NUM_FORCE_STANDALONE=1})();</script><script>/* Altura fija de la app: se mide al abrir (antes de ningun teclado). iOS 26 puede cambiar despues la altura
+<link rel="manifest" href="manifest.json"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#07070B"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><script>(function(){var h=location.hash,st=navigator.standalone===true;window.NUM_MODE=h==="#tutorial"?"tutorial":(h==="#test"?"full":(st?"full":"install"));if(h==="#test")window.NUM_FORCE_STANDALONE=1;if(window.NUM_MODE==="install")document.documentElement.classList.add("inst")})();</script><script>/* Altura fija de la app: se mide al abrir (antes de ningun teclado). iOS 26 puede cambiar despues la altura
    que informa (tras cerrar el teclado) y eso descuadraba el tutorial. Solo se vuelve a medir si cambia el ancho (girar). */
 (function(){var st=navigator.standalone===true||window.NUM_FORCE_STANDALONE,t0=Date.now(),W=window.innerWidth;
 function typing(){var a=document.activeElement;return !!(a&&a.tagName==='INPUT')}
@@ -1337,21 +1337,24 @@ body.onb #onb{display:block}
 .os.pre{transform:translateY(16px);transition:none}
 /* primera pantalla: sin retraso */
 .os.now{transition-delay:0s!important}
-.os .in{max-width:460px;min-height:100%;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 64px) 22px calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;flex-direction:column}
-.os .mid{margin:auto 0;padding:14px 0;display:flex;flex-direction:column;gap:0}
-.os .ic{width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);display:grid;place-items:center;margin-bottom:20px;color:#fff}
-.os .ic svg{width:26px;height:26px}
+/* --ok: holgura vertical del registro, de 0 (compacto) a 1 (iPhone 15 Pro Max = valores originales). La calcula place() midiendo:
+   es el mayor valor con el que todas las pantallas caben (campos sobre el teclado, botones a la vista). Cada medida es minimo + (original - minimo) * --ok. */
+html{--ok:1}
+.os .in{max-width:460px;min-height:100%;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 60px + 4px*var(--ok)) 22px calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;flex-direction:column}
+.os .mid{margin:auto 0;padding:calc(14px*var(--ok)) 0;display:flex;flex-direction:column;gap:0}
+.os .ic{width:calc(36px + 22px*var(--ok));height:calc(36px + 22px*var(--ok));border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);display:grid;place-items:center;margin-bottom:calc(8px + 12px*var(--ok));color:#fff}
+.os .ic svg{width:calc(18px + 8px*var(--ok));height:calc(18px + 8px*var(--ok))}
 .os .ic.ok{color:var(--ios-green);border-color:rgba(52,199,89,.5)}
-.os .eb{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.os .eb{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:calc(5px + 5px*var(--ok))}
 .os .eb::before{content:"";width:22px;height:1px;background:var(--mute);opacity:.7}
-.os h2{margin:0 0 12px;font-family:var(--f-display);font-weight:600;font-size:clamp(28px,8vw,34px);line-height:1.08;letter-spacing:-.015em;text-wrap:balance}
-.os p{margin:0 0 16px;font-size:15.5px;line-height:1.5;color:rgba(245,244,248,.78)}
+.os h2{margin:0 0 calc(6px + 6px*var(--ok));font-family:var(--f-display);font-weight:600;font-size:calc(clamp(28px,8vw,34px) - 4px*(1 - var(--ok)));line-height:1.08;letter-spacing:-.015em;text-wrap:balance}
+.os p{margin:0 0 calc(8px + 8px*var(--ok));font-size:calc(14.5px + 1px*var(--ok));line-height:calc(1.42 + .08*var(--ok));color:rgba(245,244,248,.78)}
 .os p b{color:#fff;font-weight:600}
-.os .card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:16px;padding:14px 16px;font-size:14.5px;line-height:1.55;color:rgba(245,244,248,.86);margin-bottom:16px}
+.os .card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:16px;padding:calc(10px + 4px*var(--ok)) 16px;font-size:calc(14px + .5px*var(--ok));line-height:calc(1.45 + .1*var(--ok));color:rgba(245,244,248,.86);margin-bottom:calc(10px + 6px*var(--ok))}
 .os .card b{color:var(--tung)}
 .os .card.warn{background:rgba(120,30,30,.28);border-color:rgba(255,120,110,.3);color:#FFD9D5}
 .os .card.warn b{color:#fff}
-.os input{width:100%;height:54px;border-radius:15px;border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.09);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;font:500 18px/1 var(--f-body);padding:0 16px;outline:none;margin-bottom:10px;-webkit-appearance:none;appearance:none;transition:border-color .25s,background .25s}
+.os input{width:100%;height:calc(46px + 8px*var(--ok));border-radius:15px;border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.09);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;font:500 18px/1 var(--f-body);padding:0 16px;outline:none;margin-bottom:10px;-webkit-appearance:none;appearance:none;transition:border-color .25s,background .25s}
 .os input::placeholder{color:rgba(245,244,248,.36)}
 .os input:focus{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.13)}
 .os input.tok{text-align:center;letter-spacing:.14em;text-transform:uppercase;font-family:var(--f-display);font-weight:500}
@@ -1368,7 +1371,7 @@ body.onb #onb{display:block}
 .os ol li{counter-increment:n;position:relative;padding-left:34px;margin-bottom:12px}
 .os ol li:last-child{margin-bottom:0}
 .os ol li::before{content:counter(n);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);font-size:12px;font-weight:600;display:grid;place-items:center;color:#fff}
-.os .stg{display:flex;gap:6px;margin-bottom:22px}
+.os .stg{display:flex;gap:6px;margin-bottom:calc(10px + 12px*var(--ok))}
 .os .stg i{flex:1;max-width:36px;height:3px;border-radius:2px;background:rgba(255,255,255,.2)}
 .os .stg i.d{background:rgba(255,255,255,.75)}
 /* capsula Atras */
@@ -1379,6 +1382,10 @@ body.onb #onb{display:block}
 /* fondo "C": la aurora real nace del negro de la barra del sistema (#07070B) y se funde suave hasta el 34% de la pantalla.
    Es solo fondo (z-index -1): no tapa capsulas ni contenido. */
 html.nosb #bg{-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.000) 2.0%,rgba(0,0,0,0.028) 5.2%,rgba(0,0,0,0.104) 8.4%,rgba(0,0,0,0.216) 11.6%,rgba(0,0,0,0.352) 14.8%,rgba(0,0,0,0.500) 18.0%,rgba(0,0,0,0.648) 21.2%,rgba(0,0,0,0.784) 24.4%,rgba(0,0,0,0.896) 27.6%,rgba(0,0,0,0.972) 30.8%,rgba(0,0,0,1.000) 34.0%,#000 100%);mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.000) 2.0%,rgba(0,0,0,0.028) 5.2%,rgba(0,0,0,0.104) 8.4%,rgba(0,0,0,0.216) 11.6%,rgba(0,0,0,0.352) 14.8%,rgba(0,0,0,0.500) 18.0%,rgba(0,0,0,0.648) 21.2%,rgba(0,0,0,0.784) 24.4%,rgba(0,0,0,0.896) 27.6%,rgba(0,0,0,0.972) 30.8%,rgba(0,0,0,1.000) 34.0%,#000 100%)}
+/* Safari (sin instalar, modo "install"): la aurora se funde con #07070B arriba (misma curva que html.nosb) y tambien abajo
+   (entera hasta el 70% del alto visible y transparente al 99%), para fundirse con las zonas lisas de Safari sin borde recto.
+   #bg mide 100% + 140px: el alto visible es (100% - 140px). En la app instalada esta clase no existe (sin fundido inferior). */
+html.inst #bg{-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.000) 2.0%,rgba(0,0,0,0.028) 5.2%,rgba(0,0,0,0.104) 8.4%,rgba(0,0,0,0.216) 11.6%,rgba(0,0,0,0.352) 14.8%,rgba(0,0,0,0.500) 18.0%,rgba(0,0,0,0.648) 21.2%,rgba(0,0,0,0.784) 24.4%,rgba(0,0,0,0.896) 27.6%,rgba(0,0,0,0.972) 30.8%,rgba(0,0,0,1.000) 34.0%,rgba(0,0,0,1.000) calc((100% - 140px)*0.700),rgba(0,0,0,0.972) calc((100% - 140px)*0.729),rgba(0,0,0,0.896) calc((100% - 140px)*0.758),rgba(0,0,0,0.784) calc((100% - 140px)*0.787),rgba(0,0,0,0.648) calc((100% - 140px)*0.816),rgba(0,0,0,0.500) calc((100% - 140px)*0.845),rgba(0,0,0,0.352) calc((100% - 140px)*0.874),rgba(0,0,0,0.216) calc((100% - 140px)*0.903),rgba(0,0,0,0.104) calc((100% - 140px)*0.932),rgba(0,0,0,0.028) calc((100% - 140px)*0.961),rgba(0,0,0,0.000) calc((100% - 140px)*0.990),rgba(0,0,0,0) 100%);mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.000) 2.0%,rgba(0,0,0,0.028) 5.2%,rgba(0,0,0,0.104) 8.4%,rgba(0,0,0,0.216) 11.6%,rgba(0,0,0,0.352) 14.8%,rgba(0,0,0,0.500) 18.0%,rgba(0,0,0,0.648) 21.2%,rgba(0,0,0,0.784) 24.4%,rgba(0,0,0,0.896) 27.6%,rgba(0,0,0,0.972) 30.8%,rgba(0,0,0,1.000) 34.0%,rgba(0,0,0,1.000) calc((100% - 140px)*0.700),rgba(0,0,0,0.972) calc((100% - 140px)*0.729),rgba(0,0,0,0.896) calc((100% - 140px)*0.758),rgba(0,0,0,0.784) calc((100% - 140px)*0.787),rgba(0,0,0,0.648) calc((100% - 140px)*0.816),rgba(0,0,0,0.500) calc((100% - 140px)*0.845),rgba(0,0,0,0.352) calc((100% - 140px)*0.874),rgba(0,0,0,0.216) calc((100% - 140px)*0.903),rgba(0,0,0,0.104) calc((100% - 140px)*0.932),rgba(0,0,0,0.028) calc((100% - 140px)*0.961),rgba(0,0,0,0.000) calc((100% - 140px)*0.990),rgba(0,0,0,0) 100%)}
 .os.inp{overflow:hidden;overflow:clip;bottom:auto;height:var(--onbh,100%)}
 /* pantallas con campo: el bloque se coloca por JS (place) para que el ultimo campo quede sobre el teclado; al abrirlo nada se mueve */
 .os.inp .mid{margin:0 0 auto}
@@ -1546,7 +1553,61 @@ html,body{height:var(--apph,100%)}
     document.body.classList.add('onb');
     show(window.NUM_MODE==='install'||!STANDALONE?'install':'token');
   };
-  document.querySelectorAll('#onb [data-go]').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.go)})});
+  /* ===== registro real: servidor de Numeria =====
+     Clave de pruebas (NUM-TEST-0001): todo simulado, sin red, como siempre.
+     Cualquier otra clave: registro de verdad contra el servidor. */
+  var API='https://numeria-server.onrender.com', TEST_KEY='NUM-TEST-0001', telSent='';
+  var E_RED='No hay conexión con el servidor. Comprueba tu internet e inténtalo de nuevo.';
+  var E_JSON='El servidor no respondió bien. Inténtalo de nuevo en un momento.';
+  function tok(){ return $('#o-token').value.trim().toUpperCase() }
+  function isTest(){ return tok()===TEST_KEY }
+  function setErr(q,t){ var n=$(q); if(n)n.textContent=t||'' }
+  function cap(s){ s=String(s||''); return s?s.charAt(0).toUpperCase()+s.slice(1):s }
+  function huella(){
+    var h=null; try{ h=localStorage.getItem('numeria_huella') }catch(e){}
+    if(!h){
+      h=window.__numHuella||((window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2)));
+      window.__numHuella=h; save('numeria_huella',h);
+    }
+    return h;
+  }
+  /* devuelve siempre {status,data,err}: err = texto listo para mostrar si no hubo respuesta util */
+  function api(method,path,body){
+    var ac=('AbortController' in window)?new AbortController():null;
+    var tm=setTimeout(function(){ if(ac)ac.abort() },75000);
+    var opt={method:method,cache:'no-store'};
+    if(ac)opt.signal=ac.signal;
+    if(body){ opt.headers={'Content-Type':'application/json'}; opt.body=JSON.stringify(body) }
+    return fetch(API+path,opt).then(function(r){
+      return r.json().then(function(d){
+        clearTimeout(tm);
+        if(!d||typeof d!=='object')return {status:r.status,data:{},err:E_JSON};
+        return {status:r.status,data:d,err:''};
+      },function(){ clearTimeout(tm); return {status:r.status,data:{},err:E_JSON} });
+    },function(){ clearTimeout(tm); return {status:0,data:{},err:E_RED} });
+  }
+  /* texto de error de una respuesta: el de conexion, o el que manda el servidor, o uno generico */
+  function errOf(r,def){ return r.err||(r.data&&r.data.error?cap(r.data.error):'')||def }
+  /* peticion con el boton ocupado: una sola a la vez; si tarda, avisa de que el servidor esta despertando */
+  function call(btn,txt,method,path,body,fn){
+    if(busy)return; busy=true; var t0=btn.textContent; btn.disabled=true; btn.textContent=txt;
+    var slow=setTimeout(function(){ btn.textContent='Conectando con el servidor…' },6000);
+    api(method,path,body).then(function(r){
+      clearTimeout(slow); busy=false; btn.disabled=false; btn.textContent=t0;
+      fn(r);
+    });
+  }
+  function ping(){ try{ fetch(API+'/ping',{cache:'no-store'}).then(function(){},function(){}) }catch(e){} }
+  var onbStart0=window.onbStart;
+  window.onbStart=function(){ if(window.NUM_MODE==='full')ping(); onbStart0() };
+
+  /* en el registro real, la pantalla de contraseña solo sale si la cuenta la tiene: no se puede saltar */
+  document.querySelectorAll('#os-tgpass [data-go]').forEach(function(b){b.addEventListener('click',function(e){
+    if(isTest())return;
+    e.stopImmediatePropagation();
+    setErr('#o-err-pass','Tu cuenta tiene contraseña de verificación en dos pasos. Escríbela para terminar.');
+  })});
+  document.querySelectorAll('#onb [data-go]').forEach(function(b){b.addEventListener('click',function(){ if(busy)return; show(b.dataset.go)})});
   document.querySelectorAll('#onb [data-fin]').forEach(function(b){b.addEventListener('click',finish)});
   $('#obk').addEventListener('click',function(){
     var id=cur&&cur.id.replace('os-',''); var to=BACK[id]; if(to&&!busy)show(to);
@@ -1557,40 +1618,105 @@ html,body{height:var(--apph,100%)}
     this.value=r.slice(0,3)+(r.length>3?'-'+r.slice(3,7):'')+(r.length>7?'-'+r.slice(7,11):'');
   });
   $('#o-b-token').addEventListener('click',function(){
-    var v=$('#o-token').value.trim().toUpperCase();
-    if(!v){$('#o-err-token').textContent='Escribe tu clave para continuar.';return}
-    $('#o-err-token').textContent='';
-    wait($('#o-b-token'),'Comprobando…',800,function(){show('datos')});   /* PRUEBAS: cualquier clave vale */
+    var v=tok();
+    if(!v){setErr('#o-err-token','Escribe tu clave para continuar.');return}
+    if(busy)return;
+    setErr('#o-err-token','');
+    if(v===TEST_KEY){
+      /* clave de pruebas: simulado, y este dispositivo NO queda marcado como registrado de verdad */
+      try{ localStorage.removeItem('numeria_lic_real'); localStorage.removeItem('numeria_licencia') }catch(e){}
+      wait($('#o-b-token'),'Comprobando…',800,function(){show('datos')});
+      return;
+    }
+    call($('#o-b-token'),'Comprobando…','GET','/validar_token?token='+encodeURIComponent(v),null,function(r){
+      if(!r.err&&r.status===200&&r.data.valido===true){ show('datos'); return }
+      var m=r.data&&r.data.motivo, t;
+      if(r.err)t=r.err;
+      else if(m==='no_existe')t='Esta clave no existe. Revísala e inténtalo de nuevo.';
+      else if(m==='ya_activada')t='Esta clave ya está activada en otro dispositivo.';
+      else if(m==='no_se_pudo_crear'){ t='No se pudo preparar la licencia. Avisa a soporte.'; try{ console.warn('validar_token:',r.data.detalle) }catch(e){} }
+      else t=errOf(r,'No se pudo comprobar la clave. Inténtalo de nuevo.');
+      setErr('#o-err-token',t);
+    });
   });
   $('#o-b-datos').addEventListener('click',function(){
     var n=$('#o-nombre').value.trim(), e=$('#o-email').value.trim();
     if(!e){$('#o-err-datos').textContent='Escribe tu email para continuar.';return}
     $('#o-err-datos').textContent='';
+    setErr('#o-err-conf','');
     $('#o-c-nombre').textContent=n||'(sin nombre)'; $('#o-c-email').textContent=e; show('confirm');
   });
   $('#o-b-conf').addEventListener('click',function(){
-    var n=$('#o-nombre').value.trim(), e=$('#o-email').value.trim(), k=$('#o-token').value.trim().toUpperCase();
-    wait($('#o-b-conf'),'Activando…',900,function(){
-      $('#o-f-email').textContent=e;
-      save('numeria_onb_datos',JSON.stringify({nombre:n,email:e,simulado:true}));
-      show('final');
+    var n=$('#o-nombre').value.trim(), e=$('#o-email').value.trim(), k=tok();
+    if(busy)return;
+    setErr('#o-err-conf','');
+    if(k===TEST_KEY){
+      try{ localStorage.removeItem('numeria_lic_real'); localStorage.removeItem('numeria_licencia') }catch(_){}
+      wait($('#o-b-conf'),'Activando…',900,function(){
+        $('#o-f-email').textContent=e;
+        save('numeria_onb_datos',JSON.stringify({nombre:n,email:e,simulado:true}));
+        show('final');
+      });
+      return;
+    }
+    call($('#o-b-conf'),'Activando…','POST','/activar_licencia',{token:k,nombre:n,email:e,huella:huella()},function(r){
+      if(!r.err&&r.status===200&&r.data.activado===true){
+        $('#o-f-email').textContent=e;
+        save('numeria_licencia',k); save('numeria_nombre_cliente',n); save('numeria_lic_real','1');
+        save('numeria_onb_datos',JSON.stringify({nombre:n,email:e,simulado:false}));
+        show('final');
+        return;
+      }
+      setErr('#o-err-conf',errOf(r,'No se pudo activar la licencia. Inténtalo de nuevo.'));
     });
   });
   $('#o-b-tel').addEventListener('click',function(){
-    if(!$('#o-tel').value.trim()){$('#o-err-tel').textContent='Escribe tu número para continuar.';return}
-    $('#o-err-tel').textContent='';
-    wait($('#o-b-tel'),'Enviando…',800,function(){show('tgcode')});      /* PRUEBAS: simulado */
+    var raw=$('#o-tel').value.trim();
+    if(!raw){setErr('#o-err-tel','Escribe tu número para continuar.');return}
+    if(busy)return;
+    setErr('#o-err-tel','');
+    if(isTest()){ wait($('#o-b-tel'),'Enviando…',800,function(){show('tgcode')}); return }   /* PRUEBAS: simulado */
+    var tel=raw.replace(/[\s\-().]/g,'');
+    if(!/^\+\d{8,15}$/.test(tel)){setErr('#o-err-tel','Escribe el número con el prefijo del país, por ejemplo +34 612 345 678.');return}
+    call($('#o-b-tel'),'Enviando…','POST','/telegram_enviar_codigo',{token:tok(),telefono:tel},function(r){
+      if(!r.err&&r.status===200&&r.data.ok===true){ telSent=tel; setErr('#o-err-code',''); $('#o-code').value=''; show('tgcode'); return }
+      setErr('#o-err-tel',errOf(r,'No se pudo enviar el código. Inténtalo de nuevo.'));
+    });
   });
   $('#o-b-code').addEventListener('click',function(){
-    if(!$('#o-code').value.trim()){$('#o-err-code').textContent='Escribe el código para continuar.';return}
-    $('#o-err-code').textContent='';
-    wait($('#o-b-code'),'Verificando…',800,function(){show('tgpass')});
+    var raw=$('#o-code').value.trim();
+    if(!raw){setErr('#o-err-code','Escribe el código para continuar.');return}
+    if(busy)return;
+    setErr('#o-err-code','');
+    if(isTest()){ wait($('#o-b-code'),'Verificando…',800,function(){show('tgpass')}); return }
+    var cod=raw.replace(/\D/g,'');
+    if(!cod){setErr('#o-err-code','Escribe el código para continuar.');return}
+    call($('#o-b-code'),'Verificando…','POST','/telegram_verificar_codigo',{token:tok(),codigo:cod},function(r){
+      if(!r.err&&r.status===200&&r.data.ok===true){ show('tglisto'); return }
+      if(!r.err&&r.status===200&&r.data.necesita_password===true){ setErr('#o-err-pass',''); $('#o-pass').value=''; show('tgpass'); return }
+      setErr('#o-err-code',errOf(r,'No se pudo verificar el código. Inténtalo de nuevo.'));
+    });
   });
-  $('#o-resend').addEventListener('click',function(){var b=$('#o-resend'),t=b.textContent;b.textContent='Código reenviado';setTimeout(function(){b.textContent=t},1800)});
+  $('#o-resend').addEventListener('click',function(){
+    var b=$('#o-resend'),t=b.textContent;
+    if(isTest()){ b.textContent='Código reenviado';setTimeout(function(){b.textContent=t},1800); return }
+    if(busy)return;
+    setErr('#o-err-code','');
+    call(b,'Enviando…','POST','/telegram_enviar_codigo',{token:tok(),telefono:telSent},function(r){
+      if(!r.err&&r.status===200&&r.data.ok===true){ b.textContent='Código reenviado';setTimeout(function(){b.textContent=t},1800); return }
+      setErr('#o-err-code',errOf(r,'No se pudo reenviar el código. Inténtalo de nuevo.'));
+    });
+  });
   $('#o-b-pass').addEventListener('click',function(){
-    if(!$('#o-pass').value){$('#o-err-pass').textContent='Escribe la contraseña para continuar.';return}
-    $('#o-err-pass').textContent='';
-    wait($('#o-b-pass'),'Verificando…',800,function(){show('tglisto')});
+    var pw=$('#o-pass').value;
+    if(!pw){setErr('#o-err-pass','Escribe la contraseña para continuar.');return}
+    if(busy)return;
+    setErr('#o-err-pass','');
+    if(isTest()){ wait($('#o-b-pass'),'Verificando…',800,function(){show('tglisto')}); return }
+    call($('#o-b-pass'),'Verificando…','POST','/telegram_verificar_password',{token:tok(),password:pw},function(r){
+      if(!r.err&&r.status===200&&r.data.ok===true){ $('#o-pass').value=''; show('tglisto'); return }
+      setErr('#o-err-pass',errOf(r,'No se pudo verificar la contraseña. Inténtalo de nuevo.'));
+    });
   });
   $('#o-nombre').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); $('#o-email').focus({preventScroll:true}) } });
   ['#o-token','#o-email','#o-tel','#o-code','#o-pass'].forEach(function(q){
@@ -1598,16 +1724,42 @@ html,body{height:var(--apph,100%)}
   });
   /* pantallas con campo: el bloque se coloca UNA vez (al cargar / girar) para que el ultimo campo quede sobre el teclado y su barrita.
      Despues no se mueve nada al tocar un campo: iOS no hace scroll propio y no hay saltos. */
+  /* RESERVA DE TECLADO (unico sitio donde se define; ajustar aqui con medidas reales de cada modelo).
+     Distancia desde el borde inferior visible hasta el borde inferior del ultimo campo.
+     Medido en iPhone 15 Pro Max (430x932): la barrita del teclado empieza a 378 pt del borde inferior; + 49 pt para la
+     separacion y dos lineas de aviso de error = 427. Para los demas modelos no hay medida real: se usa el mismo 427,
+     porque el teclado de los iPhone mas pequenos no es mas alto que el del Pro Max (reservar de mas solo sube un poco el campo;
+     reservar de menos lo taparia). w = ancho de pantalla en pt, por si se quiere una tabla por modelo. */
+  function kbReserve(w){ return 427 }
+  var OK_STEPS=20, MIN_FREE=24;  /* pasos de --ok (0.05) y aire minimo (px) entre contenido y botones en pantallas sin campo */
   function place(){
     if(typing())return;
     window.__placed=true;
-    var H=window.__appH||window.innerHeight, target=H-427;
-    document.documentElement.style.setProperty('--onbh',H+'px');
-    document.querySelectorAll('#onb .os.inp').forEach(function(sc){
-      var mid=sc.querySelector('.mid'),ins=sc.querySelectorAll('input'),last=ins[ins.length-1]; if(!mid||!last)return;
-      mid.style.marginTop='0px';
-      var b0=last.getBoundingClientRect().bottom-sc.getBoundingClientRect().top;
-      mid.style.marginTop=Math.max(0,Math.round(target-b0))+'px';
+    var root=document.documentElement, H=window.__appH||window.innerHeight, target=H-kbReserve(window.innerWidth);
+    root.style.setProperty('--onbh',H+'px');
+    var inst=window.NUM_MODE==='install', list=[];
+    document.querySelectorAll('#onb .os').forEach(function(sc){
+      if(inst&&sc.id!=='os-install')return;
+      var mid=sc.querySelector('.mid'),ins=sc.querySelectorAll('input'); if(!mid)return;
+      list.push({sc:sc,mid:mid,last:ins.length?ins[ins.length-1]:null,inn:sc.querySelector('.in'),btns:sc.querySelector('.btns')});
+    });
+    list.forEach(function(o){ if(o.last)o.mid.style.marginTop='0px' });
+    /* cabe: en pantallas con campo, el ultimo campo no pasa de "target" con el bloque arriba del todo;
+       en las demas, no hay desplazamiento y queda aire entre el contenido y los botones */
+    function fits(){
+      for(var i=0;i<list.length;i++){ var o=list[i], t=o.sc.getBoundingClientRect().top;
+        if(o.last){ if(o.last.getBoundingClientRect().bottom-t>target+.5)return false }
+        else{ if(o.sc.scrollHeight>o.sc.clientHeight)return false;
+          if(o.inn&&o.btns){ var m=o.mid.getBoundingClientRect(), pt=parseFloat(getComputedStyle(o.inn).paddingTop)||0;
+            if((m.top-t-pt)+(o.btns.getBoundingClientRect().top-m.bottom)<MIN_FREE)return false } } }
+      return true;
+    }
+    if(list.length&&list[0].sc.getBoundingClientRect().width>0){
+      for(var k=OK_STEPS;k>=0;k--){ root.style.setProperty('--ok',String(k/OK_STEPS)); if(fits())break }
+    }
+    list.forEach(function(o){ if(!o.last)return;
+      var b0=o.last.getBoundingClientRect().bottom-o.sc.getBoundingClientRect().top;
+      o.mid.style.marginTop=Math.max(0,Math.round(target-b0))+'px';
     });
   }
   window.__place=place;
@@ -1636,6 +1788,7 @@ html,body{height:var(--apph,100%)}
   }
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(place);
   setTimeout(place,50);setTimeout(place,600);
+  if(document.body.classList.contains('onb'))place();   /* antes de mostrar la primera pantalla: sin recolocacion visible */
   if(window.__onbPending)window.onbStart();
 })();
 </script>
