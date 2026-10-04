@@ -1954,6 +1954,16 @@
 .settings-overlay .settings-close{height:44px;border-radius:99px !important;background:transparent !important;border:0 !important;color:#9695A3 !important;font:500 14.5px/1 "Instrument Sans","Avenir Next","Helvetica Neue",Arial,sans-serif !important}
 .settings-overlay #cardTeclado .settings-close{background:rgba(255,255,255,.06) !important;border:1px solid rgba(255,255,255,.22) !important;color:#F5F4F8 !important}
 .settings-overlay #cardTeclado #btnResetearTeclado{background:rgba(120,30,30,.28) !important;border-color:rgba(255,120,110,.3) !important;color:#FFB4AD !important}
+/* --- mismo espacio entre todos los bloques (14px) --- */
+#settingsOverlay .settings-panel>div[style*="height"]:not(.settings-card){display:none !important}
+#settingsOverlay .settings-card{margin:0 0 14px !important}
+#settingsOverlay .settings-nav-row{padding:20px 16px !important}
+#settingsOverlay #btnGuardarCambios{margin-top:10px !important}
+#settingsOverlay #btnFabrica{margin-top:12px !important}
+#settingsOverlay #closeSettings{margin-top:8px !important}
+/* --- fundido bajo la franja de la hora: el contenido se desvanece al subir en vez de cortarse --- */
+.settings-overlay::after{content:"";position:fixed;left:0;right:0;top:0;height:60px;z-index:3;pointer-events:none;opacity:0;transition:opacity .2s ease;background:linear-gradient(180deg,#07070B 0,rgba(7,7,11,.90) 28%,rgba(7,7,11,.55) 60%,rgba(7,7,11,.18) 85%,rgba(7,7,11,0) 100%)}
+.settings-overlay.scrolled::after{opacity:1}
 /* --- instrucciones --- */
 .settings-overlay .instr-title{font-family:"Raleway","Avenir Next","Helvetica Neue",Arial,sans-serif !important;color:#F5F4F8 !important}
 .settings-overlay .instr-title .card-icon{color:rgba(245,244,248,.7) !important}
@@ -6326,6 +6336,10 @@
     document.body.classList.add('num-inst');
   }
 })();
+</script>
+<script>
+/* Solo aspecto: marca el menu como "desplazado" para mostrar el fundido de arriba */
+(function(){document.querySelectorAll('.settings-overlay').forEach(function(o){o.addEventListener('scroll',function(){o.classList.toggle('scrolled',o.scrollTop>6)},{passive:true})})})();
 </script>
 </body>
 </html>
