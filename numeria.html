@@ -606,7 +606,8 @@
     flex-direction: column;
   }
 
-  .notes-list-screen:has(.notes-list-topbar.glass) { background-color: var(--nl-bar); }
+  /* La franja de la hora se queda siempre en el color de fondo de la lista (negro puro en oscuro):
+     la cabecera de cristal arranca en ese mismo color y se aclara, para que no haya linea recta. */
 
   body.light-mode .notes-list-screen {
     --nl-bg: #EFEFF4;
@@ -655,10 +656,12 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 18px;
+    height: 30px;
     z-index: -1;
     pointer-events: none;
-    background: linear-gradient(180deg, var(--nl-bar) 0%, transparent 100%);
+    background: var(--nl-bg);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.88) 22%, rgba(0,0,0,.55) 52%, rgba(0,0,0,.2) 80%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.88) 22%, rgba(0,0,0,.55) 52%, rgba(0,0,0,.2) 80%, transparent 100%);
     opacity: 0;
     transition: opacity 0.18s ease;
   }
