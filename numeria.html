@@ -743,6 +743,7 @@
   .notes-list-title-sub svg { width: 13px; height: 13px; flex-shrink: 0; }
 
   .notes-list-link { color: #FF9F0A; }
+  .nl-slash { display: none; }
 
   .notes-list-scroll {
     flex: 1;
@@ -1755,6 +1756,7 @@
   .tel-row-right { font-size: 14px; color: #8E8E93; text-align: right; flex-shrink: 0; }
   .tel-row-i { width: 28px; height: 28px; color: #0A84FF; flex-shrink: 0; }
   .tel-row-i svg { width: 100%; height: 100%; }
+  .tel-ico-cla, .tel-operador, .tel-filtro-btn, .tel-solo-claro { display: none !important; }
   .tel-vm-dot { width: 8px; height: 8px; border-radius: 50%; background: #0A84FF; flex-shrink: 0; }
 
   .tel-azindex {
@@ -1923,6 +1925,253 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style id="claroIOS">
+  /* ============================================================
+     MODO TELEFONO CLARO — medidas tomadas de capturas reales de iOS 26
+     (iPhone 15 Pro Max). Todo cuelga de .tel-light: el oscuro no cambia.
+     Colores con tinte en display-p3 (valor exacto de la captura).
+  ============================================================ */
+  #telefonoScreen.tel-light {
+    --c-azul: color(display-p3 0.2196 0.5020 0.9412); --c-azul2: color(display-p3 0.2314 0.5255 0.9686); --c-rojo: color(display-p3 0.9216 0.2941 0.2745);
+    --c-gris: #8A8A8D; --c-sep: #E7E7E8; --c-verde: color(display-p3 0.4078 0.7922 0.4157);
+    --c-cristal: #FCFCFC;
+    --s-cristal: inset 0 0 0 .67px rgba(0,0,0,.16), 0 5px 9px rgba(0,0,0,.035);
+  }
+  #telefonoScreen.tel-light .tel-ico-osc { display: none !important; }
+  #telefonoScreen.tel-light .tel-ico-cla { display: block !important; }
+  #telefonoScreen.tel-light .tel-solo-claro { display: flex !important; }
+
+  /* --- Teclado --- */
+  #telefonoScreen.tel-light .tel-keypad-wrap { gap: 18.67px; }
+  #telefonoScreen.tel-light .tel-keypad-row { gap: 22.67px; }
+  #telefonoScreen.tel-light .tel-key {
+    width: 89.33px; height: 89.33px; border: none;
+    background: radial-gradient(circle at 50% 45%, #FCFCFC 0%, #FAFAFA 60%, #FDFDFD 100%);
+    box-shadow: inset 0 0 0 .67px rgba(0,0,0,.20), 0 5px 9px rgba(0,0,0,.035);
+  }
+  #telefonoScreen.tel-light .tel-key.pressed { background: #E6E6E6; }
+  #telefonoScreen.tel-light .tel-key .tel-key-num { font-size: 42px; transform: translateY(-1.8px); }
+  #telefonoScreen.tel-light .tel-key .tel-key-letras { font-size: 11.8px; letter-spacing: 2.95px; transform: translate(1.3px, -3.6px); }
+  #telefonoScreen.tel-light .tel-key[data-num="1"] .tel-key-num { transform: translateY(-8.5px); }
+  #telefonoScreen.tel-light .tel-key[data-num="*"] .tel-key-num { font-size: 48px; transform: translateY(6px); }
+  #telefonoScreen.tel-light .tel-key[data-num="#"] .tel-key-num { font-size: 34px; transform: skewX(-6deg); }
+  #telefonoScreen.tel-light .tel-key[data-num="0"] .tel-key-letras { font-size: 17.6px; transform: translate(1.3px, -3.9px); }
+  #telefonoScreen.tel-light .tel-call-btn {
+    width: 89.33px; height: 89.33px; background: var(--c-verde);
+    box-shadow: inset 0 0 0 .67px color(display-p3 0.3961 0.7686 0.4000), inset 0 0 0 1.6px rgba(170,253,190,.9);
+  }
+  #telefonoScreen.tel-light .tel-call-btn svg { width: 38.8px; height: 38.8px; }
+
+  /* --- Barra de pestanas --- */
+  #telefonoScreen.tel-light .tel-tabbar {
+    left: 20.33px; right: 20.33px; height: 63.33px; border-radius: 31.67px; padding: 0 10.5px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 15.67px);
+    background: rgba(255,255,255,.78); border: none;
+    box-shadow: inset 0 0 0 .67px rgba(0,0,0,.14), 0 5px 9px rgba(0,0,0,.035);
+  }
+  #telefonoScreen.tel-light .tel-tab { padding: 0 0 15.2px 0; gap: 0; font-size: 10px; line-height: 12px; font-weight: 500; }
+  #telefonoScreen.tel-light .tel-tab > span[data-i18n] { white-space: nowrap; }
+  #telefonoScreen.tel-light .tel-tab > svg,
+  #telefonoScreen.tel-light .tel-tab > span:not([data-i18n]):not(.tel-tab-capsula) {
+    position: absolute !important; top: 20px; left: 50%; translate: -50% -50%; display: block !important;
+  }
+  #telefonoScreen.tel-light .tel-tab[data-tab="favoritos"] svg { width: 35.2px; height: 35.2px; top: 19.1px; }
+  #telefonoScreen.tel-light .tel-tab[data-tab="recientes"] svg { width: 27.8px; height: 27.8px; }
+  #telefonoScreen.tel-light .tel-tab[data-tab="contactos"] svg { width: 27.3px; height: 27.3px; display: block; }
+  #telefonoScreen.tel-light .tel-tab[data-tab="teclado"] svg { width: 24.9px; height: 24.9px; }
+  #telefonoScreen.tel-light .tel-tab[data-tab="buzon"] svg { width: 35.5px; height: 18.8px; }
+  #telefonoScreen.tel-light .tel-tab.active { color: var(--c-azul); }
+  #telefonoScreen.tel-light .tel-tab.active .tel-tab-capsula { inset: 7.4px -5.5px; border-radius: 24.3px; background: #EBEBEB; }
+  #telefonoScreen.tel-light .tel-tab-badge {
+    top: 2px; right: auto; left: calc(50% + 14px); height: 18.33px; min-width: 18.33px; border-radius: 9.2px;
+    padding: 0 5px; box-sizing: border-box; font-size: 13px; font-weight: 500; background: var(--c-rojo);
+  }
+  #telefonoScreen.tel-light .tel-fade-bottom { display: none; }
+
+  /* --- Cabeceras de lista --- */
+  #telefonoScreen.tel-light .tel-list-top {
+    padding: 0 20px 10px 20px;
+    background: transparent !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  }
+  #telefonoScreen.tel-light .tel-fade-top {
+    height: 64px;
+    background: linear-gradient(180deg, rgba(255,255,255,.96) 0px, rgba(255,255,255,.82) 30px, rgba(255,255,255,0) 64px);
+    -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+    -webkit-mask-image: linear-gradient(180deg, #000 0, #000 34px, transparent 64px);
+    mask-image: linear-gradient(180deg, #000 0, #000 34px, transparent 64px);
+  }
+  #telefonoScreen.tel-light .tel-list-btn,
+  #telefonoScreen.tel-light .tel-list-plus,
+  #telefonoScreen.tel-light .tel-filtro-pill-top {
+    background: var(--c-cristal); color: #0F0F0F; box-shadow: var(--s-cristal);
+  }
+  #telefonoScreen.tel-light .tel-list-btn { height: 44.33px; border-radius: 22.2px; padding: 0 17.3px; font-size: 17px; font-weight: 500; }
+  #telefonoScreen.tel-light .tel-list-plus { width: 44.33px; height: 44.33px; }
+  #telefonoScreen.tel-light .tel-list-plus svg { width: 30px; height: 30px; }
+  #telefonoScreen.tel-light #telAjustesGear svg { width: 25px; height: 25px; }
+  #telefonoScreen.tel-light .tel-filtro-btn { display: flex !important; position: absolute; right: 0; top: 0; }
+  #telefonoScreen.tel-light .tel-filtro-btn svg { width: 26px; height: 26px; }
+  #telefonoScreen.tel-light .tel-filtro-pill-top { height: 48px; border-radius: 24px; padding: 4px; margin: -2px 0; }
+  #telefonoScreen.tel-light .tel-filtro-pill-top .tel-filtro-opt { height: 40px; border-radius: 20px; font-size: 15px; font-weight: 500; padding: 0 15px; }
+  #telefonoScreen.tel-light .tel-filtro-opt.active { background: #EBEBEB; }
+  #telefonoScreen.tel-light .tel-list-title { margin-top: 12.1px !important; line-height: 41px; }
+  #telefonoScreen.tel-light .tel-titulo-grande-wrap { margin-top: 0 !important; }
+  #telefonoScreen.tel-light #telPanelRecientes .tel-list-search { display: none; }
+
+  /* --- Filas --- */
+  #telefonoScreen.tel-light #telPanelFavoritos .tel-list-scroll { padding-top: 94px; }
+  #telefonoScreen.tel-light #telPanelRecientes .tel-list-scroll { padding-top: 106px; padding-right: 16px; }
+  #telefonoScreen.tel-light #telPanelContactos .tel-list-scroll { padding-top: 109px; padding-left: 22px; }
+  #telefonoScreen.tel-light #telPanelBuzon .tel-list-scroll { padding-top: 111px; padding-right: 16px; }
+  #telefonoScreen.tel-light .tel-row { border-bottom: none; position: relative; padding: 15px 0; gap: 12px; }
+  #telefonoScreen.tel-light .tel-row::after { content: ""; position: absolute; left: 55px; right: 0; bottom: 0; height: 1px; background: var(--c-sep); }
+  #telefonoScreen.tel-light .tel-avatar { background: linear-gradient(180deg, color(display-p3 0.6745 0.7529 0.8667), color(display-p3 0.4667 0.5020 0.7098)) !important; font-size: 20px; font-weight: 600; }
+  #telefonoScreen.tel-light .tel-row-nombre { font-size: 17px; line-height: 22px; font-weight: 600; }
+  #telefonoScreen.tel-light .tel-row-nombre.perdida { color: var(--c-rojo); }
+  #telefonoScreen.tel-light .tel-row-sub { font-size: 15px; line-height: 20px; margin-top: 0; color: var(--c-gris); }
+  #telefonoScreen.tel-light .tel-row-sub.perdida { color: var(--c-gris); }
+  #telefonoScreen.tel-light .tel-row-right { color: var(--c-gris); }
+  #telefonoScreen.tel-light .tel-row-i {
+    width: 44px; height: 44px; margin: -.5px 0; border-radius: 50%; background: #F4F4F5; color: var(--c-azul2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #telefonoScreen.tel-light .tel-row-i svg { display: none; }
+  #telefonoScreen.tel-light .tel-row-i::before { content: "i"; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 19.5px; font-weight: 500; line-height: 1; }
+  #telefonoScreen.tel-light .tel-vm-dot { width: 9px; height: 9px; background: var(--c-azul2); margin-left: 3px; }
+
+  #telefonoScreen.tel-light #telPanelRecientes .tel-row { gap: 11px; }
+  #telefonoScreen.tel-light #telPanelRecientes .tel-row::after { left: 56px; }
+  #telefonoScreen.tel-light #telPanelRecientes .tel-avatar { width: 45px; height: 45px; }
+  #telefonoScreen.tel-light #telPanelRecientes .tel-row-nombre { font-size: 16px; line-height: 21px; }
+  #telefonoScreen.tel-light #telPanelRecientes .tel-row-sub { margin-top: 0; }
+  #telefonoScreen.tel-light #telPanelRecientes .tel-row-sub svg { width: 11px; height: 11px; }
+  #telefonoScreen.tel-light #telPanelRecientes .tel-row-right { font-size: 15px; }
+  #telefonoScreen.tel-light #telPanelRecientes .tel-row-i { width: 40px; height: 40px; margin: 0 4px 0 0; }
+
+  #telefonoScreen.tel-light #telPanelContactos .tel-row { padding: 10px 0; gap: 10.67px; }
+  #telefonoScreen.tel-light #telPanelContactos .tel-row-nombre { font-size: 16px; line-height: 21px; }
+  #telefonoScreen.tel-light #telPanelContactos .tel-row-main { margin-top: -3.2px; }
+  #telefonoScreen.tel-light #telPanelFavoritos .tel-row-main { margin-top: -2.4px; }
+  #telefonoScreen.tel-light #telPanelContactos .tel-row::after { left: 55px; right: -6px; }
+  #telefonoScreen.tel-light #telPanelContactos .tel-avatar { width: 45px; height: 45px; }
+  #telefonoScreen.tel-light #telListaContactos > div[id^="tel-letra-"] {
+    font-size: 15px !important; font-weight: 500; line-height: 18px; height: 25px; box-sizing: border-box;
+    padding: 10px 0 0 1px !important; color: var(--c-gris) !important;
+  }
+  #telefonoScreen.tel-light #telPanelContactos .tel-list-title { font-size: 17px !important; font-weight: 600 !important; letter-spacing: 0; line-height: 22px; margin: 0 !important; }
+  #telefonoScreen.tel-light #telBuscaContactosWrap {
+    height: 44px; box-sizing: border-box; border-radius: 22px; padding: 0 14px; gap: 9px;
+    background: var(--c-cristal); box-shadow: var(--s-cristal); color: #0F0F0F;
+  }
+  #telefonoScreen.tel-light #telBuscaContactosWrap svg { width: 21px; height: 21px; }
+  #telefonoScreen.tel-light #telBuscaContactosWrap .tel-search-mic svg { width: 23px; height: 23px; color: #0F0F0F; }
+  #telefonoScreen.tel-light #telContactosBuscar { font-size: 17px !important; min-width: 0; }
+  #telefonoScreen.tel-light #telContactosBuscar::placeholder { color: #8E8E93; opacity: 1; }
+  #telefonoScreen.tel-light .tel-azindex {
+    top: 258px; bottom: auto; right: 2.5px; width: 10.5px; align-items: center;
+    font-size: 11px; line-height: 13.64px; font-weight: 600; color: var(--c-azul2);
+  }
+
+  #telefonoScreen.tel-light #telPanelBuzon .tel-row { gap: 11px; }
+  #telefonoScreen.tel-light #telPanelBuzon .tel-row::after { left: 60px; }
+  #telefonoScreen.tel-light #telPanelBuzon .tel-avatar { width: 45px; height: 45px; }
+  #telefonoScreen.tel-light #telPanelBuzon .tel-row-i { display: none; }
+  #telefonoScreen.tel-light #telPanelBuzon .tel-row-sub { display: block; padding-left: 0; }
+  #telefonoScreen.tel-light #telPanelBuzon .tel-row-sub::before {
+    content: "P"; display: inline-block; vertical-align: 1.5px; width: 11px; height: 11px; margin-right: 4px;
+    border-radius: 2.5px; background: #A2A2A5; color: #fff; font-size: 8px; line-height: 11px; font-weight: 800; text-align: center;
+  }
+  #telefonoScreen.tel-light #telPanelBuzon .tel-row-right { font-size: 17px; line-height: 20.16px; align-self: flex-start; padding-top: 2.55px; }
+  #telefonoScreen.tel-light #telPanelBuzon .tel-row-right::before { content: attr(data-fecha); display: block; color: #000; }
+  #telefonoScreen.tel-light .tel-operador {
+    display: flex !important; align-items: center; justify-content: space-between;
+    height: 49px; margin: 0 0 6px -4px; padding: 0 12px 0 17.3px; border-radius: 24.5px; background: #F4F4F5;
+    font-size: 16px; font-weight: 600; color: #000; box-sizing: border-box; white-space: nowrap;
+  }
+  #telefonoScreen.tel-light .tel-operador b {
+    font-weight: 500; color: var(--c-azul2); background: #E0E0E2; border-radius: 13.5px; height: 27px; padding: 0 10.7px; font-size: 15px;
+    display: flex; align-items: center;
+  }
+  #telefonoScreen.tel-light #telPanelFavoritos .tel-row-sub svg.tel-ico-cla { width: 12.5px; height: 12.5px; }
+
+  /* ============================================================
+     MODO NOTAS CLARO — medidas tomadas de capturas reales de iOS 26.
+     Todo cuelga de body.light-mode: el oscuro no cambia.
+  ============================================================ */
+  body.light-mode {
+    --text: #000000;
+    --n-oro: color(display-p3 0.8627 0.6941 0.2392);
+    --n-cristal: #FCFCFC;
+    --n-sombra: inset 0 0 0 .67px rgba(0,0,0,.16), 0 5px 9px rgba(0,0,0,.035);
+  }
+  body.light-mode #ellipsisDot.dot-pending { fill: #8E8E93 !important; }
+  body.light-mode #body { caret-color: var(--n-oro); color-scheme: only light; }
+  #telefonoScreen.tel-light input { color-scheme: only light; }
+
+  /* --- Nota abierta --- */
+  body.light-mode header { padding: 0 20px 10px 20px; }
+  body.light-mode .back,
+  body.light-mode .undo-btn,
+  body.light-mode .pill,
+  body.light-mode .idle-toolbar .pill,
+  body.light-mode .kb-pill,
+  body.light-mode .compose-btn {
+    background: var(--n-cristal); border: none; box-shadow: var(--n-sombra);
+  }
+  body.light-mode .back { width: 44.33px; height: 44.33px; }
+  body.light-mode header .back svg { width: 11px; height: 18.67px; right: 1.6px; }
+  body.light-mode .undo-btn { width: 44.33px; height: 44.33px; }
+  body.light-mode .undo-btn svg { width: 20px; height: 20px; }
+  body.light-mode header .pill {
+    width: 100.67px; height: 44.33px; border-radius: 22.2px; box-sizing: border-box;
+    padding: 0 0 0 8.9px; gap: 32.6px; justify-content: flex-start;
+  }
+  body.light-mode header .pill svg:last-child { width: 20px; }
+  body.light-mode .header-right { gap: 12px; }
+  body.light-mode .done-btn {
+    width: 44.33px; height: 44.33px; background: color(display-p3 0.8588 0.6902 0.2392); border: none;
+    box-shadow: inset 0 0 0 .67px rgba(0,0,0,.06);
+  }
+  body.light-mode .editor { padding: 6.8px 46px 24px 28px; }
+
+  body.light-mode .idle-toolbar { padding: 10px 28px calc(env(safe-area-inset-bottom, 0px) + 28px) 28px; }
+  body.light-mode .idle-toolbar .pill { height: 48px; border-radius: 24px; padding: 0 13.9px 0 14.8px; gap: 30.75px; box-sizing: border-box; }
+  body.light-mode .idle-toolbar .pill svg { width: 26px; height: 26px; }
+  body.light-mode .idle-toolbar .compose-btn { width: 48px; height: 48px; }
+  body.light-mode .idle-toolbar .compose-btn svg { width: 27.5px; height: 27.5px; }
+  body.light-mode .keyboard-toolbar { padding-left: 8px; padding-right: 8px; }
+  body.light-mode .kb-pill { height: 48.67px; box-sizing: border-box; padding-top: 0; padding-bottom: 0; }
+
+  /* --- Lista de notas --- */
+  body.light-mode .notes-list-screen {
+    --nl-bg: #F2F2F6;
+    --nl-bar: #FBFBFF;
+    --nl-glass: rgba(251, 251, 255, 0.86);
+    --nl-hairline: rgba(60, 60, 67, 0.10);
+    --nl-dim: #8A8A8D;
+    --nl-sep: #E7E7E8;
+    --nl-btn: #F5F5FA;
+    --nl-capsule: rgba(253, 253, 253, 0.82);
+  }
+  body.light-mode .notes-group { box-shadow: none; border-radius: 27px; }
+  body.light-mode .notes-row:not(:last-child)::after { height: 1px; }
+  body.light-mode .notes-list-topbar .back {
+    background: var(--nl-btn); border: none;
+    box-shadow: inset 0 0 0 .67px rgba(0,0,0,.13), inset 0 1px 0 rgba(255,255,255,.9), 0 5px 9px rgba(0,0,0,.03);
+  }
+  body.light-mode .notes-list-bigtitle { padding: 10.4px 0 14px 0; }
+  body.light-mode .notes-list-title-main { font-size: 34px; font-weight: 700; line-height: 41px; letter-spacing: 0; }
+  body.light-mode .notes-list-title-sub { font-size: 15px; line-height: 20px; margin-top: 1.1px; gap: 6px; color: color(display-p3 0.5216 0.5216 0.5412); padding-left: 1px; }
+  body.light-mode .notes-list-title-sub svg { width: 21px; height: 18px; }
+  body.light-mode .nl-slash { display: inline; }
+  body.light-mode .notes-list-link { color: var(--n-oro); }
+  body.light-mode .notes-list-footer { gap: 13px; }
+  body.light-mode .notes-search-bar,
+  body.light-mode .notes-list-footer .compose-btn {
+    border: none; box-shadow: inset 0 0 0 .67px rgba(0,0,0,.14), 0 5px 9px rgba(0,0,0,.035);
+  }
+  body.light-mode .notes-search-bar { padding: 0 12px 0 14px; color: #8A8A8D; }
+</style>
 <style id="pielNumeria">
 /* ===== Piel Numeria para el menu de ajustes, las instrucciones y los editores =====
    SOLO ASPECTO: no cambia ninguna opcion ni funcion. Las pantallas de Notas y Telefono
@@ -2242,7 +2491,7 @@
   <div class="notes-list-scroll" id="notesListScroll">
     <div class="notes-list-bigtitle">
       <div class="notes-list-title-main" id="notesListBigMain">Todo (iCloud)</div>
-      <div class="notes-list-title-sub"><svg viewBox="0 0 24 24" fill="none"><path d="M6.5 17a4 4 0 01-.5-7.97A5.5 5.5 0 0116.5 8a4.5 4.5 0 01.9 8.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="notesListBigSub">Espacio en iCloud lleno</span> · <span class="notes-list-link" id="notesListGetMore">Obtener más</span></div>
+      <div class="notes-list-title-sub"><svg viewBox="0 0 24 24" fill="none"><path d="M6.5 17a4 4 0 01-.5-7.97A5.5 5.5 0 0116.5 8a4.5 4.5 0 01.9 8.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path class="nl-slash" d="M3.5 4l16.5 15.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span id="notesListBigSub">Espacio en iCloud lleno</span> · <span class="notes-list-link" id="notesListGetMore">Obtener más</span></div>
     </div>
     <div id="notesListGroups"></div>
   </div>
@@ -2291,6 +2540,7 @@
             <div class="tel-filtro-opt" id="telFiltroPerdidas" data-i18n="telPerdidas">Perdidas</div>
           </div>
           <div class="tel-titulo-chico" id="telTituloChicoRecientes" data-i18n="telRecientesTitulo" style="visibility:hidden;">Recientes</div>
+          <div class="tel-list-plus tel-filtro-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 7.5h15M7 12h10M9.5 16.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
         </div>
         <div class="tel-titulo-grande-wrap" id="telColapsaRecientes">
           <div class="tel-list-title" data-i18n="telRecientesTitulo">Recientes</div>
@@ -2313,6 +2563,7 @@
         <div class="tel-list-search" id="telBuscaContactosWrap" style="margin-top:10px;">
           <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           <input id="telContactosBuscar" placeholder="Buscar" data-i18n-placeholder="telBuscar" style="background:none; border:none; outline:none; color:inherit; font-size:16px; flex:1;">
+          <span class="tel-search-mic tel-solo-claro"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.8a2.9 2.9 0 0 1 2.9 2.9v4.7a2.9 2.9 0 1 1-5.8 0V6.7A2.9 2.9 0 0 1 12 3.8Z" stroke="currentColor" stroke-width="1.9"/><path d="M6.8 10.8v.5a5.2 5.2 0 1 0 10.4 0v-.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M12 16.5v3.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M9.4 19.7h5.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></span>
         </div>
       </div>
       <div class="tel-fade-top"></div>
@@ -2395,7 +2646,7 @@
     </div>
     <div class="tel-tab" data-tab="recientes">
       <span class="tel-tab-capsula"></span>
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm.9 5v5.1l4 2.3-.8 1.4L11 13V7h1.9z"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><defs><mask id="telRelojMask"><rect width="24" height="24" fill="#fff"/><path class="tel-ico-osc" d="M12.9 7v5.1l4 2.3-.8 1.4L11 13V7h1.9z" fill="#000"/><path class="tel-ico-cla" d="M12 6.4v5.6H7.7" fill="none" stroke="#000" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></mask></defs><circle cx="12" cy="12" r="10" mask="url(#telRelojMask)"/></svg>
       <span data-i18n="telTabRecientes">Recientes</span>
       <div class="tel-tab-badge" id="telBadgeRecientes"></div>
     </div>
@@ -3935,6 +4186,22 @@
         iconoTeclado: { x: 0, y: 2, scale: 98 },
         iconoBuzon: { x: 0, y: 4, scale: 100 },
         texto: { x: 0, y: 0, scale: 93 }
+      },
+      // Modo claro: teclas, boton verde y capsula en la posicion medida de iOS.
+      // numero / sugerencia / borrar parten de los mismos valores que en oscuro.
+      elementosPosClaro: {
+        keypad: { x: 0, y: -59, scale: 100 },
+        callBtn: { x: 0, y: -86, scale: 100 },
+        borrarBtn: { x: 16, y: -121, scale: 100 },
+        numero: { x: 0, y: 1, scale: 100 },
+        sugerencia: { x: 0, y: -7, scale: 90 },
+        capsula: { x: 0, y: 0, scale: 100 },
+        iconoFavoritos: { x: 0, y: 0, scale: 100 },
+        iconoRecientes: { x: 0, y: 0, scale: 100 },
+        iconoContactos: { x: 0, y: 0, scale: 100 },
+        iconoTeclado: { x: 0, y: 0, scale: 100 },
+        iconoBuzon: { x: 0, y: 0, scale: 100 },
+        texto: { x: 0, y: 0, scale: 100 }
       }
     },
     elementos: {
@@ -3944,6 +4211,14 @@
       doneBtn: { x: 0, y: -4, scale: 100 },
       idlePill: { x: 8, y: -25, scale: 97 },
       composeBtn: { x: -16, y: -25, scale: 100 }
+    },
+    elementosClaro: {
+      backBtn: { x: 0, y: 0, scale: 100 },
+      undoBtn: { x: 0, y: 0, scale: 100 },
+      headerPill: { x: 0, y: 0, scale: 100 },
+      doneBtn: { x: 0, y: 0, scale: 100 },
+      idlePill: { x: 0, y: 0, scale: 100 },
+      composeBtn: { x: 0, y: 0, scale: 100 }
     }
   };
 
@@ -3958,7 +4233,14 @@
         combinado.tel = Object.assign({}, AJUSTES_DEFECTO.tel, parseado.tel || {});
         combinado.tel.peek = Object.assign({}, AJUSTES_DEFECTO.tel.peek, (parseado.tel && parseado.tel.peek) || {});
         combinado.tel.elementosPos = Object.assign({}, AJUSTES_DEFECTO.tel.elementosPos, (parseado.tel && parseado.tel.elementosPos) || {});
+        // Claro: los de arriba (numero, sugerencia) y borrar heredan lo que el usuario
+        // ya tenia colocado; el resto parte de los valores medidos contra iOS.
+        (function(){ const ep = combinado.tel.elementosPos;
+          combinado.tel.elementosPosClaro = Object.assign({}, AJUSTES_DEFECTO.tel.elementosPosClaro,
+            { numero: Object.assign({}, ep.numero), sugerencia: Object.assign({}, ep.sugerencia), borrarBtn: Object.assign({}, ep.borrarBtn) },
+            (parseado.tel && parseado.tel.elementosPosClaro) || {}); })();
         combinado.elementos = Object.assign({}, AJUSTES_DEFECTO.elementos, parseado.elementos || {});
+        combinado.elementosClaro = Object.assign({}, AJUSTES_DEFECTO.elementosClaro, parseado.elementosClaro || {});
         return combinado;
       }
     } catch (e) {}
@@ -4097,22 +4379,25 @@
     doneBtn: 'epDone', idlePill: 'epIdlePill', composeBtn: 'epCompose'
   };
 
+  // Posiciones por apariencia: las del modo oscuro (elementos) no se tocan;
+  // el modo claro usa las suyas (elementosClaro), colocadas como en iOS.
+  function claveEl() { return ajustes.apariencia === 'claro' ? 'elementosClaro' : 'elementos'; }
   function actualizarPreviaElementos() {
     const factor = 0.35;
     Object.keys(MAPA_PREVIA_ELEMENTOS).forEach(id => {
       const mini = document.getElementById(MAPA_PREVIA_ELEMENTOS[id]);
       if (!mini) return;
-      const cfg = ajustes.elementos[id];
+      const cfg = ajustes[claveEl()][id];
       mini.style.transform = `translate(${cfg.x * factor}px, ${cfg.y * factor}px) scale(${cfg.scale / 100})`;
       mini.classList.toggle('ep-selected', id === elementoSeleccionado);
     });
   }
 
   function aplicarEstilosElementos() {
-    Object.keys(ajustes.elementos).forEach(id => {
+    Object.keys(ajustes[claveEl()]).forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
-      const cfg = ajustes.elementos[id];
+      const cfg = ajustes[claveEl()][id];
       el.style.transform = `translate(${cfg.x}px, ${cfg.y}px) scale(${cfg.scale / 100})`;
     });
     actualizarPreviaElementos();
@@ -4120,7 +4405,7 @@
   aplicarEstilosElementos();
 
   function refrescarSlidersElemento() {
-    const cfg = ajustes.elementos[elementoSeleccionado];
+    const cfg = ajustes[claveEl()][elementoSeleccionado];
     elXInput.value = cfg.x;
     elYInput.value = cfg.y;
     elScaleInput.value = cfg.scale;
@@ -4153,19 +4438,19 @@
   });
 
   elXInput.addEventListener('input', () => {
-    ajustes.elementos[elementoSeleccionado].x = Number(elXInput.value);
+    ajustes[claveEl()][elementoSeleccionado].x = Number(elXInput.value);
     guardarAjustes();
     aplicarEstilosElementos();
   });
 
   elYInput.addEventListener('input', () => {
-    ajustes.elementos[elementoSeleccionado].y = Number(elYInput.value);
+    ajustes[claveEl()][elementoSeleccionado].y = Number(elYInput.value);
     guardarAjustes();
     aplicarEstilosElementos();
   });
 
   elScaleInput.addEventListener('input', () => {
-    ajustes.elementos[elementoSeleccionado].scale = Number(elScaleInput.value);
+    ajustes[claveEl()][elementoSeleccionado].scale = Number(elScaleInput.value);
     guardarAjustes();
     aplicarEstilosElementos();
   });
@@ -4394,6 +4679,8 @@
 
   function aplicarApariencia() {
     document.body.classList.toggle('light-mode', ajustes.apariencia === 'claro');
+    // cada apariencia tiene sus posiciones: se recolocan al cambiar
+    try { aplicarEstilosElementos(); refrescarSlidersElemento(); } catch (e) {}
   }
 
   function sincronizarColorVistazoConApariencia() {
@@ -4447,6 +4734,7 @@
 
   function restablecerElementos() {
     ajustes.elementos = JSON.parse(JSON.stringify(AJUSTES_DEFECTO.elementos));
+    ajustes.elementosClaro = JSON.parse(JSON.stringify(AJUSTES_DEFECTO.elementosClaro));
     guardarAjustes();
     aplicarEstilosElementos();
     refrescarSlidersElemento();
@@ -4712,7 +5000,7 @@
           ${renderAvatar(f.nombre)}
           <div class="tel-row-main">
             <div class="tel-row-nombre">${f.nombre}</div>
-            <div class="tel-row-sub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h4l2 5-2.5 1.5a11 11 0 005 5L16 12l5 2v4a2 2 0 01-2 2C10.3 20 4 13.7 4 5a2 2 0 012-2z" stroke-linejoin="round"/></svg><span data-i18n="telMovil">móvil</span></div>
+            <div class="tel-row-sub"><svg class="tel-ico-osc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h4l2 5-2.5 1.5a11 11 0 005 5L16 12l5 2v4a2 2 0 01-2 2C10.3 20 4 13.7 4 5a2 2 0 012-2z" stroke-linejoin="round"/></svg><svg class="tel-ico-cla" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg><span data-i18n="telMovil">móvil</span></div>
           </div>
           ${iconInfo}
         </div>`).join('');
@@ -4730,7 +5018,7 @@
           ${renderAvatar(r.nombre)}
           <div class="tel-row-main">
             <div class="tel-row-nombre ${r.perdida ? 'perdida' : ''}">${r.nombre}</div>
-            <div class="tel-row-sub ${r.perdida ? 'perdida' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 7l10 10M17 7v10H7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>${r.tipo}</span></div>
+            <div class="tel-row-sub ${r.perdida ? 'perdida' : ''}"><svg class="tel-ico-osc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 7l10 10M17 7v10H7" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="tel-ico-cla" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="${r.perdida ? 'M18 6L6 18M6 8.5V18h9.5' : 'M6 18L18 6M8.5 6H18v9.5'}" stroke-linecap="round" stroke-linejoin="round"/></svg><span>${r.tipo}</span></div>
           </div>
           <div class="tel-row-right">${fechaVisualRecientes(i)}</div>
           ${iconInfo}
@@ -4774,7 +5062,7 @@
 
     function renderBuzon() {
       const todos = datosTel.buzon.concat(datosTel.buzonRelleno);
-      document.getElementById('telListaBuzon').innerHTML = todos.map((b, i) => `
+      document.getElementById('telListaBuzon').innerHTML = `<div class="tel-operador"><span>Buzón de voz del operador</span><b>Llamar al operador</b></div>` + todos.map((b, i) => `
         <div class="tel-row">
           ${renderAvatar(b.nombre)}
           <div class="tel-row-main">
@@ -5285,6 +5573,7 @@
         document.getElementById('telefonoScreen').classList.toggle('tel-light', claro);
         document.getElementById('tecladoEditListScreen').classList.toggle('tel-light', claro);
         refrescarAparienciaTelUI();
+        if (window.__reaplicarPosTel) window.__reaplicarPosTel();
       });
     });
     refrescarAparienciaTelUI();
@@ -5300,6 +5589,7 @@
       ajustes.tel.mostrarEstadoVisual = true;
       refrescarAparienciaTelUI();
       telefonoScreen.classList.remove('tel-light');
+      if (window.__reaplicarPosTel) window.__reaplicarPosTel();
       renderFavoritos(); renderRecientes(false); renderContactos(''); renderBuzon();
     });
 
@@ -5403,11 +5693,15 @@
       texto: Array.from(document.querySelectorAll('.tel-tab > span[data-i18n]'))
     };
 
+    // Posiciones por apariencia: las del modo oscuro (elementosPos) no se tocan;
+    // el modo claro usa las suyas (elementosPosClaro), medidas contra iOS.
+    function clavePosTel() { return ajustes.tel.apariencia === 'claro' ? 'elementosPosClaro' : 'elementosPos'; }
+    window.__reaplicarPosTel = function(){ try { aplicarPosicionElementosTel(); } catch(e){} };
     function aplicarPosicionElementosTel() {
-      Object.keys(ajustes.tel.elementosPos).forEach(id => {
+      Object.keys(ajustes.tel[clavePosTel()]).forEach(id => {
         const lista = MAPA_ELEMENTOS_TEL[id];
         if (!lista) return;
-        const cfg = ajustes.tel.elementosPos[id];
+        const cfg = ajustes.tel[clavePosTel()][id];
         const base = (id === 'borrarBtn') ? 'translateY(-50%) ' : '';
         lista.forEach(el => {
           if (!el) return;
@@ -5418,7 +5712,7 @@
     aplicarPosicionElementosTel();
 
     function refrescarSlidersMoverTel() {
-      const cfg = ajustes.tel.elementosPos[elementoTelSeleccionado];
+      const cfg = ajustes.tel[clavePosTel()][elementoTelSeleccionado];
       telMoverX.value = cfg.x; telMoverXValue.textContent = cfg.x;
       telMoverY.value = cfg.y; telMoverYValue.textContent = cfg.y;
       telMoverScale.value = cfg.scale; telMoverScaleValue.textContent = cfg.scale + '%';
@@ -5437,25 +5731,25 @@
       });
     });
     telMoverX.addEventListener('input', () => {
-      ajustes.tel.elementosPos[elementoTelSeleccionado].x = Number(telMoverX.value);
+      ajustes.tel[clavePosTel()][elementoTelSeleccionado].x = Number(telMoverX.value);
       telMoverXValue.textContent = telMoverX.value;
       guardarAjustes();
       aplicarPosicionElementosTel();
     });
     telMoverY.addEventListener('input', () => {
-      ajustes.tel.elementosPos[elementoTelSeleccionado].y = Number(telMoverY.value);
+      ajustes.tel[clavePosTel()][elementoTelSeleccionado].y = Number(telMoverY.value);
       telMoverYValue.textContent = telMoverY.value;
       guardarAjustes();
       aplicarPosicionElementosTel();
     });
     telMoverScale.addEventListener('input', () => {
-      ajustes.tel.elementosPos[elementoTelSeleccionado].scale = Number(telMoverScale.value);
+      ajustes.tel[clavePosTel()][elementoTelSeleccionado].scale = Number(telMoverScale.value);
       telMoverScaleValue.textContent = telMoverScale.value + '%';
       guardarAjustes();
       aplicarPosicionElementosTel();
     });
     document.getElementById('telMoverReset').addEventListener('click', () => {
-      ajustes.tel.elementosPos[elementoTelSeleccionado] = JSON.parse(JSON.stringify(AJUSTES_DEFECTO.tel.elementosPos[elementoTelSeleccionado]));
+      ajustes.tel[clavePosTel()][elementoTelSeleccionado] = JSON.parse(JSON.stringify(AJUSTES_DEFECTO.tel[clavePosTel()][elementoTelSeleccionado]));
       guardarAjustes();
       aplicarPosicionElementosTel();
       refrescarSlidersMoverTel();
@@ -6309,6 +6603,10 @@
     nueva.id='iosTopStrip';
     nueva.setAttribute('aria-hidden','true');
     nueva.style.backgroundColor=c;
+    /* fondo claro: 1px (los botones de cristal empiezan en y=0, como en iOS, y
+       una franja de 5px les cortaba el borde). En oscuro sigue en 5px. */
+    var m=/(\d+)[^\d]+(\d+)[^\d]+(\d+)/.exec(c);
+    if((m && (+m[1]+ +m[2]+ +m[3])>600) || c==='#FFFFFF') nueva.style.height='1px';
     franja.replaceWith(nueva);
     franja=nueva;
     document.documentElement.style.backgroundColor=c;
