@@ -6603,10 +6603,6 @@
     nueva.id='iosTopStrip';
     nueva.setAttribute('aria-hidden','true');
     nueva.style.backgroundColor=c;
-    /* fondo claro: 1px (los botones de cristal empiezan en y=0, como en iOS, y
-       una franja de 5px les cortaba el borde). En oscuro sigue en 5px. */
-    var m=/(\d+)[^\d]+(\d+)[^\d]+(\d+)/.exec(c);
-    if((m && (+m[1]+ +m[2]+ +m[3])>600) || c==='#FFFFFF') nueva.style.height='1px';
     franja.replaceWith(nueva);
     franja=nueva;
     document.documentElement.style.backgroundColor=c;
