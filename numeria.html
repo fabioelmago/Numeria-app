@@ -1791,6 +1791,14 @@
     background: url(llamada.jpg) center / 100% 100% no-repeat;
   }
   .tel-llamando-lienzo .tel-llamando-numero { position: absolute; left: 0; right: 0; top: 14.8%; margin: 0; text-align: center; }
+  /* Fuera del español: foto sin textos y los textos encima en la fuente del iPhone,
+     colocados con las medidas de la foto original (estado: alto de mayuscula 40 px, base en y=324;
+     etiquetas: alto 29 px, bases en y=1920 y y=2280; 1 px de foto = 100vw/1170). */
+  #telLlamando.tl-txt-on .tel-llamando-lienzo { background-image: url(llamada-base.jpg); }
+  .tl-txt { display: none; position: absolute; transform: translateX(-50%); white-space: nowrap; color: #fff; line-height: 1; font-weight: 400; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; pointer-events: none; }
+  #telLlamando.tl-txt-on .tl-txt { display: block; }
+  .tl-st { left: 50%; top: 11.04%; font-size: 4.846vw; }
+  .tl-lb { font-size: 3.513vw; }
   .tel-llamando-colgar-zona { position: absolute; left: 50%; top: 84.6%; width: 21%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; }
   #telLlamando .tel-llamando-titulo { font-size: 26px; font-weight: 500; }
   #telLlamando .tel-llamando-numero { font-size: calc(34px * var(--llk, 1)); font-weight: 600; color: #FFFFFF; margin-top: 6px; letter-spacing: .2px; }
@@ -2247,10 +2255,11 @@
 .aviso-apariencia{margin-top:10px;font:400 12.5px/1.35 "Instrument Sans","Avenir Next","Helvetica Neue",Arial,sans-serif;color:rgba(245,244,248,.55);text-align:center}
 
 /* Llamada: la foto se funde arriba al color de la barra */
-#telLlamando::before{content:"";position:absolute;left:0;right:0;top:0;height:96px;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,#000 0,#000 6px,rgba(0,0,0,.72) 34%,rgba(0,0,0,.30) 66%,rgba(0,0,0,0) 100%)}
-html.barra-clara #telLlamando::before{background:linear-gradient(180deg,#fff 0,#fff 6px,rgba(255,255,255,.72) 34%,rgba(255,255,255,.30) 66%,rgba(255,255,255,0) 100%)}
-#telLlamando .tel-llamando-numero,#telLlamando .tel-llamando-colgar-zona{z-index:2}
+/* el fundido termina antes del texto "Llamando a movil…" (empieza a ~57 pt) para no apagarlo */
+#telLlamando::before{content:"";position:absolute;left:0;right:0;top:0;height:50px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,#000 0,#000 5px,rgba(0,0,0,.70) 30%,rgba(0,0,0,.28) 62%,rgba(0,0,0,0) 100%)}
+html.barra-clara #telLlamando::before{background:linear-gradient(180deg,#fff 0,#fff 5px,rgba(255,255,255,.70) 30%,rgba(255,255,255,.28) 62%,rgba(255,255,255,0) 100%)}
+#telLlamando .tel-llamando-numero,#telLlamando .tel-llamando-colgar-zona,#telLlamando .tl-txt{z-index:2}
 
 /* ===== Menu claro: cuando la barra del reloj es blanca ===== */
 html.barra-clara .settings-overlay{background:#fff url(fondo-menu-claro.jpg) center top/cover no-repeat !important;color:#1C1C22 !important}
@@ -2734,6 +2743,13 @@ body.light-mode header { padding-top: 5px !important; }
 
 <div id="telLlamando">
   <div class="tel-llamando-lienzo">
+    <div class="tl-txt tl-st" data-i18n="telLlamandoTexto"></div>
+    <div class="tl-txt tl-lb" style="left:20.68%;top:75.54%" data-i18n="telLlamAudio"></div>
+    <div class="tl-txt tl-lb" style="left:50.34%;top:75.54%" data-i18n="telLlamFacetime"></div>
+    <div class="tl-txt tl-lb" style="left:79.70%;top:75.54%" data-i18n="telLlamSilenciar"></div>
+    <div class="tl-txt tl-lb" style="left:20.64%;top:89.97%" data-i18n="telLlamMas"></div>
+    <div class="tl-txt tl-lb" style="left:50.34%;top:89.97%" data-i18n="telLlamFinalizar"></div>
+    <div class="tl-txt tl-lb" style="left:79.62%;top:89.97%" data-i18n="telLlamTeclado"></div>
     <div class="tel-llamando-numero" id="telLlamandoNumero"></div>
     <div class="tel-llamando-colgar-zona" id="telLlamandoColgar"></div>
   </div>
@@ -4370,7 +4386,7 @@ body.light-mode header { padding-top: 5px !important; }
       compartir: 'Share', listo: 'Done', capsulaIzq: 'Left capsule', notaNueva: 'New note',
       posicionHorizontal: 'Horizontal position', posicionVertical: 'Vertical position',
       tamano: 'Size', restablecerElementos: 'Reset elements', restablecerFabrica: 'Reset app to factory settings', confirmarFabrica: 'Reset the whole app to factory defaults? All settings and the current drawing will be lost.', cerrar: 'Close',
-      idiomaTitle: 'App language', guardarCambios: 'Save changes', guardado: 'Saved!', instruccionesTitle: 'Numeria instructions', buscar: 'Search', estadoCuentaTitle: 'Account status', cerrarSesion: 'Log out', estadoServidorTitle: 'Server status', comprobando: 'Checking…', servidorActivo: 'Online', servidorInactivo: 'Offline', todoIcloud: 'All iCloud', espacioICloudLleno: 'iCloud storage full', obtenerMas: 'Get More', espacioLleno: 'Storage full', notasFolder: 'Notes', sinTextoAdicional: 'No additional text', telBuzonTitulo: 'Voicemail', telContactosTitulo: 'Contacts', telFavoritosTitulo: 'Favorites', telLlamAudio: 'Audio', telLlamFacetime: 'FaceTime', telLlamFinalizar: 'End', telLlamMas: 'More', telLlamSilenciar: 'Mute', telLlamTeclado: 'Keypad', telLlamandoTexto: 'Calling mobile...', telMovil: 'mobile', telPerdidas: 'Missed', telRecientesTitulo: 'Recents', telSaludo: 'Greeting', telTabBuzon: 'Voicemail', telTabContactos: 'Contacts', telTabFavoritos: 'Favorites', telTabRecientes: 'Recents', telTabTeclado: 'Keypad', telTodas: 'All', telBuscar: 'Search'
+      idiomaTitle: 'App language', guardarCambios: 'Save changes', guardado: 'Saved!', instruccionesTitle: 'Numeria instructions', buscar: 'Search', estadoCuentaTitle: 'Account status', cerrarSesion: 'Log out', estadoServidorTitle: 'Server status', comprobando: 'Checking…', servidorActivo: 'Online', servidorInactivo: 'Offline', todoIcloud: 'All iCloud', espacioICloudLleno: 'iCloud storage full', obtenerMas: 'Get More', espacioLleno: 'Storage full', notasFolder: 'Notes', sinTextoAdicional: 'No additional text', telBuzonTitulo: 'Voicemail', telContactosTitulo: 'Contacts', telFavoritosTitulo: 'Favorites', telLlamAudio: 'Audio', telLlamFacetime: 'FaceTime', telLlamFinalizar: 'End', telLlamMas: 'More', telLlamSilenciar: 'Mute', telLlamTeclado: 'Keypad', telLlamandoTexto: 'Calling mobile…', telMovil: 'mobile', telPerdidas: 'Missed', telRecientesTitulo: 'Recents', telSaludo: 'Greeting', telTabBuzon: 'Voicemail', telTabContactos: 'Contacts', telTabFavoritos: 'Favorites', telTabRecientes: 'Recents', telTabTeclado: 'Keypad', telTodas: 'All', telBuscar: 'Search'
     },
     fr: {
       modoUsoTitle: "Mode d'utilisation", conPrefijo: 'Avec préfixe', sinPrefijo: 'Sans préfixe',
@@ -4383,7 +4399,7 @@ body.light-mode header { padding-top: 5px !important; }
       compartir: 'Partager', listo: 'Terminé', capsulaIzq: 'Capsule gauche', notaNueva: 'Nouvelle note',
       posicionHorizontal: 'Position horizontale', posicionVertical: 'Position verticale',
       tamano: 'Taille', restablecerElementos: 'Réinitialiser les éléments', restablecerFabrica: 'Réinitialiser l\'app', confirmarFabrica: 'Réinitialiser complètement l\'app aux réglages d\'usine ? Tous les réglages et le dessin actuel seront perdus.', cerrar: 'Fermer',
-      idiomaTitle: "Langue de l'app", guardarCambios: 'Enregistrer les modifications', guardado: 'Enregistré !', instruccionesTitle: 'Instructions Numeria', buscar: 'Rechercher', estadoCuentaTitle: 'État du compte', cerrarSesion: 'Se déconnecter', estadoServidorTitle: 'État du serveur', comprobando: 'Vérification…', servidorActivo: 'En ligne', servidorInactivo: 'Hors ligne', todoIcloud: 'Tout iCloud', espacioICloudLleno: 'Espace iCloud plein', obtenerMas: 'Obtenir plus', espacioLleno: 'Espace plein', notasFolder: 'Notes', sinTextoAdicional: 'Aucun texte supplémentaire', telBuzonTitulo: 'Messagerie vocale', telContactosTitulo: 'Contacts', telFavoritosTitulo: 'Favoris', telLlamAudio: 'Audio', telLlamFacetime: 'FaceTime', telLlamFinalizar: 'Terminer', telLlamMas: 'Plus', telLlamSilenciar: 'Muet', telLlamTeclado: 'Clavier', telLlamandoTexto: 'Appel du mobile...', telMovil: 'mobile', telPerdidas: 'Manqués', telRecientesTitulo: 'Récents', telSaludo: 'Accueil', telTabBuzon: 'Messagerie', telTabContactos: 'Contacts', telTabFavoritos: 'Favoris', telTabRecientes: 'Récents', telTabTeclado: 'Clavier', telTodas: 'Tous', telBuscar: 'Rechercher'
+      idiomaTitle: "Langue de l'app", guardarCambios: 'Enregistrer les modifications', guardado: 'Enregistré !', instruccionesTitle: 'Instructions Numeria', buscar: 'Rechercher', estadoCuentaTitle: 'État du compte', cerrarSesion: 'Se déconnecter', estadoServidorTitle: 'État du serveur', comprobando: 'Vérification…', servidorActivo: 'En ligne', servidorInactivo: 'Hors ligne', todoIcloud: 'Tout iCloud', espacioICloudLleno: 'Espace iCloud plein', obtenerMas: 'Obtenir plus', espacioLleno: 'Espace plein', notasFolder: 'Notes', sinTextoAdicional: 'Aucun texte supplémentaire', telBuzonTitulo: 'Messagerie vocale', telContactosTitulo: 'Contacts', telFavoritosTitulo: 'Favoris', telLlamAudio: 'Audio', telLlamFacetime: 'FaceTime', telLlamFinalizar: 'Fin', telLlamMas: 'Plus', telLlamSilenciar: 'Silence', telLlamTeclado: 'Clavier', telLlamandoTexto: 'Appel sur mobile…', telMovil: 'mobile', telPerdidas: 'Manqués', telRecientesTitulo: 'Récents', telSaludo: 'Accueil', telTabBuzon: 'Messagerie', telTabContactos: 'Contacts', telTabFavoritos: 'Favoris', telTabRecientes: 'Récents', telTabTeclado: 'Clavier', telTodas: 'Tous', telBuscar: 'Rechercher'
     },
     it: {
       modoUsoTitle: 'Modalità di utilizzo', conPrefijo: 'Con prefisso', sinPrefijo: 'Senza prefisso',
@@ -4396,7 +4412,7 @@ body.light-mode header { padding-top: 5px !important; }
       compartir: 'Condividi', listo: 'Fatto', capsulaIzq: 'Capsula sinistra', notaNueva: 'Nuova nota',
       posicionHorizontal: 'Posizione orizzontale', posicionVertical: 'Posizione verticale',
       tamano: 'Dimensione', restablecerElementos: 'Ripristina elementi', restablecerFabrica: 'Ripristina impostazioni di fabbrica', confirmarFabrica: 'Ripristinare tutta l\'app alle impostazioni di fabbrica? Tutte le impostazioni e il disegno attuale andranno persi.', cerrar: 'Chiudi',
-      idiomaTitle: "Lingua dell'app", guardarCambios: 'Salva modifiche', guardado: 'Salvato!', instruccionesTitle: 'Istruzioni Numeria', buscar: 'Cerca', estadoCuentaTitle: 'Stato dell\'account', cerrarSesion: 'Disconnetti', estadoServidorTitle: 'Stato del server', comprobando: 'Verifica…', servidorActivo: 'Attivo', servidorInactivo: 'Offline', todoIcloud: 'Tutto iCloud', espacioICloudLleno: 'Spazio iCloud pieno', obtenerMas: 'Ottieni altro', espacioLleno: 'Spazio pieno', notasFolder: 'Note', sinTextoAdicional: 'Nessun testo aggiuntivo', telBuzonTitulo: 'Segreteria', telContactosTitulo: 'Contatti', telFavoritosTitulo: 'Preferiti', telLlamAudio: 'Audio', telLlamFacetime: 'FaceTime', telLlamFinalizar: 'Termina', telLlamMas: 'Altro', telLlamSilenciar: 'Muto', telLlamTeclado: 'Tastiera', telLlamandoTexto: 'Chiamata al cellulare...', telMovil: 'cellulare', telPerdidas: 'Perse', telRecientesTitulo: 'Recenti', telSaludo: 'Saluto', telTabBuzon: 'Segreteria', telTabContactos: 'Contatti', telTabFavoritos: 'Preferiti', telTabRecientes: 'Recenti', telTabTeclado: 'Tastiera', telTodas: 'Tutte', telBuscar: 'Cerca'
+      idiomaTitle: "Lingua dell'app", guardarCambios: 'Salva modifiche', guardado: 'Salvato!', instruccionesTitle: 'Istruzioni Numeria', buscar: 'Cerca', estadoCuentaTitle: 'Stato dell\'account', cerrarSesion: 'Disconnetti', estadoServidorTitle: 'Stato del server', comprobando: 'Verifica…', servidorActivo: 'Attivo', servidorInactivo: 'Offline', todoIcloud: 'Tutto iCloud', espacioICloudLleno: 'Spazio iCloud pieno', obtenerMas: 'Ottieni altro', espacioLleno: 'Spazio pieno', notasFolder: 'Note', sinTextoAdicional: 'Nessun testo aggiuntivo', telBuzonTitulo: 'Segreteria', telContactosTitulo: 'Contatti', telFavoritosTitulo: 'Preferiti', telLlamAudio: 'Audio', telLlamFacetime: 'FaceTime', telLlamFinalizar: 'Fine', telLlamMas: 'Altro', telLlamSilenciar: 'Muto', telLlamTeclado: 'Tastierino', telLlamandoTexto: 'Chiamata cellulare…', telMovil: 'cellulare', telPerdidas: 'Perse', telRecientesTitulo: 'Recenti', telSaludo: 'Saluto', telTabBuzon: 'Segreteria', telTabContactos: 'Contatti', telTabFavoritos: 'Preferiti', telTabRecientes: 'Recenti', telTabTeclado: 'Tastiera', telTodas: 'Tutte', telBuscar: 'Cerca'
     },
     de: {
       modoUsoTitle: 'Nutzungsmodus', conPrefijo: 'Mit Vorwahl', sinPrefijo: 'Ohne Vorwahl',
@@ -4409,7 +4425,7 @@ body.light-mode header { padding-top: 5px !important; }
       compartir: 'Teilen', listo: 'Fertig', capsulaIzq: 'Linke Kapsel', notaNueva: 'Neue Notiz',
       posicionHorizontal: 'Horizontale Position', posicionVertical: 'Vertikale Position',
       tamano: 'Größe', restablecerElementos: 'Elemente zurücksetzen', restablecerFabrica: 'App auf Werkseinstellungen zurücksetzen', confirmarFabrica: 'Die ganze App auf Werkseinstellungen zurücksetzen? Alle Einstellungen und die aktuelle Zeichnung gehen verloren.', cerrar: 'Schließen',
-      idiomaTitle: 'Sprache der App', guardarCambios: 'Änderungen speichern', guardado: 'Gespeichert!', instruccionesTitle: 'Numeria-Anleitung', buscar: 'Suchen', estadoCuentaTitle: 'Kontostatus', cerrarSesion: 'Abmelden', estadoServidorTitle: 'Serverstatus', comprobando: 'Wird geprüft…', servidorActivo: 'Online', servidorInactivo: 'Offline', todoIcloud: 'Alle iCloud', espacioICloudLleno: 'iCloud-Speicher voll', obtenerMas: 'Mehr erhalten', espacioLleno: 'Speicher voll', notasFolder: 'Notizen', sinTextoAdicional: 'Kein zusätzlicher Text', telBuzonTitulo: 'Mailbox', telContactosTitulo: 'Kontakte', telFavoritosTitulo: 'Favoriten', telLlamAudio: 'Audio', telLlamFacetime: 'FaceTime', telLlamFinalizar: 'Beenden', telLlamMas: 'Mehr', telLlamSilenciar: 'Stumm', telLlamTeclado: 'Tastatur', telLlamandoTexto: 'Anruf an Mobiltelefon...', telMovil: 'mobil', telPerdidas: 'Verpasst', telRecientesTitulo: 'Zuletzt', telSaludo: 'Begrüßung', telTabBuzon: 'Mailbox', telTabContactos: 'Kontakte', telTabFavoritos: 'Favoriten', telTabRecientes: 'Zuletzt', telTabTeclado: 'Tastatur', telTodas: 'Alle', telBuscar: 'Suchen'
+      idiomaTitle: 'Sprache der App', guardarCambios: 'Änderungen speichern', guardado: 'Gespeichert!', instruccionesTitle: 'Numeria-Anleitung', buscar: 'Suchen', estadoCuentaTitle: 'Kontostatus', cerrarSesion: 'Abmelden', estadoServidorTitle: 'Serverstatus', comprobando: 'Wird geprüft…', servidorActivo: 'Online', servidorInactivo: 'Offline', todoIcloud: 'Alle iCloud', espacioICloudLleno: 'iCloud-Speicher voll', obtenerMas: 'Mehr erhalten', espacioLleno: 'Speicher voll', notasFolder: 'Notizen', sinTextoAdicional: 'Kein zusätzlicher Text', telBuzonTitulo: 'Mailbox', telContactosTitulo: 'Kontakte', telFavoritosTitulo: 'Favoriten', telLlamAudio: 'Audio', telLlamFacetime: 'FaceTime', telLlamFinalizar: 'Beenden', telLlamMas: 'Mehr', telLlamSilenciar: 'Stumm', telLlamTeclado: 'Ziffernblock', telLlamandoTexto: 'Mobil wird angerufen …', telMovil: 'mobil', telPerdidas: 'Verpasst', telRecientesTitulo: 'Zuletzt', telSaludo: 'Begrüßung', telTabBuzon: 'Mailbox', telTabContactos: 'Kontakte', telTabFavoritos: 'Favoriten', telTabRecientes: 'Zuletzt', telTabTeclado: 'Tastatur', telTodas: 'Alle', telBuscar: 'Suchen'
     }
   };
 
@@ -4426,6 +4442,7 @@ body.light-mode header { padding-top: 5px !important; }
     document.querySelectorAll('#rowIdioma .opt-btn').forEach(btn => {
       btn.classList.toggle('selected', btn.dataset.idioma === ajustes.idioma);
     });
+    try { document.getElementById('telLlamando').classList.toggle('tl-txt-on', (ajustes.idioma || 'es') !== 'es'); } catch (e) {}
   }
 
   // Convierte el valor 0-100 del slider de tamaño en pixeles reales.
@@ -4438,6 +4455,7 @@ body.light-mode header { padding-top: 5px !important; }
   let ajustes = cargarAjustes();
   sincronizarColorVistazoConApariencia();
   aplicarApariencia();
+  aplicarIdioma();   // los textos de la app salen ya en su idioma desde el arranque (antes solo al abrir el menu)
   notasFake = JSON.parse(JSON.stringify(NOTAS_FAKE_POR_IDIOMA[ajustes.idioma] || NOTAS_FAKE_POR_IDIOMA.es));
 
   const settingsOverlay = document.getElementById('settingsOverlay');
