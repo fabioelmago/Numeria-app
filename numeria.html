@@ -1791,7 +1791,7 @@
     background: url(llamada.jpg) center / 100% 100% no-repeat;
   }
   .tel-llamando-lienzo .tel-llamando-numero { position: absolute; left: 0; right: 0; top: 14.8%; margin: 0; text-align: center; }
-  /* Fuera del español: foto sin textos y los textos encima en la fuente del iPhone,
+  /* En todos los idiomas: foto sin textos y los textos encima en la fuente del iPhone,
      colocados con las medidas de la foto original (estado: alto de mayuscula 40 px, base en y=324;
      etiquetas: alto 29 px, bases en y=1920 y y=2280; 1 px de foto = 100vw/1170). */
   #telLlamando.tl-txt-on .tel-llamando-lienzo { background-image: url(llamada-base.jpg); }
@@ -2256,9 +2256,11 @@
 
 /* Llamada: la foto se funde arriba al color de la barra */
 /* el fundido termina antes del texto "Llamando a movil…" (empieza a ~57 pt) para no apagarlo */
-#telLlamando::before{content:"";position:absolute;left:0;right:0;top:0;height:50px;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,#000 0,#000 5px,rgba(0,0,0,.70) 30%,rgba(0,0,0,.28) 62%,rgba(0,0,0,0) 100%)}
-html.barra-clara #telLlamando::before{background:linear-gradient(180deg,#fff 0,#fff 5px,rgba(255,255,255,.70) 30%,rgba(255,255,255,.28) 62%,rgba(255,255,255,0) 100%)}
+/* oscuro: el gris de la llamada se funde a negro hacia arriba (los textos van por encima, no se apagan) */
+#telLlamando::before{content:"";position:absolute;left:0;right:0;top:0;height:170px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,#000 0,#000 6px,rgba(0,0,0,.86) 18%,rgba(0,0,0,.62) 38%,rgba(0,0,0,.34) 60%,rgba(0,0,0,.12) 82%,rgba(0,0,0,0) 100%)}
+/* claro: la barra es blanca (la fija iOS); fundido corto de blanco al gris, que acaba antes del texto */
+html.barra-clara #telLlamando::before{height:56px;background:linear-gradient(180deg,#fff 0,rgba(255,255,255,.9) 14%,rgba(255,255,255,.66) 34%,rgba(255,255,255,.36) 58%,rgba(255,255,255,.12) 82%,rgba(255,255,255,0) 100%)}
 #telLlamando .tel-llamando-numero,#telLlamando .tel-llamando-colgar-zona,#telLlamando .tl-txt{z-index:2}
 
 /* ===== Menu claro: cuando la barra del reloj es blanca ===== */
@@ -4442,7 +4444,7 @@ body.light-mode header { padding-top: 5px !important; }
     document.querySelectorAll('#rowIdioma .opt-btn').forEach(btn => {
       btn.classList.toggle('selected', btn.dataset.idioma === ajustes.idioma);
     });
-    try { document.getElementById('telLlamando').classList.toggle('tl-txt-on', (ajustes.idioma || 'es') !== 'es'); } catch (e) {}
+    try { document.getElementById('telLlamando').classList.add('tl-txt-on'); } catch (e) {}
   }
 
   // Convierte el valor 0-100 del slider de tamaño en pixeles reales.
