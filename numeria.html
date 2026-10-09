@@ -1793,7 +1793,7 @@
   .tel-llamando-lienzo .tel-llamando-numero { position: absolute; left: 0; right: 0; top: 14.8%; margin: 0; text-align: center; }
   .tel-llamando-colgar-zona { position: absolute; left: 50%; top: 84.6%; width: 21%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; }
   #telLlamando .tel-llamando-titulo { font-size: 26px; font-weight: 500; }
-  #telLlamando .tel-llamando-numero { font-size: calc(17px * var(--llk, 1)); color: rgba(255,255,255,0.55); margin-top: 6px; }
+  #telLlamando .tel-llamando-numero { font-size: calc(34px * var(--llk, 1)); font-weight: 600; color: #FFFFFF; margin-top: 6px; letter-spacing: .2px; }
   .tel-llamando-grid {
     margin-top: auto; width: 100%; max-width: 360px;
     padding: 0 30px calc(env(safe-area-inset-bottom, 20px) + 30px) 30px; box-sizing: border-box;
@@ -2237,6 +2237,66 @@
 .tel-mover-panel .tel-mover-botones button{height:44px;border-radius:99px !important;font:600 15px/1 "Raleway","Avenir Next","Helvetica Neue",Arial,sans-serif !important;background:rgba(255,255,255,.06) !important;border:1px solid rgba(255,255,255,.22) !important;color:#F5F4F8 !important}
 .tel-mover-panel .tel-mover-botones button:last-child{background:#F5F4F8 !important;border-color:#F5F4F8 !important;color:#0B0B10 !important}
 .tel-mover-panel .swatch.selected,.settings-overlay .swatch.selected{box-shadow:0 0 0 2px #07070B,0 0 0 4px #F5F4F8 !important;outline:none !important}
+</style>
+<style id="menuClaro">
+/* ===== Arriba del todo, todo empalma con la barra del reloj (que iOS fija al abrir la app) ===== */
+/* Menu oscuro: fondo negro puro bajo la barra, sin salto con la imagen */
+.settings-overlay{background-color:#000 !important}
+.settings-overlay::before{background:linear-gradient(180deg,#000 0,#000 10px,rgba(3,3,5,.95) 46px,rgba(7,7,11,.88) 96px,rgba(7,7,11,.52) 22%,rgba(7,7,11,.60) 100%) !important}
+.settings-overlay::after{background:linear-gradient(180deg,#000 0,rgba(0,0,0,.90) 28%,rgba(3,3,6,.55) 60%,rgba(7,7,11,.18) 85%,rgba(7,7,11,0) 100%) !important}
+.aviso-apariencia{margin-top:10px;font:400 12.5px/1.35 "Instrument Sans","Avenir Next","Helvetica Neue",Arial,sans-serif;color:rgba(245,244,248,.55);text-align:center}
+
+/* Llamada: la foto se funde arriba al color de la barra */
+#telLlamando::before{content:"";position:absolute;left:0;right:0;top:0;height:96px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,#000 0,#000 6px,rgba(0,0,0,.72) 34%,rgba(0,0,0,.30) 66%,rgba(0,0,0,0) 100%)}
+html.barra-clara #telLlamando::before{background:linear-gradient(180deg,#fff 0,#fff 6px,rgba(255,255,255,.72) 34%,rgba(255,255,255,.30) 66%,rgba(255,255,255,0) 100%)}
+#telLlamando .tel-llamando-numero,#telLlamando .tel-llamando-colgar-zona{z-index:2}
+
+/* ===== Menu claro: cuando la barra del reloj es blanca ===== */
+html.barra-clara .settings-overlay{background:#fff url(fondo-menu-claro.jpg) center top/cover no-repeat !important;color:#1C1C22 !important}
+html.barra-clara .settings-overlay::before{background:linear-gradient(180deg,#fff 0,#fff 10px,rgba(255,255,255,.94) 46px,rgba(255,255,255,.80) 96px,rgba(255,255,255,.34) 22%,rgba(255,255,255,.42) 100%) !important}
+html.barra-clara .settings-overlay::after{background:linear-gradient(180deg,#fff 0,rgba(255,255,255,.92) 28%,rgba(255,255,255,.55) 60%,rgba(255,255,255,.18) 85%,rgba(255,255,255,0) 100%) !important}
+html.barra-clara #settingsOverlay .settings-header-row>div:first-child::before{color:rgba(28,28,34,.62);background:linear-gradient(#2A2A33,#2A2A33) left center/22px 1px no-repeat}
+html.barra-clara .settings-overlay .settings-close-x{background:rgba(255,255,255,.7) !important;border:1px solid rgba(0,0,0,.12) !important;color:#1C1C22 !important}
+html.barra-clara .settings-overlay .settings-title,html.barra-clara .settings-overlay .settings-title-mid{color:#1C1C22 !important}
+html.barra-clara .settings-overlay .settings-card,html.barra-clara .settings-overlay .instr-card{background:rgba(255,255,255,.62) !important;border:1px solid rgba(0,0,0,.08) !important;box-shadow:0 6px 24px -14px rgba(40,40,80,.25) !important}
+html.barra-clara .settings-overlay .settings-card-title{color:#1C1C22 !important}
+html.barra-clara .settings-overlay .settings-card-title .card-icon,html.barra-clara .settings-overlay .instr-title .card-icon{color:rgba(28,28,34,.55) !important}
+html.barra-clara .settings-overlay .nav-chevron{color:rgba(28,28,34,.38) !important}
+html.barra-clara .settings-overlay .settings-label{color:rgba(28,28,34,.5) !important}
+html.barra-clara .settings-overlay .opt-btn{background:rgba(255,255,255,.55) !important;border:1px solid rgba(0,0,0,.12) !important;color:#3A3A45 !important}
+html.barra-clara .settings-overlay .opt-btn.selected{background:#1C1C22 !important;border-color:#1C1C22 !important;color:#fff !important}
+html.barra-clara .settings-overlay .prefijo-input{border:1px solid rgba(0,0,0,.14) !important;background:rgba(255,255,255,.7) !important;color:#1C1C22 !important}
+html.barra-clara .settings-overlay .settings-action-btn,html.barra-clara .settings-overlay #cardTeclado .settings-close{background:rgba(255,255,255,.55) !important;border:1px solid rgba(0,0,0,.14) !important;color:#1C1C22 !important}
+html.barra-clara .settings-overlay .server-status-row{color:#4A4A55 !important}
+html.barra-clara .settings-overlay .settings-save-btn{background:#1C1C22 !important;color:#fff !important;box-shadow:0 10px 30px -14px rgba(0,0,0,.45) !important}
+html.barra-clara .settings-overlay .settings-save-btn.saved{background:#34C759 !important;color:#fff !important}
+html.barra-clara .settings-overlay .settings-factory-btn,html.barra-clara .settings-overlay #cardTeclado #btnResetearTeclado{background:rgba(255,59,48,.08) !important;border:1px solid rgba(255,59,48,.28) !important;color:#D70015 !important}
+html.barra-clara .settings-overlay .settings-close{color:#6A6A75 !important}
+html.barra-clara .settings-overlay .slider-value{color:#1C1C22 !important}
+html.barra-clara .settings-overlay .step-btn{background:rgba(255,255,255,.6) !important;border:1px solid rgba(0,0,0,.14) !important;color:#1C1C22 !important}
+html.barra-clara .settings-overlay input[type="range"]{background:rgba(0,0,0,.16) !important}
+html.barra-clara .settings-overlay input[type="range"]::-webkit-slider-thumb{background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.28),0 0 0 .5px rgba(0,0,0,.08)}
+html.barra-clara .settings-overlay .swatch.selected{box-shadow:0 0 0 2px #fff,0 0 0 4px #1C1C22 !important}
+html.barra-clara .settings-overlay .aviso-apariencia{color:rgba(28,28,34,.5)}
+html.barra-clara .settings-overlay .instr-title{color:#1C1C22 !important}
+html.barra-clara .settings-overlay .instr-text{color:#4A4A55 !important}
+html.barra-clara .settings-overlay .instr-steps .num{background:rgba(0,0,0,.06) !important;border:1px solid rgba(0,0,0,.14) !important;color:#1C1C22 !important}
+html.barra-clara .settings-overlay .instr-example{border-left-color:rgba(0,0,0,.35) !important;background:rgba(255,255,255,.5) !important}
+html.barra-clara .settings-overlay .instr-example b,html.barra-clara .settings-overlay .instr-text b,html.barra-clara .settings-overlay .instr-steps b{color:#1C1C22 !important}
+html.barra-clara .settings-overlay .instr-chip{background:rgba(255,255,255,.6) !important;border:1px solid rgba(0,0,0,.12) !important;color:#1C1C22 !important}
+
+/* ===== Modo claro: botones de arriba por debajo de la franja de 5px (no se cortan) ===== */
+#telefonoScreen.tel-light .tel-list-top { padding-top: 7px !important; }
+#telefonoScreen.tel-light #telPanelFavoritos .tel-list-scroll { padding-top: 101px !important; }
+#telefonoScreen.tel-light #telPanelRecientes .tel-list-scroll { padding-top: 113px !important; }
+#telefonoScreen.tel-light #telPanelContactos .tel-list-scroll { padding-top: 116px !important; }
+#telefonoScreen.tel-light #telPanelBuzon .tel-list-scroll { padding-top: 118px !important; }
+#telefonoScreen.tel-light .tel-azindex { top: 265px !important; }
+body.light-mode header { padding-top: 5px !important; }
+body.light-mode .notes-list-topbar { padding-top: 5px; height: 59px; }
+body.light-mode .notes-list-topbar-title { top: 7.7px; }
+body.light-mode .notes-list-scroll { padding-top: 59px; }
 </style>
 </head>
 <body>
@@ -2939,6 +2999,7 @@
         <button class="opt-btn" data-apariencia-tel="oscuro" data-i18n="oscuro">Oscuro</button>
         <button class="opt-btn" data-apariencia-tel="claro" data-i18n="claro">Claro</button>
       </div>
+      <div class="aviso-apariencia" data-i18n="avisoApariencia">Cierra la app del todo y vuelve a abrirla para aplicar el cambio.</div>
     </div>
 
     <div class="settings-card" id="cardTeclado" style="display:none;">
@@ -2960,19 +3021,20 @@
         <button class="opt-btn" data-apariencia="oscuro" data-i18n="oscuro">Oscuro</button>
         <button class="opt-btn" data-apariencia="claro" data-i18n="claro">Claro</button>
       </div>
+      <div class="aviso-apariencia" data-i18n="avisoApariencia">Cierra la app del todo y vuelve a abrirla para aplicar el cambio.</div>
     </div>
 
     <div style="height: 18px;"></div>
 
     <div class="settings-card solo-notas">
-      <div class="settings-card-title" data-i18n="ajustesPeekTitle">Ajustes del Peek</div>
+      <div class="settings-card-title"><span class="card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg></span><span data-i18n="ajustesPeekTitle">Ajustes del Peek</span></div>
       <button id="btnMoverPeekNotas" class="settings-action-btn">Ajustar tamaño, posición y color</button>
     </div>
 
     <div style="height: 18px;" class="solo-notas"></div>
 
     <div class="settings-card solo-notas">
-      <div class="settings-card-title" data-i18n="ajustesIslasTitle">Ajustes de islas</div>
+      <div class="settings-card-title"><span class="card-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2.5" y="4" width="8.5" height="5" rx="2.5" stroke="currentColor" stroke-width="1.7"/><rect x="13" y="4" width="8.5" height="5" rx="2.5" stroke="currentColor" stroke-width="1.7"/><rect x="2.5" y="15" width="12" height="5" rx="2.5" stroke="currentColor" stroke-width="1.7"/><circle cx="19" cy="17.5" r="2.5" stroke="currentColor" stroke-width="1.7"/></svg></span><span data-i18n="ajustesIslasTitle">Ajustes de islas</span></div>
       <button id="btnMoverIslasNotas" class="settings-action-btn">Ajustar posición y tamaño</button>
     </div>
 
@@ -4144,6 +4206,27 @@
     ultimoPunto = null;
   });
 
+  // Con el teclado abierto en Notas, iOS deja arrastrar la pagina entera (se va la
+  // cabecera y la capsula queda flotando). Mientras se escribe, el dedo solo puede
+  // desplazar el texto de la nota, y solo si es tan largo que no cabe.
+  let arrastreY = 0, arrastreX = 0;
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length === 1) { arrastreY = e.touches[0].clientY; arrastreX = e.touches[0].clientX; }
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (modoDibujoActivo) return;
+    if (!toolbarEditing.classList.contains('visible')) return;
+    if (!e.touches || e.touches.length !== 1) return;
+    const dy = e.touches[0].clientY - arrastreY, dx = e.touches[0].clientX - arrastreX;
+    if (Math.abs(dy) < Math.abs(dx)) return;               // gesto horizontal: no se toca
+    const ed = e.target.closest ? e.target.closest('.editor') : null;
+    if (ed && ed.scrollHeight > ed.clientHeight + 1) {
+      const arriba = ed.scrollTop <= 0, abajo = ed.scrollTop + ed.clientHeight >= ed.scrollHeight - 1;
+      if (!((dy > 0 && arriba) || (dy < 0 && abajo))) return; // la nota aun puede desplazarse
+    }
+    if (e.cancelable) e.preventDefault();
+  }, { passive: false });
+
   // La flecha de deshacer (arriba, junto a la capsula de compartir) borra el dibujo
   function borrarDibujo() {
     ctxDibujo.clearRect(0, 0, dibujoCanvas.width, dibujoCanvas.height);
@@ -4269,7 +4352,7 @@
       sinTeclado: 'Sin teclado', conTeclado: 'Con teclado', tamanoTexto: 'Tamaño del texto',
       transparencia: 'Transparencia', color: 'Color', ajusteHorizontal: 'Ajuste horizontal',
       ajusteVertical: 'Ajuste vertical', restablecerPosicion: 'Restablecer posición',
-      ajustesIslasTitle: 'Ajustes de islas', atras: 'Atrás', deshacer: 'Deshacer',
+      ajustesIslasTitle: 'Ajustes de islas', avisoApariencia: "Cierra la app del todo y vuelve a abrirla para aplicar el cambio.", atras: 'Atrás', deshacer: 'Deshacer',
       compartir: 'Compartir', listo: 'Listo', capsulaIzq: 'Cápsula izq.', notaNueva: 'Nota nueva',
       posicionHorizontal: 'Posición horizontal', posicionVertical: 'Posición vertical',
       tamano: 'Tamaño', restablecerElementos: 'Restablecer elementos', restablecerFabrica: 'Restablecer app de fábrica', confirmarFabrica: '¿Restablecer toda la app a los valores de fábrica? Se perderán todos los ajustes y el dibujo actual.', cerrar: 'Cerrar',
@@ -4282,7 +4365,7 @@
       sinTeclado: 'No keyboard', conTeclado: 'With keyboard', tamanoTexto: 'Text size',
       transparencia: 'Transparency', color: 'Color', ajusteHorizontal: 'Horizontal offset',
       ajusteVertical: 'Vertical offset', restablecerPosicion: 'Reset position',
-      ajustesIslasTitle: 'Islands settings', atras: 'Back', deshacer: 'Undo',
+      ajustesIslasTitle: 'Islands settings', avisoApariencia: "Fully close the app and open it again to apply the change.", atras: 'Back', deshacer: 'Undo',
       compartir: 'Share', listo: 'Done', capsulaIzq: 'Left capsule', notaNueva: 'New note',
       posicionHorizontal: 'Horizontal position', posicionVertical: 'Vertical position',
       tamano: 'Size', restablecerElementos: 'Reset elements', restablecerFabrica: 'Reset app to factory settings', confirmarFabrica: 'Reset the whole app to factory defaults? All settings and the current drawing will be lost.', cerrar: 'Close',
@@ -4295,7 +4378,7 @@
       sinTeclado: 'Sans clavier', conTeclado: 'Avec clavier', tamanoTexto: 'Taille du texte',
       transparencia: 'Transparence', color: 'Couleur', ajusteHorizontal: 'Ajustement horizontal',
       ajusteVertical: 'Ajustement vertical', restablecerPosicion: 'Réinitialiser la position',
-      ajustesIslasTitle: 'Réglages des îlots', atras: 'Retour', deshacer: 'Annuler',
+      ajustesIslasTitle: 'Réglages des îlots', avisoApariencia: "Fermez complètement l’app et rouvrez-la pour appliquer le changement.", atras: 'Retour', deshacer: 'Annuler',
       compartir: 'Partager', listo: 'Terminé', capsulaIzq: 'Capsule gauche', notaNueva: 'Nouvelle note',
       posicionHorizontal: 'Position horizontale', posicionVertical: 'Position verticale',
       tamano: 'Taille', restablecerElementos: 'Réinitialiser les éléments', restablecerFabrica: 'Réinitialiser l\'app', confirmarFabrica: 'Réinitialiser complètement l\'app aux réglages d\'usine ? Tous les réglages et le dessin actuel seront perdus.', cerrar: 'Fermer',
@@ -4308,7 +4391,7 @@
       sinTeclado: 'Senza tastiera', conTeclado: 'Con tastiera', tamanoTexto: 'Dimensione testo',
       transparencia: 'Trasparenza', color: 'Colore', ajusteHorizontal: 'Regolazione orizzontale',
       ajusteVertical: 'Regolazione verticale', restablecerPosicion: 'Ripristina posizione',
-      ajustesIslasTitle: 'Impostazioni isole', atras: 'Indietro', deshacer: 'Annulla',
+      ajustesIslasTitle: 'Impostazioni isole', avisoApariencia: "Chiudi completamente l’app e riaprila per applicare la modifica.", atras: 'Indietro', deshacer: 'Annulla',
       compartir: 'Condividi', listo: 'Fatto', capsulaIzq: 'Capsula sinistra', notaNueva: 'Nuova nota',
       posicionHorizontal: 'Posizione orizzontale', posicionVertical: 'Posizione verticale',
       tamano: 'Dimensione', restablecerElementos: 'Ripristina elementi', restablecerFabrica: 'Ripristina impostazioni di fabbrica', confirmarFabrica: 'Ripristinare tutta l\'app alle impostazioni di fabbrica? Tutte le impostazioni e il disegno attuale andranno persi.', cerrar: 'Chiudi',
@@ -4321,7 +4404,7 @@
       sinTeclado: 'Ohne Tastatur', conTeclado: 'Mit Tastatur', tamanoTexto: 'Textgröße',
       transparencia: 'Transparenz', color: 'Farbe', ajusteHorizontal: 'Horizontale Anpassung',
       ajusteVertical: 'Vertikale Anpassung', restablecerPosicion: 'Position zurücksetzen',
-      ajustesIslasTitle: 'Inseln-Einstellungen', atras: 'Zurück', deshacer: 'Rückgängig',
+      ajustesIslasTitle: 'Inseln-Einstellungen', avisoApariencia: "Schließe die App vollständig und öffne sie erneut, um die Änderung zu übernehmen.", atras: 'Zurück', deshacer: 'Rückgängig',
       compartir: 'Teilen', listo: 'Fertig', capsulaIzq: 'Linke Kapsel', notaNueva: 'Neue Notiz',
       posicionHorizontal: 'Horizontale Position', posicionVertical: 'Vertikale Position',
       tamano: 'Größe', restablecerElementos: 'Elemente zurücksetzen', restablecerFabrica: 'App auf Werkseinstellungen zurücksetzen', confirmarFabrica: 'Die ganze App auf Werkseinstellungen zurücksetzen? Alle Einstellungen und die aktuelle Zeichnung gehen verloren.', cerrar: 'Schließen',
@@ -6580,7 +6663,7 @@
   if(!franja) return;
   var orden=[
     ['instructionsOverlay','show'],['settingsOverlay','show'],['tecladoEditListScreen','show'],
-    ['telLlamando','show'],['notesListScreen','show'],['telefonoScreen','show'],['app',null]
+    ['notesListScreen','show'],['telefonoScreen','show'],['app',null]
   ];
   function color(){
     /* pantalla de instalacion en Safari: mismo tono oscuro que el fundido de esa pantalla */
@@ -6610,6 +6693,16 @@
   }
   function prog(){ if(t) return; t=setTimeout(function(){ t=null; actualizar(); },0); }
   new MutationObserver(prog).observe(document.body,{attributes:true,attributeFilter:['class'],subtree:true});
+  /* iOS solo lee el color de la barra del reloj al abrir la app (y al volver de segundo
+     plano). html.barra-clara recuerda ese color para que el menu y la llamada empalmen con el. */
+  function fijarBarra(){
+    var ts=document.getElementById('telefonoScreen');
+    var clara = (ts && ts.classList.contains('show')) ? ts.classList.contains('tel-light') : document.body.classList.contains('light-mode');
+    document.documentElement.classList.toggle('barra-clara', !!clara);
+  }
+  fijarBarra();
+  window.addEventListener('load',fijarBarra);
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) fijarBarra(); });
   actualizar();
   window.addEventListener('load',actualizar);
 })();
