@@ -1794,7 +1794,7 @@
   /* En todos los idiomas: foto sin textos y los textos encima en la fuente del iPhone,
      colocados con las medidas de la foto original (estado: alto de mayuscula 40 px, base en y=324;
      etiquetas: alto 29 px, bases en y=1920 y y=2280; 1 px de foto = 100vw/1170). */
-  #telLlamando.tl-txt-on .tel-llamando-lienzo { background-image: url(llamada-base.jpg); }
+  #telLlamando.tl-txt-on .tel-llamando-lienzo { background-image: url(llamada-osc.jpg); }
   .tl-txt { display: none; position: absolute; transform: translateX(-50%); white-space: nowrap; color: #fff; line-height: 1; font-weight: 400; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; pointer-events: none; }
   #telLlamando.tl-txt-on .tl-txt { display: block; }
   .tl-st { left: 50%; top: 11.04%; font-size: 4.846vw; }
@@ -2256,11 +2256,16 @@
 
 /* Llamada: la foto se funde arriba al color de la barra */
 /* el fundido termina antes del texto "Llamando a movil…" (empieza a ~57 pt) para no apagarlo */
-/* oscuro: el gris de la llamada se funde a negro hacia arriba (los textos van por encima, no se apagan) */
-#telLlamando::before{content:"";position:absolute;left:0;right:0;top:0;height:170px;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,#000 0,#000 6px,rgba(0,0,0,.86) 18%,rgba(0,0,0,.62) 38%,rgba(0,0,0,.34) 60%,rgba(0,0,0,.12) 82%,rgba(0,0,0,0) 100%)}
-/* claro: la barra es blanca (la fija iOS); fundido corto de blanco al gris, que acaba antes del texto */
-html.barra-clara #telLlamando::before{height:56px;background:linear-gradient(180deg,#fff 0,rgba(255,255,255,.9) 14%,rgba(255,255,255,.66) 34%,rgba(255,255,255,.36) 58%,rgba(255,255,255,.12) 82%,rgba(255,255,255,0) 100%)}
+/* oscuro: fondo algo mas oscuro (llamada-osc.jpg) que se funde a negro hacia arriba, largo y suave */
+#telLlamando::before{content:"";position:absolute;left:0;right:0;top:0;height:46%;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.97) 6%,rgba(0,0,0,.9) 14%,rgba(0,0,0,.78) 24%,rgba(0,0,0,.6) 36%,rgba(0,0,0,.4) 50%,rgba(0,0,0,.22) 66%,rgba(0,0,0,.08) 84%,rgba(0,0,0,0) 100%)}
+/* claro: la barra del reloj es blanca -> llamada en claro (llamada-clara.jpg), texto oscuro, fundido a blanco */
+html.barra-clara #telLlamando{background-color:#E6E6E8}
+html.barra-clara #telLlamando.tl-txt-on .tel-llamando-lienzo{background-image:url(llamada-clara.jpg)}
+html.barra-clara #telLlamando::before{background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.95) 8%,rgba(255,255,255,.75) 22%,rgba(255,255,255,.45) 42%,rgba(255,255,255,.18) 66%,rgba(255,255,255,0) 100%)}
+html.barra-clara #telLlamando .tl-txt{color:#000}
+html.barra-clara #telLlamando .tl-st{color:rgba(0,0,0,.72)}
+html.barra-clara #telLlamando .tel-llamando-numero{color:#000}
 #telLlamando .tel-llamando-numero,#telLlamando .tel-llamando-colgar-zona,#telLlamando .tl-txt{z-index:2}
 
 /* ===== Menu claro: cuando la barra del reloj es blanca ===== */
@@ -3717,8 +3722,8 @@ body.light-mode header { padding-top: 5px !important; }
       { titulo: 'Speech notes', grupo: 'February', fecha: '19/02/2026', contenido: 'Success is not final, failure is not fatal: it is the courage to continue that counts. Start by thanking the team and save the emotional part for the end.', emoji: null },
       { titulo: 'Books to read', grupo: 'February', fecha: '19/02/2026', contenido: 'The Name of the Wind, Sapiens, The Shadow of the Wind, Origin. Ask the library if they have the second book in the Rothfuss trilogy.', emoji: '📚' },
       { titulo: 'Supplier meeting', grupo: 'February', fecha: '18/02/2026', contenido: 'Review Q2 budget, request new fabric samples, deadline March 15th. Confirm whether the samples arrive before Friday.', emoji: null },
-      { titulo: "Jack's shoe size", grupo: 'February', fecha: '14/02/2026', contenido: "42 EU, Nike brand, for next year's Epiphany gift. Better to buy them early since the model he likes sells out fast.", emoji: null },
-      { titulo: "Grandma's lentil recipe", grupo: '2025', fecha: '03/12/2025', contenido: 'Lentils, chorizo, potato, carrot, paprika, garlic and onion sauté, bay leaf. Let it rest for at least ten minutes before serving, tastes better.', emoji: null },
+      { titulo: "Jack's shoe size", grupo: 'February', fecha: '14/02/2026', contenido: "42 EU, Nike brand, for next Christmas. Better to buy them early since the model he likes sells out fast.", emoji: null },
+      { titulo: "Grandma's lentil recipe", grupo: '2025', fecha: '03/12/2025', contenido: 'Lentils, bacon, potato, carrot, paprika, garlic and onion sauté, bay leaf. Let it rest for at least ten minutes before serving, tastes better.', emoji: null },
       { titulo: 'Garage door code', grupo: '2025', fecha: '20/11/2025', contenido: "1984#\nIf it doesn't work the first time, wait a few seconds before trying again.", emoji: null },
       { titulo: 'Road trip playlist', grupo: '2025', fecha: '02/10/2025', contenido: "Classic rock, some jazz, and the playlist Tom made last summer. Also add the songs that played at Elena's wedding.", emoji: '🎵' },
       { titulo: '+447822112233', grupo: '2025', fecha: '15/09/2025', contenido: '', emoji: null }
@@ -3734,8 +3739,8 @@ body.light-mode header { padding-top: 5px !important; }
       { titulo: 'Notes pour le discours', grupo: 'Février', fecha: '19/02/2026', contenido: "Le succès n'est pas définitif, l'échec n'est pas fatal : c'est le courage de continuer qui compte. Commencer par remercier l'équipe.", emoji: null },
       { titulo: 'Livres à lire', grupo: 'Février', fecha: '19/02/2026', contenido: "Le Nom du vent, Sapiens, L'Ombre du vent, Origine. Demander à la bibliothèque le deuxième tome de la trilogie de Rothfuss.", emoji: '📚' },
       { titulo: 'Réunion fournisseurs', grupo: 'Février', fecha: '18/02/2026', contenido: "Revoir le budget T2, demander de nouveaux échantillons de tissu, date limite le 15 mars. Confirmer l'arrivée avant vendredi.", emoji: null },
-      { titulo: 'Pointure baskets Lucas', grupo: 'Février', fecha: '14/02/2026', contenido: "42 EU, marque Nike, pour le cadeau de l'Épiphanie. Mieux vaut les acheter tôt car le modèle qu'il aime part vite.", emoji: null },
-      { titulo: 'Recette de mamie - lentilles', grupo: '2025', fecha: '03/12/2025', contenido: "Lentilles, chorizo, pomme de terre, carotte, paprika, ail et oignon revenus, laurier. Laisser reposer dix minutes avant de servir.", emoji: null },
+      { titulo: 'Pointure baskets Lucas', grupo: 'Février', fecha: '14/02/2026', contenido: "42 EU, marque Nike, pour le cadeau de Noël. Mieux vaut les acheter tôt car le modèle qu'il aime part vite.", emoji: null },
+      { titulo: 'Recette de mamie - lentilles', grupo: '2025', fecha: '03/12/2025', contenido: "Lentilles, lardons, pomme de terre, carotte, paprika, ail et oignon revenus, laurier. Laisser reposer dix minutes avant de servir.", emoji: null },
       { titulo: 'Code portail garage', grupo: '2025', fecha: '20/11/2025', contenido: "1984#\nSi ça ne marche pas du premier coup, attendre quelques secondes avant de réessayer.", emoji: null },
       { titulo: 'Playlist pour le voyage', grupo: '2025', fecha: '02/10/2025', contenido: "Rock classique, un peu de jazz, et la playlist de Hugo de l'été dernier. Ajouter les chansons du mariage d'Elena.", emoji: '🎵' },
       { titulo: '+33698112233', grupo: '2025', fecha: '15/09/2025', contenido: '', emoji: null }
@@ -3752,7 +3757,7 @@ body.light-mode header { padding-top: 5px !important; }
       { titulo: 'Libri da leggere', grupo: 'Febbraio', fecha: '19/02/26', contenido: "Il nome del vento, Sapiens, L'ombra del vento, Origine. Chiedere in biblioteca il secondo libro della trilogia di Rothfuss.", emoji: '📚' },
       { titulo: 'Riunione fornitori', grupo: 'Febbraio', fecha: '18/02/26', contenido: "Rivedere il budget del secondo trimestre, richiedere nuovi campioni di tessuto, scadenza 15 marzo. Confermare l'arrivo prima di venerdì.", emoji: null },
       { titulo: 'Numero scarpe Luca', grupo: 'Febbraio', fecha: '14/02/26', contenido: "42 EU, marca Nike, per il regalo dell'Epifania. Meglio comprarle in anticipo perché il modello finisce subito.", emoji: null },
-      { titulo: 'Ricetta della nonna - lenticchie', grupo: '2025', fecha: '03/12/25', contenido: "Lenticchie, chorizo, patata, carota, paprica, soffritto di aglio e cipolla, alloro. Farle riposare dieci minuti prima di servire.", emoji: null },
+      { titulo: 'Ricetta della nonna - lenticchie', grupo: '2025', fecha: '03/12/25', contenido: "Lenticchie, pancetta, patata, carota, paprica, soffritto di aglio e cipolla, alloro. Farle riposare dieci minuti prima di servire.", emoji: null },
       { titulo: 'Codice cancello garage', grupo: '2025', fecha: '20/11/25', contenido: "1984#\nSe non funziona al primo tentativo, aspettare qualche secondo prima di riprovare.", emoji: null },
       { titulo: 'Playlist per il viaggio', grupo: '2025', fecha: '02/10/25', contenido: "Rock classico, un po' di jazz, e la playlist di Marco dell'estate scorsa. Aggiungere le canzoni del matrimonio di Elena.", emoji: '🎵' },
       { titulo: '+393498112233', grupo: '2025', fecha: '15/09/25', contenido: '', emoji: null }
@@ -3768,8 +3773,8 @@ body.light-mode header { padding-top: 5px !important; }
       { titulo: 'Notizen für die Rede', grupo: 'Februar', fecha: '19.02.26', contenido: 'Erfolg ist nicht endgültig, Misserfolg ist nicht fatal: Es zählt der Mut, weiterzumachen. Zuerst dem Team danken.', emoji: null },
       { titulo: 'Bücher zum Lesen', grupo: 'Februar', fecha: '19.02.26', contenido: 'Der Name des Windes, Sapiens, Der Schatten des Windes, Origin. In der Bibliothek nach Band 2 der Rothfuss-Trilogie fragen.', emoji: '📚' },
       { titulo: 'Lieferantentreffen', grupo: 'Februar', fecha: '18.02.26', contenido: 'Q2-Budget überprüfen, neue Stoffmuster anfordern, Frist 15. März. Bestätigen, ob die Muster vor Freitag ankommen.', emoji: null },
-      { titulo: 'Schuhgröße Lukas', grupo: 'Februar', fecha: '14.02.26', contenido: '42 EU, Marke Nike, für das Geschenk zum Dreikönigstag. Besser früh kaufen, das Modell ist schnell ausverkauft.', emoji: null },
-      { titulo: 'Omas Rezept - Linsen', grupo: '2025', fecha: '03.12.25', contenido: 'Linsen, Chorizo, Kartoffel, Karotte, Paprika, Knoblauch-Zwiebel-Anbraten, Lorbeer. Vor dem Servieren zehn Minuten ziehen lassen.', emoji: null },
+      { titulo: 'Schuhgröße Lukas', grupo: 'Februar', fecha: '14.02.26', contenido: '42 EU, Marke Nike, für das Weihnachtsgeschenk. Besser früh kaufen, das Modell ist schnell ausverkauft.', emoji: null },
+      { titulo: 'Omas Rezept - Linsen', grupo: '2025', fecha: '03.12.25', contenido: 'Linsen, Speck, Kartoffel, Karotte, Paprika, Knoblauch-Zwiebel-Anbraten, Lorbeer. Vor dem Servieren zehn Minuten ziehen lassen.', emoji: null },
       { titulo: 'Garagentor-Code', grupo: '2025', fecha: '20.11.25', contenido: 'Wenn es beim ersten Mal nicht klappt, ein paar Sekunden warten, bevor man es erneut versucht.\n1984#', emoji: null },
       { titulo: 'Playlist für die Reise', grupo: '2025', fecha: '02.10.25', contenido: "Klassischer Rock, etwas Jazz, und die Playlist von Jonas vom letzten Sommer. Auch die Lieder von Elenas Hochzeit hinzufügen.", emoji: '🎵' },
       { titulo: '+491768112233', grupo: '2025', fecha: '15.09.25', contenido: '', emoji: null }
@@ -4431,6 +4436,33 @@ body.light-mode header { padding-top: 5px !important; }
     }
   };
 
+  // --- Prefijo por defecto segun el pais del iPhone (region) y el idioma de la app ---
+  const PREFIJO_REGION = { ES:'+34', MX:'+52', AR:'+54', CO:'+57', CL:'+56', PE:'+51', VE:'+58', EC:'+593', UY:'+598', PY:'+595', BO:'+591', CR:'+506', GT:'+502', DO:'+1', PR:'+1',
+    US:'+1', CA:'+1', GB:'+44', IE:'+353', AU:'+61', NZ:'+64', ZA:'+27', IN:'+91', SG:'+65',
+    FR:'+33', BE:'+32', CH:'+41', LU:'+352', MC:'+377', IT:'+39', SM:'+378', VA:'+39', DE:'+49', AT:'+43', LI:'+423' };
+  const PREFIJO_IDIOMA = { es:'+34', en:'+44', fr:'+33', it:'+39', de:'+49' };
+  const PREFIJOS_AUTO = new Set(Object.values(PREFIJO_REGION).concat(Object.values(PREFIJO_IDIOMA)));
+  function prefijoPais(lang) {
+    const ls = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+    for (const l of ls) {
+      const partes = String(l || '').split(/[-_]/);
+      if (partes[0].toLowerCase() === lang && partes[1] && PREFIJO_REGION[partes[1].toUpperCase()]) return PREFIJO_REGION[partes[1].toUpperCase()];
+    }
+    return PREFIJO_IDIOMA[lang] || '+34';
+  }
+  // Cambia el prefijo de serie al del pais SOLO si sigue siendo uno automatico (no escrito a mano).
+  function aplicarPrefijoAuto() {
+    const nuevo = prefijoPais(ajustes.idioma || 'es');
+    let cambio = false;
+    if (ajustes.prefijoAuto !== false && PREFIJOS_AUTO.has(ajustes.prefijoSerie || '+34') && ajustes.prefijoSerie !== nuevo) { ajustes.prefijoSerie = nuevo; cambio = true; }
+    if (ajustes.tel && ajustes.tel.prefijoAuto !== false && PREFIJOS_AUTO.has(ajustes.tel.prefijoSerie || '+34') && ajustes.tel.prefijoSerie !== nuevo) { ajustes.tel.prefijoSerie = nuevo; cambio = true; }
+    if (cambio) {
+      guardarAjustes();
+      try { const a = document.getElementById('prefijoSerieInput'); if (a) a.value = ajustes.prefijoSerie; } catch (e) {}
+      try { const b = document.getElementById('prefijoSerieInputTel'); if (b) b.value = ajustes.tel.prefijoSerie; } catch (e) {}
+    }
+  }
+
   function aplicarIdioma() {
     const dic = TRADUCCIONES[ajustes.idioma] || TRADUCCIONES.es;
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -4458,6 +4490,7 @@ body.light-mode header { padding-top: 5px !important; }
   sincronizarColorVistazoConApariencia();
   aplicarApariencia();
   aplicarIdioma();   // los textos de la app salen ya en su idioma desde el arranque (antes solo al abrir el menu)
+  aplicarPrefijoAuto();
   notasFake = JSON.parse(JSON.stringify(NOTAS_FAKE_POR_IDIOMA[ajustes.idioma] || NOTAS_FAKE_POR_IDIOMA.es));
 
   const settingsOverlay = document.getElementById('settingsOverlay');
@@ -4811,6 +4844,7 @@ body.light-mode header { padding-top: 5px !important; }
 
   prefijoSerieInput.addEventListener('input', () => {
     ajustes.prefijoSerie = prefijoSerieInput.value || '+34';
+    ajustes.prefijoAuto = false;   // escrito a mano: ya no se cambia solo con el idioma
     guardarAjustes();
   });
 
@@ -4819,6 +4853,7 @@ body.light-mode header { padding-top: 5px !important; }
       ajustes.idioma = btn.dataset.idioma;
       guardarAjustes();
       aplicarIdioma();
+      aplicarPrefijoAuto();
       cambiarIdiomaNotasFake();
       if (window.__telIdioma) window.__telIdioma();
     });
@@ -4984,7 +5019,7 @@ body.light-mode header { padding-top: 5px !important; }
       en: {
         nombres: ['James','Olivia','Jack','Emily','Thomas','Sophie','William','Charlotte','Harry','Amelia','George','Jessica','Oliver','Hannah','Daniel','Lucy','Samuel','Grace','Joseph','Ella','Matthew','Chloe','Ben','Katie','Luke','Rachel','Adam','Holly','Ryan','Megan','Alex','Laura','Michael','Rebecca','Chris','Emma','Tom','Sarah','Josh','Alice','Sam','Lily','Liam','Zoe','Dan','Abigail','Jamie','Ellie','Mark','Isabel'],
         apellidos: ['Smith','Jones','Taylor','Brown','Williams','Wilson','Johnson','Davies','Robinson','Wright','Thompson','Evans','Walker','White','Roberts','Green','Hall','Wood','Jackson','Clarke','Harris','Lewis','Hughes','Edwards','Turner','Hill','Moore','Cooper','Ward','Morris','King','Baker','Harrison','Morgan','Allen','Scott','Young','Mitchell','Carter','Phillips'],
-        motes: ['Mum','Dad','Gaz','Boss','Nan','Little one','Auntie','Brother-in-law','Neighbour 3B','English teacher','Physio','Dentist','Hairdresser'],
+        motes: ['Mum','Dad','Gaz','Boss','Nan','Little one','Auntie','Brother-in-law','Neighbour 3B','Maths teacher','Physio','Dentist','Hairdresser'],
         favoritos: ['Mum','Dad','Best friend','Work'],
         tipos: ['mobile','phone','WA Business audio','WA Business video'],
         buzon: ['Good morning, I need a quote','Call me when you can, please','Confirming tomorrow’s appointment','I forgot to tell you something','Thanks for everything, talk soon'],
@@ -5752,6 +5787,7 @@ body.light-mode header { padding-top: 5px !important; }
     });
     prefijoSerieInputTel.addEventListener('input', () => {
       ajustes.tel.prefijoSerie = prefijoSerieInputTel.value || '+34';
+      ajustes.tel.prefijoAuto = false;
       guardarAjustes();
     });
     refrescarModoUsoTel();
