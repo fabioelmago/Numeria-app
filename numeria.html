@@ -2294,9 +2294,10 @@ html.barra-clara .settings-overlay .instr-chip{background:rgba(255,255,255,.6) !
 #telefonoScreen.tel-light #telPanelBuzon .tel-list-scroll { padding-top: 118px !important; }
 #telefonoScreen.tel-light .tel-azindex { top: 265px !important; }
 body.light-mode header { padding-top: 5px !important; }
-body.light-mode .notes-list-topbar { padding-top: 5px; height: 59px; }
-body.light-mode .notes-list-topbar-title { top: 7.7px; }
-body.light-mode .notes-list-scroll { padding-top: 59px; }
+/* lista de notas (claro y oscuro): los botones por debajo de la franja de 5px */
+.notes-list-topbar { padding-top: 5px; height: 59px; }
+.notes-list-topbar-title { top: 7.7px; }
+.notes-list-scroll { padding-top: 59px; }
 </style>
 </head>
 <body>
@@ -3688,72 +3689,72 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
       { titulo: '+34698112233', grupo: '2025', fecha: '15/9/25', contenido: '', emoji: null }
     ],
     en: [
-      { titulo: '+34662453654', grupo: 'Today', fecha: 'Today', contenido: '', emoji: null },
+      { titulo: '+447700900654', grupo: 'Today', fecha: 'Today', contenido: '', emoji: null },
       { titulo: 'Grocery list', grupo: 'Today', fecha: 'Today', contenido: "Milk, eggs, bread, coffee, olive oil, tomatoes, pasta, rice and some fruit for the week. Don't forget the detergent, it's almost gone.", emoji: '🛒' },
-      { titulo: "Ideas for Marta's birthday", grupo: 'Yesterday', fecha: 'Yesterday', contenido: 'Chocolate cake, black and gold balloons, order the cake by Thursday without fail. Tell the cousins and book grandma\'s terrace for Saturday afternoon.', emoji: '🎂' },
+      { titulo: "Ideas for Emma's birthday", grupo: 'Yesterday', fecha: 'Yesterday', contenido: 'Chocolate cake, black and gold balloons, order the cake by Thursday without fail. Tell the cousins and book grandma\'s terrace for Saturday afternoon.', emoji: '🎂' },
       { titulo: 'Countryside house wifi', grupo: 'Yesterday', fecha: 'Yesterday', contenido: 'Network: CasaRuralElOlivo\nPassword: sol2024verano\nThe router is in the living room, next to the fireplace, in case it needs restarting.', emoji: null },
       { titulo: 'Monday gym routine', grupo: 'This week', fecha: 'Monday', contenido: 'Squats 4x8, bench press 4x8, rows 3x10, plank 3x1min. Bump up the squat weight a bit from last week and stretch well afterwards.', emoji: null },
-      { titulo: 'Dentist appointment', grupo: 'This week', fecha: 'Tuesday', contenido: 'Tuesday 10:30, Rivas Dental Clinic, bring the panoramic X-ray and the insurance report. Also book a check-up for Diego.', emoji: '🦷' },
-      { titulo: '+34601458536', grupo: 'This week', fecha: 'Wednesday', contenido: '', emoji: null },
-      { titulo: 'Speech notes', grupo: 'February', fecha: '19/2/26', contenido: 'Success is not final, failure is not fatal: it is the courage to continue that counts. Start by thanking the team and save the emotional part for the end.', emoji: null },
-      { titulo: 'Books to read', grupo: 'February', fecha: '19/2/26', contenido: 'The Name of the Wind, Sapiens, The Shadow of the Wind, Origin. Ask the library if they have the second book in the Rothfuss trilogy.', emoji: '📚' },
-      { titulo: 'Supplier meeting', grupo: 'February', fecha: '18/2/26', contenido: 'Review Q2 budget, request new fabric samples, deadline March 15th. Confirm whether the samples arrive before Friday.', emoji: null },
-      { titulo: "Diego's shoe size", grupo: 'February', fecha: '14/2/26', contenido: "42 EU, Nike brand, for next year's Epiphany gift. Better to buy them early since the model he likes sells out fast.", emoji: null },
-      { titulo: "Grandma's lentil recipe", grupo: '2025', fecha: '3/12/25', contenido: 'Lentils, chorizo, potato, carrot, paprika, garlic and onion sauté, bay leaf. Let it rest for at least ten minutes before serving, tastes better.', emoji: null },
-      { titulo: 'Garage door code', grupo: '2025', fecha: '20/11/25', contenido: "1984#\nIf it doesn't work the first time, wait a few seconds before trying again.", emoji: null },
-      { titulo: 'Road trip playlist', grupo: '2025', fecha: '2/10/25', contenido: "Classic rock, some jazz, and the playlist Pablo made last summer. Also add the songs that played at Elena's wedding.", emoji: '🎵' },
-      { titulo: '+34698112233', grupo: '2025', fecha: '15/9/25', contenido: '', emoji: null }
+      { titulo: 'Dentist appointment', grupo: 'This week', fecha: 'Tuesday', contenido: 'Tuesday 10:30, Bennett Dental Clinic, bring the panoramic X-ray and the insurance report. Also book a check-up for Jack.', emoji: '🦷' },
+      { titulo: '+447911458536', grupo: 'This week', fecha: 'Wednesday', contenido: '', emoji: null },
+      { titulo: 'Speech notes', grupo: 'February', fecha: '19/02/2026', contenido: 'Success is not final, failure is not fatal: it is the courage to continue that counts. Start by thanking the team and save the emotional part for the end.', emoji: null },
+      { titulo: 'Books to read', grupo: 'February', fecha: '19/02/2026', contenido: 'The Name of the Wind, Sapiens, The Shadow of the Wind, Origin. Ask the library if they have the second book in the Rothfuss trilogy.', emoji: '📚' },
+      { titulo: 'Supplier meeting', grupo: 'February', fecha: '18/02/2026', contenido: 'Review Q2 budget, request new fabric samples, deadline March 15th. Confirm whether the samples arrive before Friday.', emoji: null },
+      { titulo: "Jack's shoe size", grupo: 'February', fecha: '14/02/2026', contenido: "42 EU, Nike brand, for next year's Epiphany gift. Better to buy them early since the model he likes sells out fast.", emoji: null },
+      { titulo: "Grandma's lentil recipe", grupo: '2025', fecha: '03/12/2025', contenido: 'Lentils, chorizo, potato, carrot, paprika, garlic and onion sauté, bay leaf. Let it rest for at least ten minutes before serving, tastes better.', emoji: null },
+      { titulo: 'Garage door code', grupo: '2025', fecha: '20/11/2025', contenido: "1984#\nIf it doesn't work the first time, wait a few seconds before trying again.", emoji: null },
+      { titulo: 'Road trip playlist', grupo: '2025', fecha: '02/10/2025', contenido: "Classic rock, some jazz, and the playlist Tom made last summer. Also add the songs that played at Elena's wedding.", emoji: '🎵' },
+      { titulo: '+447822112233', grupo: '2025', fecha: '15/09/2025', contenido: '', emoji: null }
     ],
     fr: [
-      { titulo: '+34662453654', grupo: "Aujourd'hui", fecha: "Aujourd'hui", contenido: '', emoji: null },
+      { titulo: '+33662453654', grupo: "Aujourd'hui", fecha: "Aujourd'hui", contenido: '', emoji: null },
       { titulo: 'Liste de courses', grupo: "Aujourd'hui", fecha: "Aujourd'hui", contenido: "Lait, œufs, pain, café, huile d'olive, tomates, pâtes, riz et un peu de fruits pour la semaine. Ne pas oublier la lessive, il en reste presque plus.", emoji: '🛒' },
-      { titulo: "Idées anniversaire de Marta", grupo: 'Hier', fecha: 'Hier', contenido: "Gâteau au chocolat, ballons noirs et dorés, commander le gâteau jeudi sans faute. Prévenir les cousins et réserver la terrasse de mamie pour samedi après-midi.", emoji: '🎂' },
+      { titulo: "Idées anniversaire de Chloé", grupo: 'Hier', fecha: 'Hier', contenido: "Gâteau au chocolat, ballons noirs et dorés, commander le gâteau jeudi sans faute. Prévenir les cousins et réserver la terrasse de mamie pour samedi après-midi.", emoji: '🎂' },
       { titulo: 'Wifi maison de campagne', grupo: 'Hier', fecha: 'Hier', contenido: "Réseau : CasaRuralElOlivo\nMot de passe : sol2024verano\nLe routeur est dans le salon, à côté de la cheminée, au cas où il faudrait le redémarrer.", emoji: null },
       { titulo: 'Routine salle lundi', grupo: 'Cette semaine', fecha: 'Lundi', contenido: "Squats 4x8, développé couché 4x8, rowing 3x10, gainage 3x1min. Augmenter un peu le poids des squats et bien s'étirer après.", emoji: null },
-      { titulo: 'Rendez-vous dentiste', grupo: 'Cette semaine', fecha: 'Mardi', contenido: "Mardi 10h30, Clinique Dentaire Rivas, apporter la radio panoramique et le rapport de l'assurance. Prendre aussi rendez-vous pour Diego.", emoji: '🦷' },
-      { titulo: '+34601458536', grupo: 'Cette semaine', fecha: 'Mercredi', contenido: '', emoji: null },
-      { titulo: 'Notes pour le discours', grupo: 'Février', fecha: '19/2/26', contenido: "Le succès n'est pas définitif, l'échec n'est pas fatal : c'est le courage de continuer qui compte. Commencer par remercier l'équipe.", emoji: null },
-      { titulo: 'Livres à lire', grupo: 'Février', fecha: '19/2/26', contenido: "Le Nom du vent, Sapiens, L'Ombre du vent, Origine. Demander à la bibliothèque le deuxième tome de la trilogie de Rothfuss.", emoji: '📚' },
-      { titulo: 'Réunion fournisseurs', grupo: 'Février', fecha: '18/2/26', contenido: "Revoir le budget T2, demander de nouveaux échantillons de tissu, date limite le 15 mars. Confirmer l'arrivée avant vendredi.", emoji: null },
-      { titulo: 'Pointure baskets Diego', grupo: 'Février', fecha: '14/2/26', contenido: "42 EU, marque Nike, pour le cadeau de l'Épiphanie. Mieux vaut les acheter tôt car le modèle qu'il aime part vite.", emoji: null },
-      { titulo: 'Recette de mamie - lentilles', grupo: '2025', fecha: '3/12/25', contenido: "Lentilles, chorizo, pomme de terre, carotte, paprika, ail et oignon revenus, laurier. Laisser reposer dix minutes avant de servir.", emoji: null },
-      { titulo: 'Code portail garage', grupo: '2025', fecha: '20/11/25', contenido: "1984#\nSi ça ne marche pas du premier coup, attendre quelques secondes avant de réessayer.", emoji: null },
-      { titulo: 'Playlist pour le voyage', grupo: '2025', fecha: '2/10/25', contenido: "Rock classique, un peu de jazz, et la playlist de Pablo de l'été dernier. Ajouter les chansons du mariage d'Elena.", emoji: '🎵' },
-      { titulo: '+34698112233', grupo: '2025', fecha: '15/9/25', contenido: '', emoji: null }
+      { titulo: 'Rendez-vous dentiste', grupo: 'Cette semaine', fecha: 'Mardi', contenido: "Mardi 10h30, Clinique Dentaire Moreau, apporter la radio panoramique et le rapport de l'assurance. Prendre aussi rendez-vous pour Lucas.", emoji: '🦷' },
+      { titulo: '+33601458536', grupo: 'Cette semaine', fecha: 'Mercredi', contenido: '', emoji: null },
+      { titulo: 'Notes pour le discours', grupo: 'Février', fecha: '19/02/2026', contenido: "Le succès n'est pas définitif, l'échec n'est pas fatal : c'est le courage de continuer qui compte. Commencer par remercier l'équipe.", emoji: null },
+      { titulo: 'Livres à lire', grupo: 'Février', fecha: '19/02/2026', contenido: "Le Nom du vent, Sapiens, L'Ombre du vent, Origine. Demander à la bibliothèque le deuxième tome de la trilogie de Rothfuss.", emoji: '📚' },
+      { titulo: 'Réunion fournisseurs', grupo: 'Février', fecha: '18/02/2026', contenido: "Revoir le budget T2, demander de nouveaux échantillons de tissu, date limite le 15 mars. Confirmer l'arrivée avant vendredi.", emoji: null },
+      { titulo: 'Pointure baskets Lucas', grupo: 'Février', fecha: '14/02/2026', contenido: "42 EU, marque Nike, pour le cadeau de l'Épiphanie. Mieux vaut les acheter tôt car le modèle qu'il aime part vite.", emoji: null },
+      { titulo: 'Recette de mamie - lentilles', grupo: '2025', fecha: '03/12/2025', contenido: "Lentilles, chorizo, pomme de terre, carotte, paprika, ail et oignon revenus, laurier. Laisser reposer dix minutes avant de servir.", emoji: null },
+      { titulo: 'Code portail garage', grupo: '2025', fecha: '20/11/2025', contenido: "1984#\nSi ça ne marche pas du premier coup, attendre quelques secondes avant de réessayer.", emoji: null },
+      { titulo: 'Playlist pour le voyage', grupo: '2025', fecha: '02/10/2025', contenido: "Rock classique, un peu de jazz, et la playlist de Hugo de l'été dernier. Ajouter les chansons du mariage d'Elena.", emoji: '🎵' },
+      { titulo: '+33698112233', grupo: '2025', fecha: '15/09/2025', contenido: '', emoji: null }
     ],
     it: [
-      { titulo: '+34662453654', grupo: 'Oggi', fecha: 'Oggi', contenido: '', emoji: null },
+      { titulo: '+393472453654', grupo: 'Oggi', fecha: 'Oggi', contenido: '', emoji: null },
       { titulo: 'Lista della spesa', grupo: 'Oggi', fecha: 'Oggi', contenido: "Latte, uova, pane, caffè, olio d'oliva, pomodori, pasta, riso e un po' di frutta per la settimana. Non dimenticare il detersivo, sta finendo.", emoji: '🛒' },
-      { titulo: 'Idee compleanno di Marta', grupo: 'Ieri', fecha: 'Ieri', contenido: "Torta al cioccolato, palloncini neri e dorati, ordinare la torta entro giovedì senza fallo. Avvisare i cugini e prenotare la terrazza della nonna per sabato pomeriggio.", emoji: '🎂' },
+      { titulo: 'Idee compleanno di Giulia', grupo: 'Ieri', fecha: 'Ieri', contenido: "Torta al cioccolato, palloncini neri e dorati, ordinare la torta entro giovedì senza fallo. Avvisare i cugini e prenotare la terrazza della nonna per sabato pomeriggio.", emoji: '🎂' },
       { titulo: 'Wifi casa in campagna', grupo: 'Ieri', fecha: 'Ieri', contenido: "Rete: CasaRuralElOlivo\nPassword: sol2024verano\nIl router è in salotto, vicino al camino, nel caso serva riavviarlo.", emoji: null },
       { titulo: 'Allenamento palestra lunedì', grupo: 'Questa settimana', fecha: 'Lunedì', contenido: "Squat 4x8, panca piana 4x8, rematore 3x10, plank 3x1min. Aumentare un po' il peso dello squat e fare stretching finale.", emoji: null },
-      { titulo: 'Appuntamento dentista', grupo: 'Questa settimana', fecha: 'Martedì', contenido: "Martedì alle 10:30, Clinica Dentale Rivas, portare la panoramica e il referto assicurativo. Prenotare anche il controllo di Diego.", emoji: '🦷' },
-      { titulo: '+34601458536', grupo: 'Questa settimana', fecha: 'Mercoledì', contenido: '', emoji: null },
-      { titulo: 'Frasi per il discorso', grupo: 'Febbraio', fecha: '19/2/26', contenido: "Il successo non è definitivo, il fallimento non è fatale: è il coraggio di continuare che conta. Iniziare ringraziando la squadra.", emoji: null },
-      { titulo: 'Libri da leggere', grupo: 'Febbraio', fecha: '19/2/26', contenido: "Il nome del vento, Sapiens, L'ombra del vento, Origine. Chiedere in biblioteca il secondo libro della trilogia di Rothfuss.", emoji: '📚' },
-      { titulo: 'Riunione fornitori', grupo: 'Febbraio', fecha: '18/2/26', contenido: "Rivedere il budget del secondo trimestre, richiedere nuovi campioni di tessuto, scadenza 15 marzo. Confermare l'arrivo prima di venerdì.", emoji: null },
-      { titulo: 'Numero scarpe Diego', grupo: 'Febbraio', fecha: '14/2/26', contenido: "42 EU, marca Nike, per il regalo dell'Epifania. Meglio comprarle in anticipo perché il modello finisce subito.", emoji: null },
-      { titulo: 'Ricetta della nonna - lenticchie', grupo: '2025', fecha: '3/12/25', contenido: "Lenticchie, chorizo, patata, carota, paprica, soffritto di aglio e cipolla, alloro. Farle riposare dieci minuti prima di servire.", emoji: null },
+      { titulo: 'Appuntamento dentista', grupo: 'Questa settimana', fecha: 'Martedì', contenido: "Martedì alle 10:30, Clinica Dentale Rossi, portare la panoramica e il referto assicurativo. Prenotare anche il controllo di Luca.", emoji: '🦷' },
+      { titulo: '+393331458536', grupo: 'Questa settimana', fecha: 'Mercoledì', contenido: '', emoji: null },
+      { titulo: 'Frasi per il discorso', grupo: 'Febbraio', fecha: '19/02/26', contenido: "Il successo non è definitivo, il fallimento non è fatale: è il coraggio di continuare che conta. Iniziare ringraziando la squadra.", emoji: null },
+      { titulo: 'Libri da leggere', grupo: 'Febbraio', fecha: '19/02/26', contenido: "Il nome del vento, Sapiens, L'ombra del vento, Origine. Chiedere in biblioteca il secondo libro della trilogia di Rothfuss.", emoji: '📚' },
+      { titulo: 'Riunione fornitori', grupo: 'Febbraio', fecha: '18/02/26', contenido: "Rivedere il budget del secondo trimestre, richiedere nuovi campioni di tessuto, scadenza 15 marzo. Confermare l'arrivo prima di venerdì.", emoji: null },
+      { titulo: 'Numero scarpe Luca', grupo: 'Febbraio', fecha: '14/02/26', contenido: "42 EU, marca Nike, per il regalo dell'Epifania. Meglio comprarle in anticipo perché il modello finisce subito.", emoji: null },
+      { titulo: 'Ricetta della nonna - lenticchie', grupo: '2025', fecha: '03/12/25', contenido: "Lenticchie, chorizo, patata, carota, paprica, soffritto di aglio e cipolla, alloro. Farle riposare dieci minuti prima di servire.", emoji: null },
       { titulo: 'Codice cancello garage', grupo: '2025', fecha: '20/11/25', contenido: "1984#\nSe non funziona al primo tentativo, aspettare qualche secondo prima di riprovare.", emoji: null },
-      { titulo: 'Playlist per il viaggio', grupo: '2025', fecha: '2/10/25', contenido: "Rock classico, un po' di jazz, e la playlist di Pablo dell'estate scorsa. Aggiungere le canzoni del matrimonio di Elena.", emoji: '🎵' },
-      { titulo: '+34698112233', grupo: '2025', fecha: '15/9/25', contenido: '', emoji: null }
+      { titulo: 'Playlist per il viaggio', grupo: '2025', fecha: '02/10/25', contenido: "Rock classico, un po' di jazz, e la playlist di Marco dell'estate scorsa. Aggiungere le canzoni del matrimonio di Elena.", emoji: '🎵' },
+      { titulo: '+393498112233', grupo: '2025', fecha: '15/09/25', contenido: '', emoji: null }
     ],
     de: [
-      { titulo: '+34662453654', grupo: 'Heute', fecha: 'Heute', contenido: '', emoji: null },
+      { titulo: '+491702453654', grupo: 'Heute', fecha: 'Heute', contenido: '', emoji: null },
       { titulo: 'Einkaufsliste', grupo: 'Heute', fecha: 'Heute', contenido: 'Milch, Eier, Brot, Kaffee, Olivenöl, Tomaten, Nudeln, Reis und etwas Obst für die Woche. Waschmittel nicht vergessen, es ist fast leer.', emoji: '🛒' },
-      { titulo: "Ideen für Martas Geburtstag", grupo: 'Gestern', fecha: 'Gestern', contenido: 'Schokoladentorte, schwarze und goldene Luftballons, die Torte unbedingt bis Donnerstag bestellen. Die Cousins Bescheid sagen und Omas Terrasse für Samstagnachmittag reservieren.', emoji: '🎂' },
+      { titulo: "Ideen für Annas Geburtstag", grupo: 'Gestern', fecha: 'Gestern', contenido: 'Schokoladentorte, schwarze und goldene Luftballons, die Torte unbedingt bis Donnerstag bestellen. Die Cousins Bescheid sagen und Omas Terrasse für Samstagnachmittag reservieren.', emoji: '🎂' },
       { titulo: 'WLAN Ferienhaus', grupo: 'Gestern', fecha: 'Gestern', contenido: 'Netzwerk: CasaRuralElOlivo\nPasswort: sol2024verano\nDer Router steht im Wohnzimmer, neben dem Kamin, falls ein Neustart nötig ist.', emoji: null },
       { titulo: 'Fitnessroutine Montag', grupo: 'Diese Woche', fecha: 'Montag', contenido: 'Kniebeugen 4x8, Bankdrücken 4x8, Rudern 3x10, Plank 3x1min. Das Gewicht etwas erhöhen und danach gut dehnen.', emoji: null },
-      { titulo: 'Zahnarzttermin', grupo: 'Diese Woche', fecha: 'Dienstag', contenido: 'Dienstag 10:30 Uhr, Zahnklinik Rivas, Panoramaaufnahme und Versicherungsbericht mitbringen. Auch Termin für Diego vereinbaren.', emoji: '🦷' },
-      { titulo: '+34601458536', grupo: 'Diese Woche', fecha: 'Mittwoch', contenido: '', emoji: null },
-      { titulo: 'Notizen für die Rede', grupo: 'Februar', fecha: '19/2/26', contenido: 'Erfolg ist nicht endgültig, Misserfolg ist nicht fatal: Es zählt der Mut, weiterzumachen. Zuerst dem Team danken.', emoji: null },
-      { titulo: 'Bücher zum Lesen', grupo: 'Februar', fecha: '19/2/26', contenido: 'Der Name des Windes, Sapiens, Der Schatten des Windes, Origin. In der Bibliothek nach Band 2 der Rothfuss-Trilogie fragen.', emoji: '📚' },
-      { titulo: 'Lieferantentreffen', grupo: 'Februar', fecha: '18/2/26', contenido: 'Q2-Budget überprüfen, neue Stoffmuster anfordern, Frist 15. März. Bestätigen, ob die Muster vor Freitag ankommen.', emoji: null },
-      { titulo: 'Schuhgröße Diego', grupo: 'Februar', fecha: '14/2/26', contenido: '42 EU, Marke Nike, für das Geschenk zum Dreikönigstag. Besser früh kaufen, das Modell ist schnell ausverkauft.', emoji: null },
-      { titulo: 'Omas Rezept - Linsen', grupo: '2025', fecha: '3/12/25', contenido: 'Linsen, Chorizo, Kartoffel, Karotte, Paprika, Knoblauch-Zwiebel-Anbraten, Lorbeer. Vor dem Servieren zehn Minuten ziehen lassen.', emoji: null },
-      { titulo: 'Garagentor-Code', grupo: '2025', fecha: '20/11/25', contenido: 'Wenn es beim ersten Mal nicht klappt, ein paar Sekunden warten, bevor man es erneut versucht.\n1984#', emoji: null },
-      { titulo: 'Playlist für die Reise', grupo: '2025', fecha: '2/10/25', contenido: "Klassischer Rock, etwas Jazz, und die Playlist von Pablo vom letzten Sommer. Auch die Lieder von Elenas Hochzeit hinzufügen.", emoji: '🎵' },
-      { titulo: '+34698112233', grupo: '2025', fecha: '15/9/25', contenido: '', emoji: null }
+      { titulo: 'Zahnarzttermin', grupo: 'Diese Woche', fecha: 'Dienstag', contenido: 'Dienstag 10:30 Uhr, Zahnklinik Becker, Panoramaaufnahme und Versicherungsbericht mitbringen. Auch Termin für Lukas vereinbaren.', emoji: '🦷' },
+      { titulo: '+491511458536', grupo: 'Diese Woche', fecha: 'Mittwoch', contenido: '', emoji: null },
+      { titulo: 'Notizen für die Rede', grupo: 'Februar', fecha: '19.02.26', contenido: 'Erfolg ist nicht endgültig, Misserfolg ist nicht fatal: Es zählt der Mut, weiterzumachen. Zuerst dem Team danken.', emoji: null },
+      { titulo: 'Bücher zum Lesen', grupo: 'Februar', fecha: '19.02.26', contenido: 'Der Name des Windes, Sapiens, Der Schatten des Windes, Origin. In der Bibliothek nach Band 2 der Rothfuss-Trilogie fragen.', emoji: '📚' },
+      { titulo: 'Lieferantentreffen', grupo: 'Februar', fecha: '18.02.26', contenido: 'Q2-Budget überprüfen, neue Stoffmuster anfordern, Frist 15. März. Bestätigen, ob die Muster vor Freitag ankommen.', emoji: null },
+      { titulo: 'Schuhgröße Lukas', grupo: 'Februar', fecha: '14.02.26', contenido: '42 EU, Marke Nike, für das Geschenk zum Dreikönigstag. Besser früh kaufen, das Modell ist schnell ausverkauft.', emoji: null },
+      { titulo: 'Omas Rezept - Linsen', grupo: '2025', fecha: '03.12.25', contenido: 'Linsen, Chorizo, Kartoffel, Karotte, Paprika, Knoblauch-Zwiebel-Anbraten, Lorbeer. Vor dem Servieren zehn Minuten ziehen lassen.', emoji: null },
+      { titulo: 'Garagentor-Code', grupo: '2025', fecha: '20.11.25', contenido: 'Wenn es beim ersten Mal nicht klappt, ein paar Sekunden warten, bevor man es erneut versucht.\n1984#', emoji: null },
+      { titulo: 'Playlist für die Reise', grupo: '2025', fecha: '02.10.25', contenido: "Klassischer Rock, etwas Jazz, und die Playlist von Jonas vom letzten Sommer. Auch die Lieder von Elenas Hochzeit hinzufügen.", emoji: '🎵' },
+      { titulo: '+491768112233', grupo: '2025', fecha: '15.09.25', contenido: '', emoji: null }
     ]
   };
 
@@ -4799,6 +4800,7 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
       guardarAjustes();
       aplicarIdioma();
       cambiarIdiomaNotasFake();
+      if (window.__telIdioma) window.__telIdioma();
     });
   });
 
@@ -4943,22 +4945,86 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
   (function () {
     const telefonoScreen = document.getElementById('telefonoScreen');
 
-    // --- Generacion de contactos falsos (nombres al azar, no se traducen) ---
-    const NOMBRES_POOL = ['Antonio','María','José','Carmen','Manuel','Ana','Francisco','Isabel','David','Laura','Javier','Marta','Daniel','Cristina','Carlos','Elena','Miguel','Paula','Rafael','Lucía','Alejandro','Sara','Pedro','Rosa','Fernando','Patricia','Sergio','Beatriz','Pablo','Silvia','Jorge','Raquel','Alberto','Natalia','Diego','Irene','Adrián','Julia','Iván','Nuria','Rubén','Andrea','Óscar','Marina','Víctor','Alba','Enrique','Teresa','Ricardo','Eva'];
-    const APELLIDOS_POOL = ['García','Martínez','López','Sánchez','Pérez','González','Rodríguez','Fernández','Gómez','Díaz','Ruiz','Hernández','Jiménez','Álvarez','Moreno','Muñoz','Romero','Alonso','Gutiérrez','Navarro','Torres','Domínguez','Vázquez','Ramos','Gil','Serrano','Blanco','Molina','Morales','Suárez','Ortega','Delgado','Castro','Ortiz','Rubio','Marín','Sanz','Núñez','Iglesias','Medina'];
+    // --- Contenido de ejemplo por idioma (nombres, motes, mensajes, fechas) ---
+    // El español es exactamente el de siempre. Lo que el usuario haya escrito
+    // a mano en los editores no se toca: solo se cambian las entradas que siguen
+    // siendo las de fabrica de algun idioma.
+    const TEL_POOLS = {
+      es: {
+        nombres: ['Antonio','María','José','Carmen','Manuel','Ana','Francisco','Isabel','David','Laura','Javier','Marta','Daniel','Cristina','Carlos','Elena','Miguel','Paula','Rafael','Lucía','Alejandro','Sara','Pedro','Rosa','Fernando','Patricia','Sergio','Beatriz','Pablo','Silvia','Jorge','Raquel','Alberto','Natalia','Diego','Irene','Adrián','Julia','Iván','Nuria','Rubén','Andrea','Óscar','Marina','Víctor','Alba','Enrique','Teresa','Ricardo','Eva'],
+        apellidos: ['García','Martínez','López','Sánchez','Pérez','González','Rodríguez','Fernández','Gómez','Díaz','Ruiz','Hernández','Jiménez','Álvarez','Moreno','Muñoz','Romero','Alonso','Gutiérrez','Navarro','Torres','Domínguez','Vázquez','Ramos','Gil','Serrano','Blanco','Molina','Morales','Suárez','Ortega','Delgado','Castro','Ortiz','Rubio','Marín','Sanz','Núñez','Iglesias','Medina'],
+        motes: ['Mamá','Papá','Curro','Jefe','Yaya','Peque','Titi','Cuñao','Vecino del 3º','Profe Inglés','Fisio','Dentista','Peluquería'],
+        favoritos: ['Mamá','Papá','Mejor amigo','Trabajo'],
+        tipos: ['móvil','teléfono','WA Business de audio','WA Business de vídeo'],
+        buzon: ['Buenos días, necesito un presupuesto','Llámame cuando puedas por favor','Confirmando la cita de mañana','Se me ha olvidado comentarte una cosa','Gracias por todo, hablamos pronto'],
+        relleno: ['Una oferta especial solo para usted','Recordatorio de su próxima cita','Le llamamos de parte de la entidad','Por favor devuelva la llamada','Hola, soy yo otra vez','Perdona que te moleste a esta hora'],
+        rellenoMotes: ['Laura Barceló','José Madrid','Mamá','Curro','Jefe Obra','Yaya','Fisio Marcos','Dentista Dra. Ruiz','Vecino 3ºB','Peluquería Ana'],
+        ayer: 'ayer', operador: 'Buzón de voz del operador', llamarOperador: 'Llamar al operador', locale: 'es-ES', minus: true
+      },
+      en: {
+        nombres: ['James','Olivia','Jack','Emily','Thomas','Sophie','William','Charlotte','Harry','Amelia','George','Jessica','Oliver','Hannah','Daniel','Lucy','Samuel','Grace','Joseph','Ella','Matthew','Chloe','Ben','Katie','Luke','Rachel','Adam','Holly','Ryan','Megan','Alex','Laura','Michael','Rebecca','Chris','Emma','Tom','Sarah','Josh','Alice','Sam','Lily','Liam','Zoe','Dan','Abigail','Jamie','Ellie','Mark','Isabel'],
+        apellidos: ['Smith','Jones','Taylor','Brown','Williams','Wilson','Johnson','Davies','Robinson','Wright','Thompson','Evans','Walker','White','Roberts','Green','Hall','Wood','Jackson','Clarke','Harris','Lewis','Hughes','Edwards','Turner','Hill','Moore','Cooper','Ward','Morris','King','Baker','Harrison','Morgan','Allen','Scott','Young','Mitchell','Carter','Phillips'],
+        motes: ['Mum','Dad','Gaz','Boss','Nan','Little one','Auntie','Brother-in-law','Neighbour 3B','English teacher','Physio','Dentist','Hairdresser'],
+        favoritos: ['Mum','Dad','Best friend','Work'],
+        tipos: ['mobile','phone','WA Business audio','WA Business video'],
+        buzon: ['Good morning, I need a quote','Call me when you can, please','Confirming tomorrow’s appointment','I forgot to tell you something','Thanks for everything, talk soon'],
+        relleno: ['A special offer just for you','Reminder of your next appointment','We’re calling on behalf of your bank','Please call us back','Hi, it’s me again','Sorry to bother you at this hour'],
+        rellenoMotes: ['Laura Bennett','Josh Carter','Mum','Gaz','Site Boss','Nan','Physio Mark','Dentist Dr. Hughes','Neighbour 3B','Hairdresser Amy'],
+        ayer: 'Yesterday', operador: 'Carrier voicemail', llamarOperador: 'Call carrier', locale: 'en-GB', minus: false
+      },
+      fr: {
+        nombres: ['Lucas','Emma','Hugo','Léa','Louis','Chloé','Gabriel','Manon','Arthur','Camille','Jules','Sarah','Nathan','Inès','Théo','Julie','Tom','Clara','Paul','Lucie','Antoine','Marie','Maxime','Pauline','Thomas','Laura','Nicolas','Anaïs','Julien','Mathilde','Alexandre','Céline','Pierre','Élodie','Romain','Charlotte','Mathis','Juliette','Baptiste','Océane','Quentin','Margaux','Victor','Zoé','Adrien','Jade','Martin','Alice','Benoît','Elsa'],
+        apellidos: ['Martin','Bernard','Dubois','Thomas','Robert','Richard','Petit','Durand','Leroy','Moreau','Simon','Laurent','Lefebvre','Michel','Garcia','David','Bertrand','Roux','Vincent','Fournier','Morel','Girard','André','Lefèvre','Mercier','Dupont','Lambert','Bonnet','François','Martinez','Legrand','Garnier','Faure','Rousseau','Blanc','Guérin','Muller','Henry','Roussel','Nicolas'],
+        motes: ['Maman','Papa','Jojo','Chef','Mamie','Petit','Tata','Beau-frère','Voisin du 3e','Prof d’anglais','Kiné','Dentiste','Coiffeur'],
+        favoritos: ['Maman','Papa','Meilleur ami','Travail'],
+        tipos: ['mobile','téléphone','audio WA Business','vidéo WA Business'],
+        buzon: ['Bonjour, j’ai besoin d’un devis','Rappelle-moi quand tu peux s’il te plaît','Je confirme le rendez-vous de demain','J’ai oublié de te dire quelque chose','Merci pour tout, à bientôt'],
+        relleno: ['Une offre spéciale rien que pour vous','Rappel de votre prochain rendez-vous','Nous vous appelons de la part de votre banque','Merci de nous rappeler','Salut, c’est encore moi','Désolé de te déranger à cette heure'],
+        rellenoMotes: ['Laura Bonnet','José Marchand','Maman','Jojo','Chef Chantier','Mamie','Kiné Marc','Dentiste Dr Roux','Voisin 3B','Coiffeur Anne'],
+        ayer: 'hier', operador: 'Messagerie de l’opérateur', llamarOperador: 'Appeler l’opérateur', locale: 'fr-FR', minus: true
+      },
+      it: {
+        nombres: ['Marco','Giulia','Luca','Francesca','Alessandro','Chiara','Andrea','Sara','Matteo','Martina','Lorenzo','Valentina','Davide','Elena','Simone','Alessia','Federico','Giorgia','Riccardo','Silvia','Stefano','Laura','Francesco','Anna','Giovanni','Paola','Paolo','Elisa','Roberto','Federica','Giuseppe','Roberta','Fabio','Ilaria','Antonio','Serena','Daniele','Marta','Nicola','Camilla','Tommaso','Beatrice','Emanuele','Sofia','Pietro','Aurora','Michele','Greta','Filippo','Noemi'],
+        apellidos: ['Rossi','Russo','Ferrari','Esposito','Bianchi','Romano','Colombo','Ricci','Marino','Greco','Bruno','Gallo','Conti','De Luca','Mancini','Costa','Giordano','Rizzo','Lombardi','Moretti','Barbieri','Fontana','Santoro','Mariani','Rinaldi','Caruso','Ferrara','Galli','Martini','Leone','Longo','Gentile','Martinelli','Vitale','Lombardo','Serra','Coppola','De Santis','D’Angelo','Marchetti'],
+        motes: ['Mamma','Papà','Gigi','Capo','Nonna','Piccolo','Zia','Cognato','Vicino del 3°','Prof di inglese','Fisioterapista','Dentista','Parrucchiere'],
+        favoritos: ['Mamma','Papà','Migliore amico','Lavoro'],
+        tipos: ['cellulare','telefono','audio WA Business','video WA Business'],
+        buzon: ['Buongiorno, avrei bisogno di un preventivo','Richiamami quando puoi per favore','Confermo l’appuntamento di domani','Mi sono dimenticato di dirti una cosa','Grazie di tutto, ci sentiamo presto'],
+        relleno: ['Un’offerta speciale solo per lei','Promemoria del suo prossimo appuntamento','La chiamiamo per conto della sua banca','Per favore ci richiami','Ciao, sono di nuovo io','Scusa se ti disturbo a quest’ora'],
+        rellenoMotes: ['Laura Barbieri','Giuseppe Galli','Mamma','Gigi','Capo Cantiere','Nonna','Fisio Marco','Dentista Dott. Rizzo','Vicino 3B','Parrucchiere Anna'],
+        ayer: 'ieri', operador: 'Segreteria dell’operatore', llamarOperador: 'Chiama l’operatore', locale: 'it-IT', minus: true
+      },
+      de: {
+        nombres: ['Lukas','Anna','Leon','Lena','Felix','Laura','Jonas','Julia','Paul','Sarah','Max','Lisa','Tim','Hannah','Jan','Marie','Finn','Sophie','Niklas','Katharina','Tobias','Lea','David','Johanna','Simon','Nina','Moritz','Clara','Philipp','Emma','Alexander','Jana','Sebastian','Miriam','Florian','Carla','Daniel','Pia','Michael','Theresa','Stefan','Vanessa','Thomas','Mia','Markus','Sabine','Andreas','Lara','Christian','Eva'],
+        apellidos: ['Müller','Schmidt','Schneider','Fischer','Weber','Meyer','Wagner','Becker','Schulz','Hoffmann','Schäfer','Koch','Bauer','Richter','Klein','Wolf','Schröder','Neumann','Schwarz','Zimmermann','Braun','Krüger','Hofmann','Hartmann','Lange','Schmitt','Werner','Schmitz','Krause','Meier','Lehmann','Schmid','Schulze','Maier','Köhler','Herrmann','König','Walter','Mayer','Huber'],
+        motes: ['Mama','Papa','Kalle','Chef','Oma','Kleiner','Tante','Schwager','Nachbar 3. OG','Englischlehrer','Physio','Zahnarzt','Friseur'],
+        favoritos: ['Mama','Papa','Bester Freund','Arbeit'],
+        tipos: ['Mobil','Telefon','WA Business-Audio','WA Business-Video'],
+        buzon: ['Guten Morgen, ich bräuchte ein Angebot','Ruf mich bitte zurück, wenn du kannst','Ich bestätige den Termin morgen','Ich habe vergessen, dir etwas zu sagen','Danke für alles, bis bald'],
+        relleno: ['Ein Sonderangebot nur für Sie','Erinnerung an Ihren nächsten Termin','Wir rufen im Auftrag Ihrer Bank an','Bitte rufen Sie uns zurück','Hallo, ich bin’s nochmal','Entschuldige die späte Störung'],
+        rellenoMotes: ['Laura Becker','Jonas Krause','Mama','Kalle','Bauleiter','Oma','Physio Markus','Zahnarzt Dr. Wolf','Nachbar 3B','Friseur Anna'],
+        ayer: 'Gestern', operador: 'Mailbox des Anbieters', llamarOperador: 'Anbieter anrufen', locale: 'de-DE', minus: false
+      }
+    };
+    const TEL_LANGS = Object.keys(TEL_POOLS);
+    function telL() { return TEL_POOLS[ajustes.idioma] ? ajustes.idioma : 'es'; }
+    function telP() { return TEL_POOLS[telL()]; }
+    // --- Generacion de contactos falsos (nombres al azar del idioma elegido) ---
+    let NOMBRES_POOL = TEL_POOLS.es.nombres;
+    let APELLIDOS_POOL = TEL_POOLS.es.apellidos;
     const TEL_COLORES_AVATAR = ['#6C6CE0','#5E8DE8','#7A6CE0','#5FA8E0','#8C6CE0','#4F9BD1','#6E7FE0','#5AA0D8'];
 
     // --- Nombres que rotan al azar en la sugerencia de "marcando..." ---
     // Mezcla de nombres normales y motes informales, para que parezca un
     // movil de verdad. Nunca coinciden con los contactos reales guardados.
-    const SUGERENCIAS_MOTES = ['Mamá','Papá','Curro','Jefe','Yaya','Peque','Titi','Cuñao','Vecino del 3º','Profe Inglés','Fisio','Dentista','Peluquería'];
-    const SUGERENCIAS_NOMBRES = (() => {
+    let SUGERENCIAS_NOMBRES = [];
+    function construirSugerencias() {
       const lista = [];
       for (let i = 0; i < 37; i++) {
         lista.push(NOMBRES_POOL[i % NOMBRES_POOL.length] + ' ' + APELLIDOS_POOL[(i * 3) % APELLIDOS_POOL.length]);
       }
-      return lista.concat(SUGERENCIAS_MOTES);
-    })();
+      SUGERENCIAS_NOMBRES = lista.concat(telP().motes);
+    }
     let ultimaSugerenciaIdx = -1;
     function nombreSugerenciaAleatorio() {
       let idx;
@@ -4990,52 +5056,68 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
         const nombre = NOMBRES_POOL[Math.floor(Math.random() * NOMBRES_POOL.length)];
         const apellido1 = APELLIDOS_POOL[Math.floor(Math.random() * APELLIDOS_POOL.length)];
         const apellido2 = APELLIDOS_POOL[Math.floor(Math.random() * APELLIDOS_POOL.length)];
-        const completo = Math.random() < 0.5 ? `${nombre} ${apellido1}` : `${nombre} ${apellido1} ${apellido2}`;
+        // dos apellidos solo en español; en los demas idiomas, nombre y un apellido
+        const completo = (telL() === 'es' && Math.random() >= 0.5) ? `${nombre} ${apellido1} ${apellido2}` : `${nombre} ${apellido1}`;
         const clave = completo + '|' + intentos;
         if (usados.has(completo) && Math.random() < 0.7) continue;
         usados.add(completo);
         lista.push({ nombre: completo, numero: numeroAlAzar() });
       }
-      lista.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+      lista.sort((a, b) => a.nombre.localeCompare(b.nombre, telP().locale));
       return lista;
     }
 
     // --- Datos personalizables, guardados aparte de los ajustes generales ---
     const TEL_DATOS_KEY = 'numeria_tel_datos';
-    const TEL_DEFECTO = {
-      favoritos: [
-        { nombre: 'Mamá', numero: numeroAlAzar() },
-        { nombre: 'Papá', numero: numeroAlAzar() },
-        { nombre: 'Mejor amigo', numero: numeroAlAzar() },
-        { nombre: 'Trabajo', numero: numeroAlAzar() }
-      ],
-      recientes: Array.from({ length: 45 }).map((_, i) => ({
-        nombre: NOMBRES_POOL[i % NOMBRES_POOL.length] + ' ' + APELLIDOS_POOL[(i * 3) % APELLIDOS_POOL.length],
-        tipo: ['móvil', 'teléfono', 'WA Business de audio', 'WA Business de vídeo'][i % 4],
-        perdida: i % 3 === 0
-      })),
-      buzon: Array.from({ length: 10 }).map((_, i) => ({
-        nombre: NOMBRES_POOL[(i + 5) % NOMBRES_POOL.length] + ' ' + APELLIDOS_POOL[(i + 5) % APELLIDOS_POOL.length],
-        transcripcion: ['Buenos días, necesito un presupuesto', 'Llámame cuando puedas por favor', 'Confirmando la cita de mañana', 'Se me ha olvidado comentarte una cosa', 'Gracias por todo, hablamos pronto'][i % 5],
-        duracion: '00:' + String(10 + i * 3).padStart(2, '0'),
-        leido: i > 2
-      })),
-      buzonRelleno: Array.from({ length: 40 }).map((_, i) => {
-        const motes = ['Laura Barceló', 'José Madrid', 'Mamá', 'Curro', 'Jefe Obra', 'Yaya', 'Fisio Marcos', 'Dentista Dra. Ruiz', 'Vecino 3ºB', 'Peluquería Ana'];
-        const nombre = (i % 5 === 0)
-          ? motes[Math.floor(i / 5) % motes.length]
-          : NOMBRES_POOL[(i + 20) % NOMBRES_POOL.length] + ' ' + APELLIDOS_POOL[(i + 12) % APELLIDOS_POOL.length];
-        const segs = 7 + ((i * 13) % 95); // duraciones variadas, de 7 a 101 segundos
-        return {
-          nombre,
-          transcripcion: ['Una oferta especial solo para usted', 'Recordatorio de su próxima cita', 'Le llamamos de parte de la entidad', 'Por favor devuelva la llamada', 'Hola, soy yo otra vez', 'Perdona que te moleste a esta hora'][i % 6],
-          duracion: String(Math.floor(segs / 60)).padStart(2, '0') + ':' + String(segs % 60).padStart(2, '0'),
-          leido: true
-        };
-      }),
-      contactosPropios: []
-    };
-
+    function defectoTel(lang) {
+      const P = TEL_POOLS[lang] || TEL_POOLS.es, N = P.nombres, A = P.apellidos;
+      return {
+        favoritos: P.favoritos.map(n => ({ nombre: n, numero: numeroAlAzar() })),
+        recientes: Array.from({ length: 45 }).map((_, i) => ({
+          nombre: N[i % N.length] + ' ' + A[(i * 3) % A.length],
+          tipo: P.tipos[i % 4],
+          perdida: i % 3 === 0
+        })),
+        buzon: Array.from({ length: 10 }).map((_, i) => ({
+          nombre: N[(i + 5) % N.length] + ' ' + A[(i + 5) % A.length],
+          transcripcion: P.buzon[i % 5],
+          duracion: '00:' + String(10 + i * 3).padStart(2, '0'),
+          leido: i > 2
+        })),
+        buzonRelleno: Array.from({ length: 40 }).map((_, i) => {
+          const nombre = (i % 5 === 0)
+            ? P.rellenoMotes[Math.floor(i / 5) % P.rellenoMotes.length]
+            : N[(i + 20) % N.length] + ' ' + A[(i + 12) % A.length];
+          const segs = 7 + ((i * 13) % 95); // duraciones variadas, de 7 a 101 segundos
+          return {
+            nombre,
+            transcripcion: P.relleno[i % 6],
+            duracion: String(Math.floor(segs / 60)).padStart(2, '0') + ':' + String(segs % 60).padStart(2, '0'),
+            leido: true
+          };
+        }),
+        contactosPropios: []
+      };
+    }
+    const TEL_DEFECTO = defectoTel('es');
+    const TEL_DEF_TODOS = {}; TEL_LANGS.forEach(l => { TEL_DEF_TODOS[l] = defectoTel(l); });
+    // Pasa al idioma elegido las entradas que siguen siendo las de fabrica (de cualquier idioma).
+    // Lo escrito a mano en los editores se queda tal cual.
+    function relocalizarTel(lang) {
+      const CAMPOS = { favoritos: ['nombre'], recientes: ['nombre', 'tipo'], buzon: ['nombre', 'transcripcion'], buzonRelleno: ['nombre', 'transcripcion'] };
+      let cambio = false;
+      Object.keys(CAMPOS).forEach(lista => {
+        (datosTel[lista] || []).forEach((item, i) => {
+          CAMPOS[lista].forEach(f => {
+            const destino = TEL_DEF_TODOS[lang][lista][i];
+            if (!destino || item[f] === destino[f]) return;
+            const deFabrica = TEL_LANGS.some(l => TEL_DEF_TODOS[l][lista][i] && TEL_DEF_TODOS[l][lista][i][f] === item[f]);
+            if (deFabrica) { item[f] = destino[f]; cambio = true; }
+          });
+        });
+      });
+      return cambio;
+    }
     function cargarDatosTel() {
       try {
         const g = localStorage.getItem(TEL_DATOS_KEY);
@@ -5057,15 +5139,27 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
       return JSON.parse(JSON.stringify(TEL_DEFECTO));
     }
     let datosTel = cargarDatosTel();
+    let telHayGuardado = false; try { telHayGuardado = !!localStorage.getItem(TEL_DATOS_KEY); } catch (e) {}
+    function prepararIdiomaTel() {
+      NOMBRES_POOL = telP().nombres; APELLIDOS_POOL = telP().apellidos;
+      construirSugerencias();
+      if (relocalizarTel(telL()) && telHayGuardado) guardarDatosTel();
+    }
+    prepararIdiomaTel();
+    window.__telIdioma = function () {
+      prepararIdiomaTel();
+      contactosGenerados = null;
+      try { renderFavoritos(); renderRecientes(document.getElementById('telFiltroPerdidas').classList.contains('active')); renderContactos(''); renderBuzon(); } catch (e) {}
+    };
     function guardarDatosTel() {
-      try { localStorage.setItem(TEL_DATOS_KEY, JSON.stringify(datosTel)); } catch (e) {}
+      try { localStorage.setItem(TEL_DATOS_KEY, JSON.stringify(datosTel)); telHayGuardado = true; } catch (e) {}
     }
 
     let contactosGenerados = null;
     function obtenerTodosContactos() {
       if (!contactosGenerados) contactosGenerados = generarContactos(180);
       const propiosConNombre = datosTel.contactosPropios.filter(c => c.nombre && c.nombre.trim());
-      return contactosGenerados.concat(propiosConNombre).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+      return contactosGenerados.concat(propiosConNombre).sort((a, b) => a.nombre.localeCompare(b.nombre, telP().locale));
     }
 
     function renderAvatar(nombre, generico) {
@@ -5083,14 +5177,21 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
           ${renderAvatar(f.nombre)}
           <div class="tel-row-main">
             <div class="tel-row-nombre">${f.nombre}</div>
-            <div class="tel-row-sub"><svg class="tel-ico-osc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h4l2 5-2.5 1.5a11 11 0 005 5L16 12l5 2v4a2 2 0 01-2 2C10.3 20 4 13.7 4 5a2 2 0 012-2z" stroke-linejoin="round"/></svg><svg class="tel-ico-cla" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg><span data-i18n="telMovil">móvil</span></div>
+            <div class="tel-row-sub"><svg class="tel-ico-osc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h4l2 5-2.5 1.5a11 11 0 005 5L16 12l5 2v4a2 2 0 01-2 2C10.3 20 4 13.7 4 5a2 2 0 012-2z" stroke-linejoin="round"/></svg><svg class="tel-ico-cla" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg><span data-i18n="telMovil">${(TRADUCCIONES[ajustes.idioma] || TRADUCCIONES.es).telMovil || 'móvil'}</span></div>
           </div>
           ${iconInfo}
         </div>`).join('');
     }
 
+    function telDia(d) {
+      const P = telP(); let t = new Intl.DateTimeFormat(P.locale, { weekday: 'long' }).format(d);
+      return P.minus ? t.toLowerCase() : t.charAt(0).toUpperCase() + t.slice(1);
+    }
+    function telFechaCorta(d) { return new Intl.DateTimeFormat(telP().locale, { dateStyle: 'short' }).format(d); }
     function fechaVisualRecientes(indice) {
-      const etiquetas = ['ayer','ayer','ayer','ayer','ayer','ayer','ayer','ayer','lunes','lunes','lunes','sábado','jueves','3/9/26','2/9/26'];
+      const P = telP(), ay = P.ayer;
+      const lun = telDia(new Date(2024, 0, 1)), sab = telDia(new Date(2024, 0, 6)), jue = telDia(new Date(2024, 0, 4));
+      const etiquetas = [ay,ay,ay,ay,ay,ay,ay,ay,lun,lun,lun,sab,jue,telFechaCorta(new Date(2026, 8, 3)),telFechaCorta(new Date(2026, 8, 2))];
       return etiquetas[indice % etiquetas.length];
     }
 
@@ -5137,15 +5238,13 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
       const d = new Date();
       d.setHours(12, 0, 0, 0);
       d.setDate(d.getDate() - (saltos[indice % saltos.length] + Math.floor(indice / saltos.length) * 31));
-      if (indice < 2) {
-        return new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(d);
-      }
-      return `${d.getDate()}/${d.getMonth() + 1}/${String(d.getFullYear()).slice(-2)}`;
+      if (indice < 2) return telDia(d);
+      return telFechaCorta(d);
     }
 
     function renderBuzon() {
       const todos = datosTel.buzon.concat(datosTel.buzonRelleno);
-      document.getElementById('telListaBuzon').innerHTML = `<div class="tel-operador"><span>Buzón de voz del operador</span><b>Llamar al operador</b></div>` + todos.map((b, i) => `
+      document.getElementById('telListaBuzon').innerHTML = `<div class="tel-operador"><span>${telP().operador}</span><b>${telP().llamarOperador}</b></div>` + todos.map((b, i) => `
         <div class="tel-row">
           ${renderAvatar(b.nombre)}
           <div class="tel-row-main">
@@ -5227,7 +5326,6 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
       buzon: 'Editar buzón de voz',
       contactosPropios: 'Tus contactos'
     };
-    const TIPOS_LLAMADA = ['móvil', 'teléfono', 'WA Business de audio', 'WA Business de vídeo'];
 
     function cerrarEditorLista() {
       editListScreen.classList.remove('show');
@@ -5270,7 +5368,7 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
             <div class="tel-editlist-inputwrap"><span class="tel-editlist-icono">${iconoPersona}</span><input class="tel-editlist-input" data-campo="nombre" placeholder="Nombre" value="${item.nombre.replace(/"/g, '&quot;')}"></div>
             <div class="tel-editlist-inputwrap"><span class="tel-editlist-icono">${iconoTelefono}</span><input class="tel-editlist-input" data-campo="numero" placeholder="Número" value="${item.numero.replace(/"/g, '&quot;')}"></div>`;
         } else if (editListTipo === 'recientes') {
-          const opciones = TIPOS_LLAMADA.map(t => `<option value="${t}" ${item.tipo === t ? 'selected' : ''}>${t}</option>`).join('');
+          const opciones = telP().tipos.map(t => `<option value="${t}" ${item.tipo === t ? 'selected' : ''}>${t}</option>`).join('');
           camposHtml = `
             <div class="tel-editlist-inputwrap"><span class="tel-editlist-icono">${iconoPersona}</span><input class="tel-editlist-input" data-campo="nombre" placeholder="Nombre" value="${item.nombre.replace(/"/g, '&quot;')}"></div>
             <select class="tel-editlist-select" data-campo="tipo">${opciones}</select>
@@ -5664,7 +5762,7 @@ body.light-mode .notes-list-scroll { padding-top: 59px; }
     // --- Restablecer solo el Modo Teclado a fabrica ---
     document.getElementById('btnResetearTeclado').addEventListener('click', () => {
       if (!confirm('¿Restablecer el Modo Teclado a los valores de fábrica? Esto borra tus favoritos, recientes, buzón y contactos propios personalizados.')) return;
-      datosTel = JSON.parse(JSON.stringify(TEL_DEFECTO));
+      datosTel = JSON.parse(JSON.stringify(TEL_DEFECTO)); relocalizarTel(telL()); contactosGenerados = null;
       guardarDatosTel();
       ajustes.tel = JSON.parse(JSON.stringify(AJUSTES_DEFECTO.tel));
       guardarAjustes();
