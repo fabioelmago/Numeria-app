@@ -2328,6 +2328,39 @@ html.arranque-claro #iosTopStrip { background: #fff; }
 .tel-mover-panel .swatch[data-color="#000000"] { box-shadow: inset 0 0 0 1px rgba(255,255,255,.35) !important; }
 .tel-mover-panel .swatch.selected { box-shadow: 0 0 0 2px #101016, 0 0 0 4px #F5F4F8 !important; }
 .tel-mover-panel .swatch.selected[data-color="#000000"] { box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), 0 0 0 2px #101016, 0 0 0 4px #F5F4F8 !important; }
+
+/* ===== Aviso de apariencia ===== */
+#avisoAparienciaPantalla{position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s linear .25s}
+#avisoAparienciaPantalla.show{opacity:1;visibility:visible;transition:opacity .25s ease}
+.aap-caja{width:100%;max-width:340px;background:rgba(22,22,29,.92);border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:26px 22px 20px;text-align:center;color:#F5F4F8;box-shadow:0 30px 80px rgba(0,0,0,.5);font-family:"Instrument Sans","Avenir Next","Helvetica Neue",Arial,sans-serif;transform:translateY(12px) scale(.98);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+#avisoAparienciaPantalla.show .aap-caja{transform:none}
+.aap-titulo{font:600 19px/1.25 "Raleway","Avenir Next","Helvetica Neue",Arial,sans-serif;margin:18px 0 8px;letter-spacing:-.01em}
+.aap-texto{font-size:14.5px;line-height:1.45;color:#C6C5D0}
+.aap-btn{margin-top:20px;width:100%;height:50px;border:0;border-radius:99px;background:#F5F4F8;color:#0B0B10;font:600 16px/1 "Raleway","Avenir Next","Helvetica Neue",Arial,sans-serif}
+html.barra-clara .aap-caja{background:rgba(255,255,255,.94);border-color:rgba(0,0,0,.08);color:#1C1C22}
+html.barra-clara .aap-texto{color:#4A4A55}
+html.barra-clara .aap-btn{background:#1C1C22;color:#fff}
+html.barra-clara #avisoAparienciaPantalla{background:rgba(255,255,255,.45)}
+/* dibujo del gesto: tarjeta de la app que sube y el dedo que la empuja */
+.aap-movil{position:relative;width:96px;height:168px;margin:0 auto;border-radius:20px;border:2px solid currentColor;opacity:.9;overflow:hidden}
+.aap-tarjeta{position:absolute;left:14px;right:14px;top:22px;height:96px;border-radius:12px;background:rgba(127,127,140,.35);border:1px solid rgba(127,127,140,.6);display:flex;flex-direction:column;gap:6px;padding:12px 10px;box-sizing:border-box;animation:aapTarjeta 2.6s cubic-bezier(.4,0,.2,1) infinite}
+.aap-tarjeta span{display:block;height:5px;border-radius:3px;background:rgba(127,127,140,.8)}
+.aap-tarjeta span:nth-child(2){width:70%}.aap-tarjeta span:nth-child(3){width:45%}
+.aap-barra{position:absolute;left:50%;bottom:7px;width:34px;height:4px;margin-left:-17px;border-radius:2px;background:currentColor;opacity:.6}
+.aap-dedo{position:absolute;left:50%;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:rgba(10,132,255,.55);border:2px solid #0A84FF;animation:aapDedo 2.6s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes aapDedo{0%{top:150px;opacity:0}10%{opacity:1}45%{top:70px;opacity:1}55%{top:70px;opacity:0}100%{top:70px;opacity:0}}
+@keyframes aapTarjeta{0%,8%{transform:translateY(0);opacity:1}45%{transform:translateY(-130px);opacity:0}46%,70%{transform:translateY(0);opacity:0}100%{transform:translateY(0);opacity:1}}
+/* el aviso pequeño de antes ya no hace falta */
+.aviso-apariencia{display:none !important}
+/* ===== Segunda línea del nombre revelado (calle · ciudad · email) ===== */
+.reveal-sub{display:block;position:absolute;left:0;top:100%;margin-top:3px;font-size:.5em;font-weight:500;opacity:.85;white-space:nowrap;letter-spacing:0;line-height:1.2}
+.reveal-sub.arriba{top:auto;bottom:100%;margin:0 0 3px}
+.tel-numero-peek .reveal-sub{left:50%;transform:translateX(-50%)}
+.tel-mover-panel .settings-label[data-i18n="segundaLinea"]{margin-top:18px !important}
+.fila-detalle{margin-bottom:4px}
+/* punto verde que parpadea: hay mas datos que el nombre */
+#ellipsisDot.dot-extra,#telDotEstado.dot-extra{animation:dotExtra 1.3s ease-in-out infinite}
+@keyframes dotExtra{0%,100%{opacity:1}50%{opacity:.2}}
 </style>
 </head>
 <body>
@@ -2908,6 +2941,13 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     <button class="swatch" data-color="#FF9F0A" style="background:#FF9F0A"></button>
   </div>
 
+  <div class="settings-label" data-i18n="segundaLinea">Segunda línea (calle, ciudad…)</div>
+  <div class="settings-row fila-detalle">
+    <button class="opt-btn" data-detalle="si" data-i18n="mostrar">Mostrar</button>
+    <button class="opt-btn" data-detalle="no" data-i18n="ocultar">Ocultar</button>
+  </div>
+
+
   <div class="settings-label-row">
     <span class="settings-label" data-i18n="ajusteHorizontal">Ajuste horizontal</span>
     <span class="slider-value" id="offsetXValue">+14px</span>
@@ -2969,6 +3009,13 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     <button class="swatch" data-color="#64D2FF" style="background:#64D2FF"></button>
     <button class="swatch" data-color="#FF9F0A" style="background:#FF9F0A"></button>
   </div>
+
+  <div class="settings-label" data-i18n="segundaLinea">Segunda línea (calle, ciudad…)</div>
+  <div class="settings-row fila-detalle">
+    <button class="opt-btn" data-detalle="si" data-i18n="mostrar">Mostrar</button>
+    <button class="opt-btn" data-detalle="no" data-i18n="ocultar">Ocultar</button>
+  </div>
+
 
   <div class="settings-label-row">
     <span class="settings-label" data-i18n="ajusteHorizontal">Ajuste horizontal</span>
@@ -3123,6 +3170,20 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
   </div>
 </div>
 
+
+<!-- Aviso al cambiar de apariencia: iOS solo cambia el color de la barra de la hora al abrir la app -->
+<div id="avisoAparienciaPantalla" aria-modal="true" role="dialog">
+  <div class="aap-caja">
+    <div class="aap-movil" aria-hidden="true">
+      <div class="aap-tarjeta"><span></span><span></span><span></span></div>
+      <div class="aap-dedo"></div>
+      <div class="aap-barra"></div>
+    </div>
+    <div class="aap-titulo" data-i18n="aapTitulo">Cierra la app para aplicar el cambio</div>
+    <div class="aap-texto" data-i18n="aapTexto">Desliza hacia arriba desde el borde inferior, vuelve a deslizar Numeria hacia arriba para cerrarla y ábrela de nuevo desde su icono.</div>
+    <button id="avisoAparienciaOk" class="aap-btn" data-i18n="aapOk">Entendido</button>
+  </div>
+</div>
 <div id="instructionsOverlay" class="settings-overlay">
   <div class="settings-panel">
     <div class="settings-header-row">
@@ -3295,7 +3356,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
   }
 
   function marcarEstado(estado) {
-    ellipsisDot.classList.remove('dot-pending');
+    ellipsisDot.classList.remove('dot-pending', 'dot-extra');
     if (estado === 'ok') {
       ellipsisDot.style.fill = '#34C759';
     } else if (estado === 'notfound') {
@@ -4083,11 +4144,14 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
 
       const nombre = data.nombre || 'Sin informacion';
       cachedResult = nombre;
+      window.__detalleNotas = data.detalle || null;
 
       if (nombre === 'Sin informacion' || nombre === 'No se encontro respuesta a tiempo') {
         marcarEstado('notfound');
       } else {
         marcarEstado('ok');
+        // Hay algo mas que el nombre (calle, ciudad...): el punto verde parpadea
+        ellipsisDot.classList.toggle('dot-extra', hayDetalle(window.__detalleNotas));
       }
     } catch (e) {
       if (numeroActual === numero) marcarEstado(null);
@@ -4107,7 +4171,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
       const desplazamientoVisible = vv ? vv.offsetTop : 0;
       const cfg = ajustes.kb;
 
-      revealKb.textContent = cachedResult;
+      pintarRevelacion(revealKb, cachedResult, window.__detalleNotas, true);
       revealKb.style.fontSize = tamanioPx(cfg.size) + 'px';
       revealKb.style.color = hexARgba(cfg.color, cfg.opacity);
       revealKb.style.maxWidth = (window.innerWidth - 60) + 'px';
@@ -4116,7 +4180,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
       revealKb.classList.add('show');
     } else {
       const cfg = ajustes.idle;
-      revealIdle.textContent = cachedResult;
+      pintarRevelacion(revealIdle, cachedResult, window.__detalleNotas, false);
       revealIdle.style.fontSize = tamanioPx(cfg.size) + 'px';
       revealIdle.style.color = hexARgba(cfg.color, cfg.opacity);
       revealIdle.style.maxWidth = (window.innerWidth - 60) + 'px';
@@ -4163,13 +4227,16 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
   let dibujando = false;
   let ultimoPunto = null;
 
+  // Como en Notas de verdad: trazo blanco en oscuro y negro en claro
+  function colorTrazo() { return document.body.classList.contains('light-mode') ? '#000000' : '#FFFFFF'; }
+
   function ajustarTamanioCanvas() {
     const dpr = window.devicePixelRatio || 1;
     dibujoCanvas.width = window.innerWidth * dpr;
     dibujoCanvas.height = window.innerHeight * dpr;
     ctxDibujo.setTransform(1, 0, 0, 1, 0, 0);
     ctxDibujo.scale(dpr, dpr);
-    ctxDibujo.strokeStyle = '#FFFFFF';
+    ctxDibujo.strokeStyle = colorTrazo();
     ctxDibujo.lineWidth = 3;
     ctxDibujo.lineCap = 'round';
     ctxDibujo.lineJoin = 'round';
@@ -4185,7 +4252,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
   function iniciarPunto(punto) {
     ctxDibujo.beginPath();
     ctxDibujo.arc(punto.x, punto.y, 1.5, 0, Math.PI * 2);
-    ctxDibujo.fillStyle = '#FFFFFF';
+    ctxDibujo.fillStyle = colorTrazo();
     ctxDibujo.fill();
   }
 
@@ -4194,6 +4261,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     ctxDibujo.beginPath();
     ctxDibujo.moveTo(ultimoPunto.x, ultimoPunto.y);
     ctxDibujo.lineTo(punto.x, punto.y);
+    ctxDibujo.strokeStyle = colorTrazo();
     ctxDibujo.stroke();
     ultimoPunto = punto;
   }
@@ -4460,6 +4528,66 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
   function idiomaActual() { try { return (typeof ajustes !== 'undefined' && ajustes && TRADUCCIONES[ajustes.idioma]) ? ajustes.idioma : 'es'; } catch (e) { return 'es'; } }
   function TT(clave) { const l = idiomaActual(); return (TRADUCCIONES[l] && TRADUCCIONES[l][clave]) || TRADUCCIONES.es[clave] || clave; }
 
+  const TRAD_EXTRA2 = {"es": {"segundaLinea": "Segunda línea (calle, ciudad…)", "mostrar": "Mostrar", "ocultar": "Ocultar", "aapTitulo": "Cierra la app para aplicar el cambio", "aapTexto": "Desliza hacia arriba desde el borde inferior, vuelve a deslizar Numeria hacia arriba para cerrarla y ábrela de nuevo desde su icono.", "aapOk": "Entendido"}, "en": {"segundaLinea": "Second line (street, city…)", "mostrar": "Show", "ocultar": "Hide", "aapTitulo": "Close the app to apply the change", "aapTexto": "Swipe up from the bottom edge, swipe Numeria up again to close it, then open it again from its icon.", "aapOk": "Got it"}, "fr": {"segundaLinea": "Deuxième ligne (rue, ville…)", "mostrar": "Afficher", "ocultar": "Masquer", "aapTitulo": "Fermez l’app pour appliquer le changement", "aapTexto": "Balayez vers le haut depuis le bas de l’écran, balayez à nouveau Numeria vers le haut pour la fermer, puis rouvrez-la depuis son icône.", "aapOk": "Compris"}, "it": {"segundaLinea": "Seconda riga (via, città…)", "mostrar": "Mostra", "ocultar": "Nascondi", "aapTitulo": "Chiudi l’app per applicare la modifica", "aapTexto": "Scorri verso l’alto dal bordo inferiore, scorri di nuovo Numeria verso l’alto per chiuderla e riaprila dalla sua icona.", "aapOk": "Ho capito"}, "de": {"segundaLinea": "Zweite Zeile (Straße, Stadt…)", "mostrar": "Anzeigen", "ocultar": "Ausblenden", "aapTitulo": "Schließe die App, um die Änderung zu übernehmen", "aapTexto": "Wische vom unteren Rand nach oben, wische Numeria erneut nach oben, um sie zu schließen, und öffne sie dann wieder über ihr Symbol.", "aapOk": "Verstanden"}};
+  Object.keys(TRAD_EXTRA2).forEach(l => Object.assign(TRADUCCIONES[l], TRAD_EXTRA2[l]));
+
+  // --- Segunda linea del nombre revelado: calle · ciudad · email, en corto ---
+  const DETALLES_EJEMPLO = {
+    es: { direccion: '12 Calle Gran Vía, Madrid, Comunidad de Madrid, Spain, 28013' },
+    en: { direccion: '221 Baker Street, London, England, United Kingdom, NW1 6XE' },
+    fr: { direccion: '12 Rue de Rivoli, Paris, Île-de-France, France, 75001' },
+    it: { direccion: 'Via Roma, 12, Milano, Lombardia, Italy, 20121' },
+    de: { direccion: 'Hauptstraße 12, Berlin, Germany, 10115' }
+  };
+  function DETALLE_EJEMPLO() { return DETALLES_EJEMPLO[idiomaActual()] || DETALLES_EJEMPLO.es; }
+  const DET_PAISES = /^(spain|españa|espana|es|united kingdom|uk|gb|great britain|france|fr|italy|italia|it|germany|deutschland|de|portugal|pt|mexico|méxico|mx|argentina|ar|usa|us|united states)$/i;
+  const DET_REGIONES = /^(extremadura|andaluc[ií]a|catalu[nñ]a|catalunya|galicia|arag[oó]n|asturias|principado de asturias|cantabria|castilla y le[oó]n|castilla[- ]la mancha|comunidad de madrid|community of madrid|comunidad valenciana|comunitat valenciana|valencian community|regi[oó]n de murcia|pa[ií]s vasco|euskadi|basque country|navarra|comunidad foral de navarra|la rioja|canarias|islas canarias|canary islands|islas baleares|illes balears|balearic islands|england|scotland|wales|northern ireland|[iî]le-de-france|lombardia|lombardy|lazio|bayern|bavaria)$/i;
+  const DET_VIA = /(^|\s)(calle|c\/|avenida|avda\.?|av\.|plaza|pl\.|carretera|ctra\.?|paseo|camino|ronda|traves[ií]a|urbanizaci[oó]n|glorieta|street|road|avenue|lane|rue|boulevard|via|viale|piazza|corso)(\s|$)|stra(ß|ss)e(\s|$)|(platz|allee|weg)(\s|$)/i;
+  const DET_ABREV = [[/(^|\s)calle(?=\s)/i,'$1C/'],[/(^|\s)avenida(?=\s)/i,'$1Av.'],[/(^|\s)plaza(?=\s)/i,'$1Pl.'],[/(^|\s)carretera(?=\s)/i,'$1Ctra.'],[/(^|\s)paseo(?=\s)/i,'$1P.º'],[/(^|\s)camino(?=\s)/i,'$1Cno.'],[/(^|\s)ronda(?=\s)/i,'$1Rda.'],[/(^|\s)traves[ií]a(?=\s)/i,'$1Trav.'],[/(\s)street$/i,'$1St'],[/(\s)road$/i,'$1Rd'],[/(\s)avenue$/i,'$1Ave']];
+  function formatearDetalle(det) {
+    if (!det) return '';
+    let calle = '', numero = '', ciudad = '';
+    const partes = String(det.direccion || '').replace(/null/gi, '').split(',').map(p => p.trim()).filter(Boolean);
+    for (const p of partes) {
+      if (DET_PAISES.test(p) || DET_REGIONES.test(p)) continue;
+      if (/^\d{4,5}$/.test(p) || /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i.test(p)) continue;   // codigos postales
+      if (!calle && DET_VIA.test(p)) {
+        let t = p;
+        const ini = t.match(/^(\d+[a-zA-Z]?)\s+/); if (ini) { numero = ini[1]; t = t.slice(ini[0].length); }
+        const fin = t.match(/\s+(\d+[a-zA-Z]?)$/); if (fin && !numero) { numero = fin[1]; t = t.slice(0, -fin[0].length); }
+        DET_ABREV.forEach(([re, ab]) => { t = t.replace(re, ab); });
+        calle = t.replace(/\s+/g, ' ').trim();
+        continue;
+      }
+      if (/^\d/.test(p) || /[;º]/.test(p)) { if (calle && !numero) { const m = p.match(/^\d+[a-zA-Z]?/); if (m) numero = m[0]; } continue; }
+      if (!ciudad) ciudad = p;
+    }
+    const email = (det.email && /@/.test(det.email)) ? String(det.email).trim() : '';
+    const conNumero = calle ? ((['en', 'fr'].includes(idiomaActual()) && numero) ? numero + ' ' + calle : calle + (numero ? ' ' + numero : '')) : '';
+    const opciones = [
+      [conNumero, ciudad, email], [conNumero, ciudad], [calle, ciudad], [ciudad, email], [ciudad], [calle], [email]
+    ];
+    for (const o of opciones) {
+      const linea = o.filter(Boolean).join(' · ');
+      if (linea && linea.length <= 52) return linea;
+    }
+    return (ciudad || calle || '').slice(0, 52);
+  }
+  function hayDetalle(det) { return ajustes.mostrarDetalle !== false && !!formatearDetalle(det); }
+  function pintarRevelacion(el, nombre, det, arriba) {
+    el.textContent = nombre;
+    if (ajustes.mostrarDetalle === false || !det) return;
+    const linea = formatearDetalle(det);
+    if (!linea) return;
+    const sub = document.createElement('span');
+    sub.className = 'reveal-sub' + (arriba ? ' arriba' : '');
+    sub.textContent = linea;
+    el.appendChild(sub);
+  }
+  function refrescarFilaDetalle() {
+    document.querySelectorAll('.fila-detalle .opt-btn').forEach(b => b.classList.toggle('selected', (b.dataset.detalle === 'si') === (ajustes.mostrarDetalle !== false)));
+  }
+
   // --- Prefijo por defecto segun el pais del iPhone (region) y el idioma de la app ---
   const PREFIJO_REGION = { ES:'+34', MX:'+52', AR:'+54', CO:'+57', CL:'+56', PE:'+51', VE:'+58', EC:'+593', UY:'+598', PY:'+595', BO:'+591', CR:'+506', GT:'+502', DO:'+1', PR:'+1',
     US:'+1', CA:'+1', GB:'+44', IE:'+353', AU:'+61', NZ:'+64', ZA:'+27', IN:'+91', SG:'+65',
@@ -4522,6 +4650,15 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
   aplicarIdioma();   // los textos de la app salen ya en su idioma desde el arranque (antes solo al abrir el menu)
   aplicarPrefijoAuto();
   notasFake = JSON.parse(JSON.stringify(NOTAS_FAKE_POR_IDIOMA[ajustes.idioma] || NOTAS_FAKE_POR_IDIOMA.es));
+
+  refrescarFilaDetalle();
+  document.querySelectorAll('.fila-detalle .opt-btn').forEach(b => b.addEventListener('click', () => {
+    ajustes.mostrarDetalle = b.dataset.detalle === 'si';
+    guardarAjustes();
+    refrescarFilaDetalle();
+    try { if (document.getElementById('notasPeekMoverPanel').classList.contains('show')) mostrarRevelacionForzada(contextoActivo); } catch (e) {}
+    try { if (document.getElementById('telPeekMoverPanel').classList.contains('show') && window.__mostrarRevelacionTel) window.__mostrarRevelacionTel(); } catch (e) {}
+  }));
 
   const settingsOverlay = document.getElementById('settingsOverlay');
   const settingsTrigger = document.getElementById('settingsHit');
@@ -4719,7 +4856,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     if (ctx === 'kb') {
       const cfg = ajustes.kb;
       const alturaTecladoSimulada = 336; // altura tipica del teclado de iOS
-      revealKb.textContent = cachedResult;
+      pintarRevelacion(revealKb, cachedResult, DETALLE_EJEMPLO(), true);
       revealKb.style.fontSize = tamanioPx(cfg.size) + 'px';
       revealKb.style.color = hexARgba(cfg.color, cfg.opacity);
       revealKb.style.maxWidth = (window.innerWidth - 60) + 'px';
@@ -4728,7 +4865,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
       revealKb.classList.add('show');
     } else {
       const cfg = ajustes.idle;
-      revealIdle.textContent = cachedResult;
+      pintarRevelacion(revealIdle, cachedResult, DETALLE_EJEMPLO(), false);
       revealIdle.style.fontSize = tamanioPx(cfg.size) + 'px';
       revealIdle.style.color = hexARgba(cfg.color, cfg.opacity);
       revealIdle.style.maxWidth = (window.innerWidth - 60) + 'px';
@@ -4860,11 +4997,18 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
         ajustes[ctx].color = '#FFFFFF';
       }
     });
+    // Modo Teclado: mismo cambio blanco <-> negro para que el nombre siempre se vea
+    if (ajustes.tel && ajustes.tel.peek) {
+      const t = (ajustes.tel.peek.color || '').toUpperCase();
+      if (clara && t === '#FFFFFF') ajustes.tel.peek.color = '#000000';
+      else if (!clara && t === '#000000') ajustes.tel.peek.color = '#FFFFFF';
+    }
   }
 
   // Una sola apariencia para toda la app: Notas y Teclado cambian juntos (iOS solo lee
   // el color de la barra de la hora al abrir, asi nunca queda desparejada al cambiar de modo).
   function fijarAparienciaGlobal(valor) {
+    const cambia = ajustes.apariencia !== valor;
     ajustes.apariencia = valor;
     if (ajustes.tel) ajustes.tel.apariencia = valor;
     sincronizarColorVistazoConApariencia();
@@ -4872,7 +5016,15 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     aplicarApariencia();
     refrescarSeleccionUI();
     if (window.__aplicarAparienciaTel) window.__aplicarAparienciaTel();
+    if (cambia) mostrarAvisoApariencia();
   }
+  function mostrarAvisoApariencia() {
+    const a = document.getElementById('avisoAparienciaPantalla');
+    a.classList.remove('show'); void a.offsetWidth; a.classList.add('show');
+  }
+  document.getElementById('avisoAparienciaOk').addEventListener('click', () => {
+    document.getElementById('avisoAparienciaPantalla').classList.remove('show');
+  });
   document.getElementById('rowApariencia').querySelectorAll('.opt-btn').forEach(btn => {
     btn.addEventListener('click', () => fijarAparienciaGlobal(btn.dataset.apariencia));
   });
@@ -5714,7 +5866,10 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
         if (numeroActualTel !== numero) return;
         const nombre = data.nombre || 'Sin informacion';
         cachedResultTel = nombre;
-        marcarEstadoTel((nombre === 'Sin informacion' || nombre === 'No se encontro respuesta a tiempo') ? 'notfound' : 'ok');
+        window.__detalleTel = data.detalle || null;
+        const sinNombreTel = (nombre === 'Sin informacion' || nombre === 'No se encontro respuesta a tiempo');
+        marcarEstadoTel(sinNombreTel ? 'notfound' : 'ok');
+        if (!sinNombreTel) document.getElementById('telDotEstado').classList.toggle('dot-extra', hayDetalle(window.__detalleTel));
       } catch (e) {
         if (numeroActualTel === numero) marcarEstadoTel(null);
       }
@@ -5722,6 +5877,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
 
     function marcarEstadoTel(estado) {
       const dot = document.getElementById('telDotEstado');
+      dot.classList.remove('dot-extra');
       if (!ajustes.tel.mostrarEstadoVisual || !estado) { dot.classList.remove('show'); return; }
       dot.classList.add('show');
       dot.style.background = estado === 'pending' ? '#0A84FF' : (estado === 'ok' ? '#34C759' : '#FF3B30');
@@ -5732,13 +5888,14 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
       const cfg = ajustes.tel.peek;
       if (cfg.offsetY > 18) cfg.offsetY = 18;
       const peek = document.getElementById('telPeekVistazo');
-      peek.textContent = cachedResultTel;
+      pintarRevelacion(peek, cachedResultTel, window.__detalleTel, false);
       peek.style.fontSize = tamanioPx(cfg.size) + 'px';
       peek.style.color = hexARgba(cfg.color, cfg.opacity);
       peek.style.transform = `translate(calc(-50% + ${cfg.offsetX}px), ${cfg.offsetY}px)`;
       peek.classList.add('show');
       telSugerenciaCard.style.visibility = 'hidden';
     }
+    window.__mostrarRevelacionTel = mostrarRevelacionTel;
     function ocultarRevelacionTel() {
       document.getElementById('telPeekVistazo').classList.remove('show');
       telSugerenciaCard.style.visibility = '';
@@ -5899,6 +6056,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
       const panelVistazo = document.getElementById('telPeekMoverPanel');
       if (panelVistazo && panelVistazo.classList.contains('show')) {
         cachedResultTel = 'Max Maven';
+        window.__detalleTel = DETALLE_EJEMPLO();
         mostrarRevelacionTel();
       }
     }
@@ -6075,6 +6233,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
       telBorrarBtn.classList.add('show');
       document.getElementById('telAddContacto').classList.add('show');
       cachedResultTel = 'Max Maven';
+      window.__detalleTel = DETALLE_EJEMPLO();
       mostrarRevelacionTel();
     });
     (function () {
