@@ -93,7 +93,9 @@ function eh($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 //   ['boton', texto, url]   botón negro
 function plantilla_email($pre, $b) {
     $base = rtrim((string)(cfg('enlace_app') ?: '/'), '/') . '/';
-    $logo = $base . 'email/numeria-logo.png';
+    // Cabecera: aurora real de la app con el logo plata encima (una sola imagen,
+    // porque los degradados por código no los respetan Gmail ni Outlook).
+    $cab = $base . 'email/cabecera.jpg';
     $sop = (string)(cfg('email_soporte') ?: cfg('email_remitente'));
     $F = "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;";
     $c = '';
@@ -119,8 +121,8 @@ function plantilla_email($pre, $b) {
         . '<div style="display:none;max-height:0;overflow:hidden;opacity:0;">' . eh($pre) . '</div>'
         . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F2F2F5;"><tr><td align="center" style="padding:28px 12px;">'
         . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#FFFFFF;border-radius:18px;overflow:hidden;">'
-        . '<tr><td align="center" bgcolor="#07070B" style="background:#07070B;padding:34px 24px 30px;">'
-        . '<img src="' . eh($logo) . '" width="260" alt="NUMERIA" style="display:block;width:260px;max-width:80%;height:auto;border:0;color:#D1D1D6;font:600 22px/1 Helvetica,Arial,sans-serif;letter-spacing:6px;"></td></tr>'
+        . '<tr><td align="center" bgcolor="#07070B" style="background:#07070B;padding:0;line-height:0;font-size:0;">'
+        . '<img src="' . eh($cab) . '" width="560" alt="NUMERIA" style="display:block;width:100%;max-width:560px;height:auto;border:0;color:#D1D1D6;font:600 22px/60px Helvetica,Arial,sans-serif;letter-spacing:6px;text-align:center;"></td></tr>'
         . '<tr><td style="padding:34px 32px 14px;">' . $c . '</td></tr>'
         . ($sop ? '<tr><td style="padding:18px 32px 26px;border-top:1px solid #EFEFF2;' . $F . 'font-size:13px;line-height:1.5;color:#8E8E93;">'
             . eh(sprintf(email_t($GLOBALS['__email_idioma'] ?? 'es')['pie'], '')) . '<a href="mailto:' . eh($sop) . '" style="color:#1C1C1E;text-decoration:underline;">' . eh($sop) . '</a></td></tr>' : '')
