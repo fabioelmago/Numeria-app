@@ -19,7 +19,7 @@ if (!preg_match(FORMATO_TOKEN, $token) || !filter_var($email, FILTER_VALIDATE_EM
 asegurar_tablas_recuperacion();
 $pdo = db();
 
-$q = $pdo->prepare('SELECT l.estado, c.email FROM licencias l LEFT JOIN clientes c ON c.id = l.cliente_id WHERE l.token = ?');
+$q = $pdo->prepare('SELECT l.estado, c.email, c.nombre FROM licencias l LEFT JOIN clientes c ON c.id = l.cliente_id WHERE l.token = ?');
 $q->execute([$token]);
 $f = $q->fetch();
 // Misma respuesta si la clave no existe o el email no es el suyo (no se dan pistas).
@@ -48,7 +48,7 @@ $pdo->prepare('DELETE FROM recuperaciones WHERE token = ?')->execute([$token]);
 $pdo->prepare('INSERT INTO recuperaciones (token, codigo, expira, intentos, envios, primer_envio) VALUES (?, ?, ?, 0, ?, ?)')
     ->execute([$token, hash_codigo($token, $codigo), time() + MINUTOS_CODIGO * 60, $envios, $primer]);
 
-if (!mandar_email_codigo($email, $codigo, $idioma)) {
+if (!mandar_email_codigo($email, $codigo, $idioma, (string)($f['nombre'] ?? ''))) {
     error_log('Numeria recuperar: fallo al enviar el email');
     responder(['error' => 'no se pudo enviar', 'motivo' => 'envio', 'soporte' => $soporte], 503);
 }

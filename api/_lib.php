@@ -3,6 +3,7 @@
 // Este fichero no se puede abrir desde el navegador (lo bloquea .htaccess
 // y además corta aquí si alguien lo llama directamente).
 if (!defined('NUMERIA')) { http_response_code(404); exit; }
+require_once __DIR__ . '/_emails.php';
 
 const FORMATO_TOKEN = '/^NUM-[A-Z0-9]{4}-[A-Z0-9]{4}$/';
 const TOKEN_PRUEBAS = 'NUM-TEST-0001';
@@ -199,25 +200,6 @@ function cambios_ultimo_anio($token) {
 
 function hash_codigo($token, $codigo) { return hash('sha256', $token . '|' . $codigo . '|' . (string)cfg('admin_clave')); }
 
-// Email con el código para pasar la licencia a un móvil nuevo (en el idioma de la app).
-function mandar_email_codigo($destino, $codigo, $idioma) {
-    $de = cfg('email_remitente');
-    if (!$de) return false;
-    $T = [
-        'es' => ['Tu código de Numeria', 'Tu código para pasar tu licencia de Numeria a tu móvil nuevo es:', 'Caduca en %d minutos. Si no lo has pedido tú, ignora este correo.'],
-        'en' => ['Your Numeria code', 'Your code to move your Numeria licence to your new phone is:', 'It expires in %d minutes. If you did not request it, ignore this email.'],
-        'fr' => ['Ton code Numeria', 'Ton code pour transférer ta licence Numeria sur ton nouveau téléphone :', 'Il expire dans %d minutes. Si tu ne l’as pas demandé, ignore cet e-mail.'],
-        'it' => ['Il tuo codice Numeria', 'Il tuo codice per spostare la licenza Numeria sul nuovo telefono è:', 'Scade tra %d minuti. Se non l’hai richiesto tu, ignora questa email.'],
-        'de' => ['Dein Numeria-Code', 'Dein Code, um deine Numeria-Lizenz auf dein neues Handy zu übertragen:', 'Er läuft in %d Minuten ab. Wenn du ihn nicht angefordert hast, ignoriere diese E-Mail.'],
-    ];
-    $t = $T[$idioma] ?? $T['es'];
-    $html = '<div style="font-family:-apple-system,sans-serif;max-width:480px;margin:0 auto;">'
-        . '<p>' . htmlspecialchars($t[1], ENT_QUOTES, 'UTF-8') . '</p>'
-        . '<p style="font:700 30px/1.2 ui-monospace,Menlo,monospace;letter-spacing:.18em;color:#1C1C1E;">' . $codigo . '</p>'
-        . '<p style="color:#8E8E93;font-size:13px;">' . htmlspecialchars(sprintf($t[2], MINUTOS_CODIGO), ENT_QUOTES, 'UTF-8') . '</p></div>';
-    $cab = "MIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nFrom: Numeria <$de>\r\n";
-    return @mail($destino, '=?UTF-8?B?' . base64_encode($t[0]) . '?=', $html, $cab);
-}
 
 function obtener_o_crear_cliente($email, $nombre) {
     $pdo = db();
@@ -231,16 +213,3 @@ function obtener_o_crear_cliente($email, $nombre) {
     return $q->fetch();
 }
 
-function mandar_email_bienvenida($destino, $nombre) {
-    $de = cfg('email_remitente');
-    if (!$de) return false;
-    $enlace = cfg('enlace_app') ?: '/';
-    $n = $nombre !== '' ? ', ' . htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8') : '';
-    $html = '<div style="font-family:-apple-system,sans-serif;max-width:480px;margin:0 auto;">'
-        . '<h2 style="color:#1C1C1E;">¡Bienvenido a Numeria' . $n . '!</h2>'
-        . '<p>Tu licencia ya está activada en tu dispositivo. Guarda este correo: es tu enlace de entrada.</p>'
-        . '<p><a href="' . htmlspecialchars($enlace, ENT_QUOTES, 'UTF-8') . '" style="color:#FFD60A;background:#1C1C1E;padding:12px 20px;border-radius:10px;text-decoration:none;display:inline-block;">Abrir Numeria</a></p>'
-        . '</div>';
-    $cab = "MIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nFrom: Numeria <$de>\r\n";
-    return @mail($destino, '=?UTF-8?B?' . base64_encode('Bienvenido a Numeria') . '?=', $html, $cab);
-}

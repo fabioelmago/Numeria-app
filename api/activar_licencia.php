@@ -12,6 +12,7 @@ $token  = token_limpio($d['token'] ?? '');
 $nombre = mb_substr(trim(preg_replace('/[\x00-\x1F<>]/u', '', (string)($d['nombre'] ?? ''))), 0, 120);
 $email  = strtolower(trim((string)($d['email'] ?? '')));
 $huella = (string)($d['huella'] ?? '');
+$idioma = in_array($d['idioma'] ?? '', ['es', 'en', 'fr', 'it', 'de'], true) ? $d['idioma'] : 'es';
 
 if (!preg_match(FORMATO_TOKEN, $token) || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 190 || !huella_valida($huella)) {
     responder(['error' => 'faltan datos o no son validos'], 400);
@@ -32,5 +33,5 @@ $cli = obtener_o_crear_cliente($email, $nombre);
 db()->prepare("UPDATE licencias SET cliente_id = ?, estado = 'activo', huella = ?, fecha_activacion = ?, ultima_vez = ? WHERE token = ?")
     ->execute([$cli['id'], $huella, ahora(), ahora(), $token]);
 
-mandar_email_bienvenida($email, $nombre);
+mandar_email_bienvenida($email, $nombre, $token, $idioma);
 responder(['activado' => true, 'nombre' => $nombre, 'email' => $email]);

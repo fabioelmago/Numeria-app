@@ -1863,7 +1863,7 @@ html,body{height:var(--apph,100%)}
       });
       return;
     }
-    call($('#o-b-conf'),TX('Activando…'),'POST','/activar_licencia',{token:k,nombre:n,email:e,huella:huella()},function(r){
+    call($('#o-b-conf'),TX('Activando…'),'POST','/activar_licencia',{token:k,nombre:n,email:e,huella:huella(),idioma:window.NL||'es'},function(r){
       if(!r.err&&r.status===200&&r.data.activado===true){
         $('#o-f-email').textContent=e;
         save('numeria_licencia',k); save('numeria_nombre_cliente',n); save('numeria_lic_real','1');
