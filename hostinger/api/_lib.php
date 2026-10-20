@@ -11,8 +11,14 @@ const MINUTOS_GRACIA_HUELLA = 30;
 function cfg($clave = null) {
     static $c = null;
     if ($c === null) {
-        $f = __DIR__ . '/config.php';
-        if (!is_file($f)) responder(['error' => 'servidor sin configurar'], 503);
+        // La configuración vive FUERA de public_html (una carpeta por encima),
+        // para que los despliegues desde GitHub —que vacían public_html— no la
+        // borren nunca, y para que no se pueda abrir desde internet.
+        //   public_html/api/_lib.php  →  ../../numeria-config.php
+        $fuera = dirname(__DIR__, 2) . '/numeria-config.php';
+        $dentro = __DIR__ . '/config.php';            // solo para pruebas locales
+        $f = is_file($fuera) ? $fuera : (is_file($dentro) ? $dentro : null);
+        if (!$f) responder(['error' => 'servidor sin configurar'], 503);
         $c = require $f;
     }
     return $clave === null ? $c : ($c[$clave] ?? null);
