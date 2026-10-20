@@ -2,12 +2,13 @@
 // =====================================================================
 // CONFIGURACIÓN DE NUMERIA (Hostinger)
 //
-// 1. En el Administrador de archivos de Hostinger, duplica este fichero
-//    y llama a la copia  config.php  (en esta misma carpeta /api).
-// 2. Rellena en config.php los datos de la base de datos que creaste en
-//    hPanel → Bases de datos → MySQL.
-// 3. config.php NO se sube nunca a GitHub (está en .gitignore) y el
-//    servidor no deja descargarlo (lo bloquea el .htaccess).
+// Este fichero es solo la PLANTILLA. El de verdad se llama
+//   numeria-config.php
+// y va FUERA de public_html: en la carpeta de encima, la del dominio
+// (donde está el aviso DO_NOT_UPLOAD_HERE). Ahí los despliegues desde
+// GitHub no lo borran y nadie puede abrirlo desde internet.
+// Copia este texto en ese fichero y rellena los datos de la base de datos
+// (hPanel → Bases de datos → MySQL) tal cual aparecen, con mayúsculas.
 // =====================================================================
 
 return [
