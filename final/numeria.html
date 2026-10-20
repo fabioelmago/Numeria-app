@@ -2,9 +2,21 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<script>window.NUM_API_ID=32470618;window.NUM_API_HASH="12f99737b8a746a5f5d4b742db758626";</script>
-<script src="engine.js"></script>
-<script>try{window.NumeriaTG&&window.NumeriaTG.init(window.NUM_API_ID,window.NUM_API_HASH);}catch(e){}</script>
+<script>window.NUM_API_ID=32470618;window.NUM_API_HASH="12f99737b8a746a5f5d4b742db758626";
+/* El motor (pesado) se carga SOLO cuando se va a buscar, para que la app vaya ligera
+   y el blur de iOS no se rompa mientras el mago navega por las pantallas. */
+window.__cargarMotor=function(){
+  if(window.NumeriaTG)return Promise.resolve();
+  if(window.__motorP)return window.__motorP;
+  window.__motorP=new Promise(function(res,rej){
+    var s=document.createElement('script');
+    s.src='engine.js';
+    s.onload=function(){try{window.NumeriaTG&&window.NumeriaTG.init(window.NUM_API_ID,window.NUM_API_HASH);}catch(e){}res();};
+    s.onerror=function(){rej(new Error('no se pudo cargar el motor'));};
+    document.head.appendChild(s);
+  });
+  return window.__motorP;
+};</script>
 <link rel="manifest" href="manifest.json">
 <script>/* Apariencia guardada: si es clara, la franja de la hora y el fondo salen blancos desde el primer pintado */
 (function(){try{var a=JSON.parse(localStorage.getItem('numeria_ajustes')||'{}');if(a&&a.apariencia==='claro'){var d=document.documentElement;d.classList.add('arranque-claro','barra-clara');d.style.backgroundColor='#fff';}}catch(e){}})();</script>
@@ -4134,6 +4146,8 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
 
     try {
       // BÚSQUEDA DIRECTA: el motor habla con Telegram desde el propio móvil.
+      await window.__cargarMotor();          // se carga la primera vez que se busca
+      if (numeroActual !== numero) return;
       const r = await window.NumeriaTG.buscar(numero);
       if (numeroActual !== numero) return;
 
