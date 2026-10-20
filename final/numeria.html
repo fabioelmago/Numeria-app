@@ -3361,14 +3361,78 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
   let debounceTimer = null;
   let lastFetchController = null;
 
-  function extraerNumero(texto) {
-    const digitos = texto.replace(/\D/g, '');
-    if (ajustes.modoUso === 'sin_prefijo') {
-      if (digitos.length < 9) return null;
-      return ajustes.prefijoSerie + digitos.slice(0, 9);
+  // --- Longitud del número según el país ---
+  // Dígitos del número nacional (sin el prefijo de país) [mínimo, máximo].
+  // Si mínimo = máximo (España, Francia...) se busca en cuanto se completa,
+  // igual que antes. Si el país admite varias longitudes (Italia, Alemania,
+  // Argentina...) se busca al llegar al máximo o, si se para de escribir
+  // con una longitud válida, tras PAUSA_NUMERO ms.
+  const LONG_NUMERO = {
+    '1':[10,10], '7':[10,10], '20':[10,10], '27':[9,9], '30':[10,10], '31':[9,9], '32':[8,9], '33':[9,9],
+    '34':[9,9], '36':[8,9], '39':[9,10], '40':[9,9], '41':[9,9], '43':[10,13], '44':[10,10], '45':[8,8],
+    '46':[7,9], '47':[8,8], '48':[9,9], '49':[10,11], '51':[9,9], '52':[10,10], '53':[8,8], '54':[10,11],
+    '55':[10,11], '56':[9,9], '57':[10,10], '58':[10,10], '60':[9,10], '61':[9,9], '62':[9,12], '63':[10,10],
+    '64':[8,10], '65':[8,8], '66':[9,9], '81':[10,10], '82':[9,10], '84':[9,10], '86':[11,11], '90':[10,10],
+    '91':[10,10], '92':[10,10], '98':[10,10], '212':[9,9], '213':[9,9], '216':[8,8], '351':[9,9],
+    '352':[9,9], '353':[9,9], '354':[7,7], '355':[9,9], '356':[8,8], '357':[8,8], '358':[9,10], '359':[9,9],
+    '370':[8,8], '371':[8,8], '372':[7,8], '373':[8,8], '375':[9,9], '376':[6,6], '380':[9,9], '381':[8,9],
+    '385':[8,9], '386':[8,8], '387':[8,8], '389':[8,8], '420':[9,9], '421':[9,9], '502':[8,8], '503':[8,8],
+    '504':[8,8], '505':[8,8], '506':[8,8], '507':[8,8], '591':[8,8], '593':[9,9], '595':[9,9], '598':[8,8],
+    '966':[9,9], '971':[9,9], '972':[9,9], '974':[8,8]
+  };
+  const LONG_DESCONOCIDA = [8, 11];
+  const PAUSA_NUMERO = 1200;
+
+  function prefijoDePais(digitos) {
+    for (const n of [3, 2, 1]) {
+      const p = digitos.slice(0, n);
+      if (p.length === n && LONG_NUMERO[p]) return p;
     }
-    if (digitos.length < 11) return null;
-    return '+' + digitos;
+    return null;
+  }
+
+  // Analiza lo escrito y dice cuántos dígitos hacen falta.
+  //  min / max  : total de dígitos (de lo que se cuenta) para dar el número por bueno
+  //  hay        : dígitos que hay ahora
+  //  saltar     : dígitos del principio que no son del número (un "00" internacional)
+  //  armar(n)   : el número en formato +XXXXXXXX usando los n primeros dígitos
+  // Si se escribe con "+" o con "00" delante, se toma como número con prefijo
+  // aunque el modo sea "sin prefijo" (antes eso hacía buscar un número cortado).
+  function analizarNumero(texto, modoUso, prefijoSerie) {
+    const crudo = String(texto || '').replace(/[^\d+]/g, '');
+    const conMas = crudo.indexOf('+') !== -1;
+    let digitos = crudo.replace(/\D/g, '');
+    let saltar = 0;
+    if (!conMas && digitos.startsWith('00')) { saltar = 2; digitos = digitos.slice(2); }
+    const conPrefijo = modoUso === 'con_prefijo' || conMas || saltar === 2;
+
+    if (conPrefijo) {
+      const pais = prefijoDePais(digitos);
+      if (!pais) {
+        // Aún no se sabe el país: hace falta al menos el prefijo + algo
+        const r = LONG_DESCONOCIDA;
+        return { min: digitos.length < 3 ? 99 : 2 + r[0], max: 3 + r[1], hay: digitos.length, saltar,
+                 armar: (n) => '+' + digitos.slice(0, n) };
+      }
+      const r = LONG_NUMERO[pais];
+      return { min: pais.length + r[0], max: pais.length + r[1], hay: digitos.length, saltar,
+               armar: (n) => '+' + digitos.slice(0, n) };
+    }
+    const pref = String(prefijoSerie || '+34').replace(/\D/g, '');
+    const r = LONG_NUMERO[pref] || LONG_DESCONOCIDA;
+    return { min: r[0], max: r[1], hay: digitos.length, saltar,
+             armar: (n) => '+' + pref + digitos.slice(0, n) };
+  }
+
+  // Empieza a cargar el motor y a conectar en cuanto se teclea el primer dígito,
+  // para que la primera búsqueda no espere a todo eso.
+  let motorPreparado = false;
+  function prepararMotor() {
+    if (motorPreparado) return;
+    motorPreparado = true;
+    window.__cargarMotor()
+      .then(() => window.NumeriaTG && window.NumeriaTG.preparar && window.NumeriaTG.preparar())
+      .catch(() => { motorPreparado = false; });
   }
 
   function marcarEstado(estado) {
@@ -4076,10 +4140,6 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     sel.addRange(range);
   }
 
-  function umbralDigitos() {
-    return ajustes.modoUso === 'sin_prefijo' ? 9 : 11;
-  }
-
   function envolverNumeroReal(cantidadDigitos) {
     const texto = body.textContent || '';
     let vistos = 0;
@@ -4105,34 +4165,49 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     body.blur();
   });
 
+  let pausaNumeroTimer = null;
+
   body.addEventListener('input', () => {
     const textoPlano = body.textContent || '';
-    const digitosAhora = textoPlano.replace(/\D/g, '').length;
-    const umbral = umbralDigitos();
-
-    if (digitosAhora < umbral) {
-      congelado = false;
-      numeroActual = null;
-      cachedResult = null;
-      marcarEstado(null);
+    if (/\d/.test(textoPlano)) prepararMotor();
+    if (congelado) {
+      // Número ya enviado: lo que se escriba después es pantomima y se ignora,
+      // salvo que se borre por debajo del mínimo (entonces se empieza de nuevo).
+      const a = analizarNumero(textoPlano, ajustes.modoUso, ajustes.prefijoSerie);
+      if (a.hay < a.min) reiniciarBusqueda();
       return;
     }
 
-    // Se dispara UNA sola vez, justo al completar el numero.
-    // Cualquier digito escrito despues (pantomima) se ignora por completo.
-    // IMPORTANTE: se captura el texto ANTES de reconstruir el DOM (envolverNumeroReal
-    // modifica body.innerHTML), y esa copia limpia es la que se usa para la consulta,
-    // para no volver a leer el campo despues de haberlo tocado.
-    if (!congelado) {
+    clearTimeout(pausaNumeroTimer);
+    const a = analizarNumero(textoPlano, ajustes.modoUso, ajustes.prefijoSerie);
+    if (a.hay < a.min) { reiniciarBusqueda(); return; }
+
+    // Se dispara UNA sola vez por número:
+    //  - en cuanto llega al máximo de dígitos de su país, o
+    //  - si ya tiene una longitud válida y se deja de escribir PAUSA_NUMERO ms
+    //    (países con varias longitudes: Italia, Alemania, Argentina...).
+    // IMPORTANTE: el número se saca del texto ANTES de reconstruir el DOM
+    // (envolverNumeroReal modifica body.innerHTML).
+    const disparar = (n) => {
+      if (congelado) return;
       congelado = true;
-      const textoParaConsulta = textoPlano;
-      envolverNumeroReal(umbral);
-      actualizarPreview(textoParaConsulta);
-    }
+      const numero = a.armar(n);
+      envolverNumeroReal(a.saltar + n);
+      actualizarPreview(numero);
+    };
+    if (a.hay >= a.max) disparar(a.max);
+    else pausaNumeroTimer = setTimeout(() => disparar(a.hay), PAUSA_NUMERO);
   });
 
-  async function actualizarPreview(textoCapturado) {
-    const numero = extraerNumero(textoCapturado || body.textContent || '');
+  function reiniciarBusqueda() {
+    clearTimeout(pausaNumeroTimer);
+    congelado = false;
+    numeroActual = null;
+    cachedResult = null;
+    marcarEstado(null);
+  }
+
+  async function actualizarPreview(numero) {
     if (!numero) {
       numeroActual = null;
       cachedResult = null;
@@ -4158,12 +4233,19 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
         marcarEstado('notfound');
       } else {
         cachedResult = r.nombre;
-        window.__detalleNotas = r.direccion ? { direccion: r.direccion } : null;
+        window.__detalleNotas = (r.direccion || r.email) ? { direccion: r.direccion || '', email: r.email || '' } : null;
         marcarEstado('ok');
         ellipsisDot.classList.toggle('dot-extra', hayDetalle(window.__detalleNotas));
       }
     } catch (e) {
-      if (numeroActual === numero) marcarEstado(null);
+      // Sin conexión o el bot no contestó a tiempo: rojo, como hacía el servidor.
+      // Antes se quedaba sin color y había que borrar un dígito para repetir.
+      // Para volver a intentarlo basta con borrar el número y escribirlo otra vez.
+      if (numeroActual === numero) {
+        cachedResult = 'Sin informacion';
+        window.__detalleNotas = null;
+        marcarEstado('notfound');
+      }
     }
   }
 
@@ -5835,52 +5917,57 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     // ============================================================
     let numeroActualTel = null;
     let cachedResultTel = null;
-    let lastFetchControllerTel = null;
+    let pausaTelTimer = null;
 
-    function numeroParaConsultaTel() {
-      const n = numeroMarcado.replace(/[^\d+]/g, '');
-      if (ajustes.tel.modoUso === 'con_prefijo') return n;
-      return (ajustes.tel.prefijoSerie || '') + n;
-    }
-
-    async function actualizarPreviewTel() {
-      const numeroCompleto = numeroParaConsultaTel();
-      const digitosCompletos = numeroCompleto.replace(/\D/g, '');
-      const digitosPrefijo = (ajustes.tel.prefijoSerie || '').replace(/\D/g, '').length;
-      // Solo consultamos cuando el numero esta completo de verdad (prefijo + 9
-      // digitos), no en cuanto se llega a un numero cualquiera de digitos —
-      // asi evitamos consultas de mas mientras se sigue escribiendo.
-      const numero = digitosCompletos.length === (digitosPrefijo + 9) ? numeroCompleto : '';
-      if (!numero) {
+    // Mismo criterio de longitud por país que el Modo Notas. Aquí no hay
+    // pantomima: se consulta cuando el número tiene una longitud válida
+    // (al momento si es la máxima de su país, o tras una pausa si no).
+    function actualizarPreviewTel() {
+      clearTimeout(pausaTelTimer);
+      if (/\d/.test(numeroMarcado)) prepararMotor();
+      const a = analizarNumero(numeroMarcado, ajustes.tel.modoUso, ajustes.tel.prefijoSerie);
+      if (a.hay < a.min || a.hay > a.max) {
         numeroActualTel = null; cachedResultTel = null; marcarEstadoTel(null);
         return;
       }
-      if (numero === numeroActualTel && cachedResultTel !== null) return;
+      const numero = a.armar(a.hay);
+      if (numero === numeroActualTel) return;
+      if (a.hay >= a.max) consultarTel(numero);
+      else {
+        numeroActualTel = null; cachedResultTel = null; marcarEstadoTel(null);
+        pausaTelTimer = setTimeout(() => consultarTel(numero), PAUSA_NUMERO);
+      }
+    }
 
+    async function consultarTel(numero) {
+      if (numero === numeroActualTel && cachedResultTel !== null) return;
       numeroActualTel = numero;
       cachedResultTel = null;
       marcarEstadoTel('pending');
 
-      if (lastFetchControllerTel) lastFetchControllerTel.abort();
-      lastFetchControllerTel = new AbortController();
-
       try {
-        const res = await fetch(SERVER_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ numero }),
-          signal: lastFetchControllerTel.signal
-        });
-        const data = await res.json();
+        // BÚSQUEDA DIRECTA desde el móvil, igual que el Modo Notas.
+        await window.__cargarMotor();
         if (numeroActualTel !== numero) return;
-        const nombre = data.nombre || 'Sin informacion';
-        cachedResultTel = nombre;
-        window.__detalleTel = data.detalle || null;
-        const sinNombreTel = (nombre === 'Sin informacion' || nombre === 'No se encontro respuesta a tiempo');
-        marcarEstadoTel(sinNombreTel ? 'notfound' : 'ok');
-        if (!sinNombreTel) document.getElementById('telDotEstado').classList.toggle('dot-extra', hayDetalle(window.__detalleTel));
+        const r = await window.NumeriaTG.buscar(numero);
+        if (numeroActualTel !== numero) return;
+        if (!r || !r.nombre) {
+          cachedResultTel = 'Sin informacion';
+          window.__detalleTel = null;
+          marcarEstadoTel('notfound');
+        } else {
+          cachedResultTel = r.nombre;
+          window.__detalleTel = (r.direccion || r.email) ? { direccion: r.direccion || '', email: r.email || '' } : null;
+          marcarEstadoTel('ok');
+          document.getElementById('telDotEstado').classList.toggle('dot-extra', hayDetalle(window.__detalleTel));
+        }
       } catch (e) {
-        if (numeroActualTel === numero) marcarEstadoTel(null);
+        // Sin conexión o sin respuesta a tiempo: rojo (antes se quedaba sin color).
+        if (numeroActualTel === numero) {
+          cachedResultTel = 'Sin informacion';
+          window.__detalleTel = null;
+          marcarEstadoTel('notfound');
+        }
       }
     }
 
