@@ -36,6 +36,10 @@ return [
     // dominio en Hostinger (p. ej. hola@tudominio.com), ponlo aquí.
     'email_remitente' => '',
 
+    // Email de soporte que se enseña al cliente si no puede cambiar de móvil
+    // él solo (p. ej. soporte@numeriaapp.com). Vacío = no se enseña.
+    'email_soporte' => '',
+
     // Enlace que va en el email de bienvenida (la dirección de la app).
     'enlace_app' => 'https://TU-DOMINIO/',
 ];

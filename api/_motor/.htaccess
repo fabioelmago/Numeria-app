@@ -1,0 +1,9 @@
+# El motor solo se entrega a través de api/motor (con licencia válida).
+# Abrir esta carpeta directamente desde internet está prohibido.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>

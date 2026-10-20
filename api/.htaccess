@@ -2,7 +2,7 @@ Options -Indexes
 
 # Rutas limpias: /api/validar_token → validar_token.php (igual que en el servidor antiguo)
 RewriteEngine On
-RewriteRule ^(validar_token|activar_licencia|comprobar|ping)$ $1.php [L]
+RewriteRule ^(validar_token|activar_licencia|comprobar|motor|recuperar|recuperar_confirmar|ping)$ $1.php [L]
 
 # La configuración (contraseñas) y la librería interna no se pueden abrir desde fuera
 <FilesMatch "^(config\.php|config\.ejemplo\.php|_lib\.php)$">

@@ -7,6 +7,29 @@ if (!defined('NUMERIA')) { http_response_code(404); exit; }
 const FORMATO_TOKEN = '/^NUM-[A-Z0-9]{4}-[A-Z0-9]{4}$/';
 const TOKEN_PRUEBAS = 'NUM-TEST-0001';
 const MINUTOS_GRACIA_HUELLA = 30;
+const DIAS_VALIDEZ_MOTOR = 7;          // cada copia del motor caduca a los 7 días
+// Claves de la app de Telegram (my.telegram.org). Ya NO van en el HTML público:
+// solo viajan dentro del motor que se entrega a licencias válidas.
+// Se pueden cambiar desde numeria-config.php ('tg_api_id' / 'tg_api_hash').
+const TG_API_ID = 32470618;
+const TG_API_HASH = '12f99737b8a746a5f5d4b742db758626';
+
+// Dominio de la app (sale de 'enlace_app' en la configuración).
+function dominio_app() {
+    $h = parse_url((string)cfg('enlace_app'), PHP_URL_HOST);
+    return $h ?: '';
+}
+
+// Solo se aceptan peticiones hechas desde la propia app. Un navegador manda
+// siempre la cabecera Origin en un POST con fetch: si viene de otra web
+// (un clon de la app montado en otro dominio), se rechaza.
+function solo_desde_la_app() {
+    $o = $_SERVER['HTTP_ORIGIN'] ?? '';
+    if ($o === '') return;   // peticiones sin Origin (mismo sitio en navegadores antiguos)
+    $h = parse_url($o, PHP_URL_HOST);
+    $permitido = dominio_app();
+    if ($permitido !== '' && strcasecmp((string)$h, $permitido) !== 0) responder(['error' => 'origen no permitido'], 403);
+}
 
 function cfg($clave = null) {
     static $c = null;
@@ -62,6 +85,30 @@ function entrada() {
 
 function solo_post() {
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') responder(['error' => 'metodo no permitido'], 405);
+    solo_desde_la_app();
+}
+
+// ¿Esta licencia vale EN ESTE móvil? Devuelve [true, null] o [false, motivo].
+//  - móvil liberado desde admin (huella vacía): ningún móvil vale hasta que el
+//    cliente se registre de nuevo con la clave (así el móvil viejo no se la queda);
+//  - recién activada (30 min): se acepta y actualiza la huella (Safari vs app instalada);
+//  - otro móvil: fuera, y la licencia queda MARCADA para revisar sin bloquear al dueño.
+function verificar_licencia($token, $huella) {
+    if (!preg_match(FORMATO_TOKEN, $token) || !huella_valida($huella)) return [false, 'no_existe'];
+    $lic = obtener_licencia($token);
+    if (!$lic || $lic['estado'] === 'sin_usar') return [false, 'no_existe'];
+    if ($lic['estado'] === 'revisar') return [false, 'bloqueada'];
+    if ($lic['estado'] !== 'activo') return [false, 'baja'];
+    $pdo = db();
+    if (!$lic['huella']) return [false, 'otro_movil'];
+    if (hash_equals($lic['huella'], $huella)
+        || dentro_del_margen($lic['fecha_activacion'], MINUTOS_GRACIA_HUELLA)) {
+        $pdo->prepare('UPDATE licencias SET huella = ?, ultima_vez = ? WHERE token = ?')->execute([$huella, ahora(), $token]);
+        return [true, null];
+    }
+    $pdo->prepare('UPDATE licencias SET motivo = ? WHERE token = ?')
+        ->execute(['REVISAR: intento desde otro movil (' . ahora() . ' UTC)', $token]);
+    return [false, 'otro_movil'];
 }
 
 function token_limpio($t) { return strtoupper(trim((string)$t)); }
@@ -121,6 +168,55 @@ function instalar_tablas() {
         accion VARCHAR(20) NOT NULL,
         momento INT NOT NULL
     )$fin");
+}
+
+// Tablas del "¿Cambiaste de móvil?". Se crean solas la primera vez que hacen falta.
+function asegurar_tablas_recuperacion() {
+    $pdo = db();
+    $fin = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql' ? ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4' : '';
+    $pdo->exec("CREATE TABLE IF NOT EXISTS recuperaciones (
+        token VARCHAR(20) NOT NULL PRIMARY KEY,
+        codigo VARCHAR(64) NOT NULL,
+        expira INT NOT NULL,
+        intentos INT NOT NULL DEFAULT 0,
+        envios INT NOT NULL DEFAULT 1,
+        primer_envio INT NOT NULL
+    )$fin");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS cambios_movil (
+        token VARCHAR(20) NOT NULL,
+        momento DATETIME NOT NULL
+    )$fin");
+}
+
+const MAX_CAMBIOS_MOVIL_ANIO = 2;
+const MINUTOS_CODIGO = 15;
+
+function cambios_ultimo_anio($token) {
+    $q = db()->prepare('SELECT COUNT(*) FROM cambios_movil WHERE token = ? AND momento > ?');
+    $q->execute([$token, gmdate('Y-m-d H:i:s', time() - 365 * 86400)]);
+    return (int)$q->fetchColumn();
+}
+
+function hash_codigo($token, $codigo) { return hash('sha256', $token . '|' . $codigo . '|' . (string)cfg('admin_clave')); }
+
+// Email con el código para pasar la licencia a un móvil nuevo (en el idioma de la app).
+function mandar_email_codigo($destino, $codigo, $idioma) {
+    $de = cfg('email_remitente');
+    if (!$de) return false;
+    $T = [
+        'es' => ['Tu código de Numeria', 'Tu código para pasar tu licencia de Numeria a tu móvil nuevo es:', 'Caduca en %d minutos. Si no lo has pedido tú, ignora este correo.'],
+        'en' => ['Your Numeria code', 'Your code to move your Numeria licence to your new phone is:', 'It expires in %d minutes. If you did not request it, ignore this email.'],
+        'fr' => ['Ton code Numeria', 'Ton code pour transférer ta licence Numeria sur ton nouveau téléphone :', 'Il expire dans %d minutes. Si tu ne l’as pas demandé, ignore cet e-mail.'],
+        'it' => ['Il tuo codice Numeria', 'Il tuo codice per spostare la licenza Numeria sul nuovo telefono è:', 'Scade tra %d minuti. Se non l’hai richiesto tu, ignora questa email.'],
+        'de' => ['Dein Numeria-Code', 'Dein Code, um deine Numeria-Lizenz auf dein neues Handy zu übertragen:', 'Er läuft in %d Minuten ab. Wenn du ihn nicht angefordert hast, ignoriere diese E-Mail.'],
+    ];
+    $t = $T[$idioma] ?? $T['es'];
+    $html = '<div style="font-family:-apple-system,sans-serif;max-width:480px;margin:0 auto;">'
+        . '<p>' . htmlspecialchars($t[1], ENT_QUOTES, 'UTF-8') . '</p>'
+        . '<p style="font:700 30px/1.2 ui-monospace,Menlo,monospace;letter-spacing:.18em;color:#1C1C1E;">' . $codigo . '</p>'
+        . '<p style="color:#8E8E93;font-size:13px;">' . htmlspecialchars(sprintf($t[2], MINUTOS_CODIGO), ENT_QUOTES, 'UTF-8') . '</p></div>';
+    $cab = "MIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nFrom: Numeria <$de>\r\n";
+    return @mail($destino, '=?UTF-8?B?' . base64_encode($t[0]) . '?=', $html, $cab);
 }
 
 function obtener_o_crear_cliente($email, $nombre) {
