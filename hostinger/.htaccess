@@ -3,11 +3,21 @@ Options -Indexes
 # La carpeta .git (si Hostinger despliega desde GitHub) no se puede ver desde fuera
 RedirectMatch 404 /\.git
 
-# Que el iPhone pregunte siempre si hay versión nueva de la app (si no ha
-# cambiado, el servidor contesta "igual" sin volver a mandar el fichero).
-# Evita que la app instalada se quede con una versión vieja en caché.
 <IfModule mod_headers.c>
+  # Que el iPhone pregunte siempre si hay versión nueva de la app (si no ha
+  # cambiado, el servidor contesta "igual" sin volver a mandar el fichero).
+  # Evita que la app instalada se quede con una versión vieja en caché.
   <FilesMatch "\.(html|js|json)$">
     Header set Cache-Control "no-cache"
   </FilesMatch>
+
+  # Nadie puede meter la app dentro de otra web (marcos/iframes de un clon)
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Content-Security-Policy "frame-ancestors 'self'"
+  # El navegador no "adivina" tipos de archivo
+  Header always set X-Content-Type-Options "nosniff"
+  # Al salir de la app no se cuenta a otras webs desde dónde vienes
+  Header always set Referrer-Policy "same-origin"
+  # Solo HTTPS a partir de la primera visita
+  Header always set Strict-Transport-Security "max-age=31536000"
 </IfModule>

@@ -2,21 +2,34 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<script>window.NUM_API_ID=32470618;window.NUM_API_HASH="12f99737b8a746a5f5d4b742db758626";
-/* El motor (pesado) se carga SOLO cuando se va a buscar, para que la app vaya ligera
-   y el blur de iOS no se rompa mientras el mago navega por las pantallas. */
+<script>/*! Numeria © 2026 Fabio Pérez de Lazárraga y Marroyo (Fabio el Mago). Todos los derechos reservados. */
+/* El motor de Telegram NO es un archivo público: el servidor lo entrega solo a
+   un móvil con licencia válida (api/motor), con la licencia, caducidad y dominio
+   dentro. Se pide la primera vez que se busca (o al conectar Telegram). */
 window.__cargarMotor=function(){
   if(window.NumeriaTG)return Promise.resolve();
   if(window.__motorP)return window.__motorP;
-  window.__motorP=new Promise(function(res,rej){
-    var s=document.createElement('script');
-    s.src='engine.js';
-    s.onload=function(){try{window.NumeriaTG&&window.NumeriaTG.init(window.NUM_API_ID,window.NUM_API_HASH);}catch(e){}res();};
-    s.onerror=function(){rej(new Error('no se pudo cargar el motor'));};
-    document.head.appendChild(s);
-  });
+  var token='',huella='';
+  try{token=localStorage.getItem('numeria_licencia')||'';huella=localStorage.getItem('numeria_huella')||''}catch(e){}
+  var base=location.pathname.replace(/[^/]*$/,'');
+  window.__motorP=fetch(base+'api/motor',{method:'POST',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token,huella:huella})})
+    .then(function(r){
+      if(!r.ok)return r.json().catch(function(){return{}}).then(function(d){var e=new Error('licencia no valida: '+(d.motivo||d.error||r.status));e.code='LICENCIA';throw e});
+      return r.text();
+    })
+    .then(function(code){return new Promise(function(res,rej){
+      var u=URL.createObjectURL(new Blob([code],{type:'application/javascript'}));
+      var s=document.createElement('script');s.src=u;
+      s.onload=function(){URL.revokeObjectURL(u);window.NumeriaTG?res():rej(new Error('motor no disponible'))};
+      s.onerror=function(){URL.revokeObjectURL(u);rej(new Error('no se pudo cargar el motor'))};
+      document.head.appendChild(s);
+    })})
+    .catch(function(e){window.__motorP=null;throw e});
   return window.__motorP;
-};</script>
+};
+/* Si una copia del motor ha caducado (7 días) se descarta y se pide otra. */
+window.__descartarMotor=function(){window.NumeriaTG=null;window.__motorP=null};
+</script>
 <link rel="manifest" href="manifest.json">
 <script>/* Apariencia guardada: si es clara, la franja de la hora y el fondo salen blancos desde el primer pintado */
 (function(){try{var a=JSON.parse(localStorage.getItem('numeria_ajustes')||'{}');if(a&&a.apariencia==='claro'){var d=document.documentElement;d.classList.add('arranque-claro','barra-clara');d.style.backgroundColor='#fff';}}catch(e){}})();</script>
@@ -3432,7 +3445,9 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     motorPreparado = true;
     window.__cargarMotor()
       .then(() => window.NumeriaTG && window.NumeriaTG.preparar && window.NumeriaTG.preparar())
-      .catch(() => { motorPreparado = false; });
+      // Si falla por conexión se reintenta en el siguiente dígito; si es porque
+      // la licencia no vale, no se insiste (no tiene sentido pedirlo en cada tecla).
+      .catch((e) => { if (!e || e.code !== 'LICENCIA') motorPreparado = false; });
   }
 
   function marcarEstado(estado) {
@@ -4255,6 +4270,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
       // Sin conexión o el bot no contestó a tiempo: rojo, como hacía el servidor.
       // Antes se quedaba sin color y había que borrar un dígito para repetir.
       // Para volver a intentarlo basta con borrar el número y escribirlo otra vez.
+      if (e && e.code === 'CADUCADO' && window.__descartarMotor) window.__descartarMotor();
       if (numeroActual === numero) {
         cachedResult = 'Sin informacion';
         window.__detalleNotas = null;
@@ -5978,6 +5994,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
         }
       } catch (e) {
         // Sin conexión o sin respuesta a tiempo: rojo (antes se quedaba sin color).
+        if (e && e.code === 'CADUCADO' && window.__descartarMotor) window.__descartarMotor();
         if (numeroActualTel === numero) {
           cachedResultTel = 'Sin informacion';
           window.__detalleTel = null;

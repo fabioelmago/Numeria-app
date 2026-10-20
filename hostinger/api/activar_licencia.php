@@ -20,7 +20,8 @@ if (!preg_match(FORMATO_TOKEN, $token) || !filter_var($email, FILTER_VALIDATE_EM
 $lic = obtener_licencia($token);
 if (!$lic) responder(['error' => 'token no valido'], 404);
 
-if ($lic['estado'] !== 'sin_usar') {
+$liberada = $lic['estado'] === 'activo' && !$lic['huella'];   // "Cambió de móvil" desde admin.php
+if ($lic['estado'] !== 'sin_usar' && !$liberada) {
     // Reactivar justo después (mismo registro repetido) se permite unos minutos;
     // pasado ese margen, la clave ya es de otro móvil.
     $gracia = $lic['estado'] === 'activo' && dentro_del_margen($lic['fecha_activacion'], MINUTOS_GRACIA_HUELLA);

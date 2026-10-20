@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     if ($accion === 'liberar') {
                         $pdo->prepare("UPDATE licencias SET estado = 'activo', huella = NULL, motivo = 'movil liberado' WHERE token = ?")->execute([$t]);
-                        $mensaje = 'Móvil liberado: el próximo móvil que abra la app con esta clave se la queda.';
+                        $mensaje = 'Móvil liberado: el cliente puede registrarse otra vez con esta clave en su móvil nuevo (el viejo queda fuera).';
                     } elseif ($accion === 'desbloquear') {
                         $pdo->prepare("UPDATE licencias SET estado = 'activo', motivo = NULL WHERE token = ?")->execute([$t]);
                         $mensaje = 'Desbloqueada (sigue atada al mismo móvil).';

@@ -24,5 +24,7 @@ if (!$lic && cfg('pruebas_abiertas') && $token !== TOKEN_PRUEBAS) {
 }
 
 if (!$lic) responder(['valido' => false, 'motivo' => 'no_existe']);
-if ($lic['estado'] !== 'sin_usar') responder(['valido' => false, 'motivo' => 'ya_activada']);
+// Libre: sin usar, o activa con el móvil liberado desde admin.php ("Cambió de móvil").
+$liberada = $lic['estado'] === 'activo' && !$lic['huella'];
+if ($lic['estado'] !== 'sin_usar' && !$liberada) responder(['valido' => false, 'motivo' => 'ya_activada']);
 responder(['valido' => true]);
