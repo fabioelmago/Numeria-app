@@ -33,7 +33,10 @@ window.__descartarMotor=function(){window.NumeriaTG=null;window.__motorP=null};
 <link rel="manifest" href="manifest.json">
 <script>/* Apariencia guardada: si es clara, la franja de la hora y el fondo salen blancos desde el primer pintado */
 (function(){try{var a=JSON.parse(localStorage.getItem('numeria_ajustes')||'{}');if(a&&a.apariencia==='claro'){var d=document.documentElement;d.classList.add('arranque-claro','barra-clara');d.style.backgroundColor='#fff';}}catch(e){}})();</script>
-<script>(function(){try{var st=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);if(st&&!localStorage.getItem('numeria_onb_v1')){document.documentElement.style.background='#07070B';document.documentElement.style.visibility='hidden';location.replace('bienvenida.html')}}catch(e){}})();</script>
+<script>(function(){try{var st=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);if(st&&!localStorage.getItem('numeria_onb_v1')){document.documentElement.style.background='#07070B';document.documentElement.style.visibility='hidden';location.replace('bienvenida.html')}
+/* Telegram cerró la sesión en una búsqueda anterior: al ABRIR la app (nunca en mitad de
+   una actuación) se va directo a reconectar Telegram, sin licencia ni tutorial. */
+else if(st&&localStorage.getItem('numeria_tg_reconectar')==='1'){document.documentElement.style.background='#07070B';document.documentElement.style.visibility='hidden';location.replace('bienvenida.html#telegram')}}catch(e){}})();</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Notas</title>
@@ -4271,6 +4274,9 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
       // Antes se quedaba sin color y había que borrar un dígito para repetir.
       // Para volver a intentarlo basta con borrar el número y escribirlo otra vez.
       if (e && e.code === 'CADUCADO' && window.__descartarMotor) window.__descartarMotor();
+      // Sesión de Telegram cerrada: solo rojo ahora (puede estar actuando) y se
+      // pide reconectar la próxima vez que abra la app.
+      if (e && e.code === 'SESION') { try { localStorage.setItem('numeria_tg_reconectar', '1'); } catch (_) {} }
       if (numeroActual === numero) {
         cachedResult = 'Sin informacion';
         window.__detalleNotas = null;
@@ -5995,6 +6001,7 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
       } catch (e) {
         // Sin conexión o sin respuesta a tiempo: rojo (antes se quedaba sin color).
         if (e && e.code === 'CADUCADO' && window.__descartarMotor) window.__descartarMotor();
+        if (e && e.code === 'SESION') { try { localStorage.setItem('numeria_tg_reconectar', '1'); } catch (_) {} }
         if (numeroActualTel === numero) {
           cachedResultTel = 'Sin informacion';
           window.__detalleTel = null;
