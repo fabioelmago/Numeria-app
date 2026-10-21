@@ -16,13 +16,14 @@ function hora_es($utc) {
     catch (Throwable $x) { return $utc; }
 }
 
-$FILTROS = ['todas' => 'Todas', 'activo' => 'Activas', 'sin_usar' => 'Sin usar', 'baja' => 'De baja', 'revisar' => 'Para revisar'];
+// Las dadas de baja no se mezclan: solo salen en «De baja» (el archivo).
+$FILTROS = ['uso' => 'En uso', 'activo' => 'Activas', 'sin_usar' => 'Sin usar', 'revisar' => 'Para revisar', 'baja' => 'De baja'];
 $ESTADOS = ['sin_usar' => 'Sin usar', 'activo' => 'Activa', 'revisar' => 'Bloqueada', 'baja' => 'De baja'];
 
 $mensaje = ''; $error = ''; $tokensNuevos = []; $confirmar = null;
 $clave  = (string)($_POST['clave'] ?? '');
 $accion = (string)($_POST['accion'] ?? '');
-$filtro = array_key_exists($_POST['filtro'] ?? '', $FILTROS) ? $_POST['filtro'] : 'todas';
+$filtro = array_key_exists($_POST['filtro'] ?? '', $FILTROS) ? $_POST['filtro'] : 'uso';
 $busca  = mb_substr(trim((string)($_POST['q'] ?? '')), 0, 80);
 $loteV  = substr(preg_replace('/[^A-Za-z0-9 _\-]/', '', (string)($_POST['lote_ver'] ?? '')), 0, 40);
 $entrado = false; $falloBD = false;
@@ -68,7 +69,7 @@ if ($entrado) {
             }
             $mensaje = count($tokensNuevos) . ' licencia(s) creadas en el lote «' . $lote . '».';
             $loteV = $lote;
-        } elseif (in_array($accion, ['liberar', 'desbloquear', 'pedir_baja', 'baja'], true)) {
+        } elseif (in_array($accion, ['liberar', 'desbloquear', 'pedir_baja', 'baja', 'recuperar'], true)) {
             $t = token_limpio($_POST['token'] ?? '');
             $lic = obtener_licencia($t);
             if (!$lic) {
@@ -79,6 +80,11 @@ if ($entrado) {
                 $motivo = substr(trim((string)($_POST['motivo'] ?? '')), 0, 190) ?: 'baja';
                 $pdo->prepare("UPDATE licencias SET estado = 'baja', motivo = ? WHERE token = ?")->execute([$motivo, $t]);
                 $mensaje = $t . ' dada de baja.';
+            } elseif ($accion === 'recuperar') {
+                // Vuelve a activa si tenía cliente (mismo móvil), o a sin usar si no llegó a usarse.
+                $nuevo = $lic['cliente_id'] ? 'activo' : 'sin_usar';
+                $pdo->prepare('UPDATE licencias SET estado = ?, motivo = NULL WHERE token = ?')->execute([$nuevo, $t]);
+                $mensaje = $t . ' recuperada (' . ($nuevo === 'activo' ? 'activa otra vez' : 'sin usar') . ').';
             } elseif ($accion === 'liberar') {
                 $pdo->prepare("UPDATE licencias SET estado = 'activo', huella = NULL, motivo = 'movil liberado' WHERE token = ?")->execute([$t]);
                 $mensaje = $t . ': móvil liberado. El cliente puede registrarse otra vez con su clave en el móvil nuevo (el viejo queda fuera).';
@@ -133,11 +139,17 @@ if ($entrado && !$falloBD) {
     try {
         foreach (db()->query("SELECT estado, COUNT(*) n FROM licencias GROUP BY estado")->fetchAll() as $r) $cont[$r['estado']] = (int)$r['n'] + ($cont[$r['estado']] ?? 0);
         $cont['revisar'] = (int)db()->query("SELECT COUNT(*) FROM licencias WHERE estado = 'revisar' OR motivo LIKE 'REVISAR%'")->fetchColumn();
-        $lotes = db()->query('SELECT lote, COUNT(*) n FROM licencias GROUP BY lote ORDER BY MAX(creado) DESC')->fetchAll();
+        // Botones de lote: cuentan las que están en uso (o las de baja si se está en «De baja»)
+        $lotes = [];
+        foreach (db()->query("SELECT lote, SUM(CASE WHEN estado <> 'baja' THEN 1 ELSE 0 END) uso, SUM(CASE WHEN estado = 'baja' THEN 1 ELSE 0 END) bajas FROM licencias GROUP BY lote ORDER BY MAX(creado) DESC")->fetchAll() as $r) {
+            $n = (int)($filtro === 'baja' ? $r['bajas'] : $r['uso']);
+            if ($n > 0 || (string)$r['lote'] === $loteV) $lotes[] = ['lote' => $r['lote'], 'n' => $n];
+        }
         $w = []; $p = [];
         if ($loteV !== '') { $w[] = 'l.lote = ?'; $p[] = $loteV; }
         if ($filtro === 'revisar') $w[] = "(l.estado = 'revisar' OR l.motivo LIKE 'REVISAR%')";
-        elseif ($filtro !== 'todas') { $w[] = 'l.estado = ?'; $p[] = $filtro; }
+        elseif ($filtro === 'uso') $w[] = "l.estado <> 'baja'";
+        else { $w[] = 'l.estado = ?'; $p[] = $filtro; }
         if ($busca !== '') {
             $like = '%' . str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], mb_strtolower($busca)) . '%';
             $w[] = "(LOWER(l.token) LIKE ? ESCAPE '\\' OR LOWER(COALESCE(c.email,'')) LIKE ? ESCAPE '\\' OR LOWER(COALESCE(c.nombre,'')) LIKE ? ESCAPE '\\' OR LOWER(COALESCE(l.lote,'')) LIKE ? ESCAPE '\\')";
@@ -308,7 +320,7 @@ button.s{padding:8px 12px;font-size:12.5px}
   </div>
   <?php endif; ?>
 
-  <p class="nota" style="margin:14px 0 4px"><?= count($filas) ?> licencia(s)<?= $loteV !== '' ? ' en el lote «' . e($loteV) . '»' : '' ?><?= count($filas) >= 500 ? ' (se muestran las 500 más recientes; usa el buscador)' : '' ?> · horas de España</p>
+  <p class="nota" style="margin:14px 0 4px"><?= count($filas) ?> licencia(s)<?= $filtro === 'uso' ? ' en uso' : ($filtro === 'baja' ? ' de baja' : '') ?><?= $loteV !== '' ? ' en el lote «' . e($loteV) . '»' : '' ?><?= count($filas) >= 500 ? ' (se muestran las 500 más recientes; usa el buscador)' : '' ?> · horas de España</p>
   <div class="lista">
     <div class="cabl"><div>Clave</div><div>Estado</div><div>Cliente</div><div>Activada</div><div>Última vez</div><div style="text-align:right">Acciones</div></div>
     <?php foreach ($filas as $f): $est = $f['estado']; $rev = strpos((string)$f['motivo'], 'REVISAR') === 0; ?>
@@ -329,6 +341,8 @@ button.s{padding:8px 12px;font-size:12.5px}
         <?php endif; ?>
         <?php if ($est !== 'baja'): ?>
           <form method="post"><?= $oculto ?><input type="hidden" name="token" value="<?= e($f['token']) ?>"><button class="s r" name="accion" value="pedir_baja">Dar de baja</button></form>
+        <?php else: ?>
+          <form method="post"><?= $oculto ?><input type="hidden" name="token" value="<?= e($f['token']) ?>"><button class="s" name="accion" value="recuperar">Recuperar</button></form>
         <?php endif; ?>
       </div>
     </div>
