@@ -335,6 +335,10 @@ button:focus-visible{outline:2px solid var(--tung);outline-offset:3px}
 .s0 .cta:active{transform:scale(.97)}
 /* ===== v4: Modo Notas + ajustes ===== */
 .nm #pnum,.nm #padd,.nm #psug,.nm #ppeek,.nm #pkeys,.nm #pcall,.nm #pdel,.nm #ptab{display:none}
+/* Escena 5 (ajustes del Peek): el teclado no pinta nada y asomaba por detrás de la hoja,
+   moviéndose con el zoom de la cámara. Se desvanece (sin cambiar posiciones) y vuelve al salir. */
+#pkeys,#pcall,#pdel,#ptab{transition:opacity .45s ease}
+.s5 #pkeys,.s5 #pcall,.s5 #pdel,.s5 #ptab{opacity:0;pointer-events:none}
 #nscr{position:absolute;inset:0;background:#000;z-index:2;display:none;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;color:#fff;overflow:hidden}
 .nm #nscr{display:block}
 #nscr svg{shape-rendering:geometricPrecision}
@@ -774,11 +778,11 @@ function tw(a,b,ms,fn,t){return new Promise(function(r){var t0=performance.now()
 async function autoCfg(t){
   var s0=cfg.size,y0=cfg.y,c0=cfg.color;
   if(!(await sleep(2300,t)))return;
-  if(!(await tw(s0,92,700,function(v){cfg.size=v;syncSheet()},t)))return;
-  if(!(await tw(92,s0,700,function(v){cfg.size=v;syncSheet()},t)))return;
+  if(!(await tw(s0,92,700,function(v){cfg.size=Math.round(v);syncSheet()},t)))return;
+  if(!(await tw(92,s0,700,function(v){cfg.size=Math.round(v);syncSheet()},t)))return;
   if(!(await sleep(200,t)))return;
-  if(!(await tw(y0,-30,650,function(v){cfg.y=v;syncSheet()},t)))return;
-  if(!(await tw(-30,y0,650,function(v){cfg.y=v;syncSheet()},t)))return;
+  if(!(await tw(y0,-30,650,function(v){cfg.y=Math.round(v);syncSheet()},t)))return;
+  if(!(await tw(-30,y0,650,function(v){cfg.y=Math.round(v);syncSheet()},t)))return;
   if(!(await sleep(200,t)))return;
   var cols=['#FFFFFF','#FFD60A','#34C759','#0A84FF'];
   for(var i=0;i<cols.length;i++){
@@ -906,7 +910,7 @@ function syncSheet(){
   s.value=cfg.size; y.value=cfg.y;
   [s,y].forEach(function(r){r.style.setProperty('--p',((r.value-r.min)/(r.max-r.min)*100)+'%')});
   $('#oSize').textContent=Math.round(10+cfg.size/100*38)+' px';
-  $('#oY').textContent=(cfg.y>0?'+':'')+cfg.y+' px';
+  var yv=Math.round(cfg.y); $('#oY').textContent=(yv>0?'+':'')+yv+' px';   /* siempre en enteros (la demo animaba con decimales) */
   applyPeek();
 }
 ['#rSize','#rY'].forEach(function(id){
