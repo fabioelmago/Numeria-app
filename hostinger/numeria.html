@@ -2447,11 +2447,41 @@ try{ if(document.documentElement.classList.contains('arranque-claro')) document.
     else de.style.setProperty('--llk', String(Math.round(Math.max(0.8,Math.min(1.1,k))*10000)/10000));
   }
   medir();
+  window.__numeriaMedir=medir;
   window.addEventListener('load', function(){ if(!escribiendo()) medir(); });
   window.addEventListener('resize', function(){
     if(window.innerWidth!==W){ W=window.innerWidth; medir(); return; }
     if(Date.now()-t0<1500&&!escribiendo()) medir();
   });
+})();
+/* Giro del móvil: en iPhone una app web no puede bloquear la orientación. Si se gira a
+   horizontal y se vuelve a vertical, iOS a veces deja un zoom "pegado" y medidas de la
+   pantalla horizontal (todo se ve ampliado y descuadrado). Al volver a vertical:
+   1) se reescribe la etiqueta viewport para que iOS vuelva a escala 1 (quita el zoom),
+   2) se vuelve a medir la pantalla y se avisa al resto de la app, varias veces mientras
+      iOS termina el giro (informa de medidas intermedias). */
+(function(){
+  var vp=document.querySelector('meta[name="viewport"]'); if(!vp) return;
+  var base=vp.getAttribute('content'), estaba=window.innerWidth>window.innerHeight, tm=[];
+  function enVertical(){ return window.innerHeight>=window.innerWidth; }
+  function reparar(){
+    vp.setAttribute('content', base+', minimum-scale=1.0');
+    setTimeout(function(){ vp.setAttribute('content', base); }, 60);
+    window.scrollTo(0,0); document.documentElement.scrollLeft=0;
+    if(window.__numeriaMedir) window.__numeriaMedir();
+    try{ window.dispatchEvent(new Event('resize')); }catch(e){}
+  }
+  function alGirar(){
+    var horizontal=!enVertical();
+    if(horizontal){ estaba=true; return; }
+    if(!estaba) return;
+    estaba=false;
+    tm.forEach(clearTimeout);
+    tm=[80,400,1000].map(function(ms){ return setTimeout(function(){ if(enVertical()) reparar(); }, ms); });
+  }
+  window.addEventListener('orientationchange', alGirar);
+  window.addEventListener('resize', alGirar);
+  if(window.matchMedia){ var mq=matchMedia('(orientation: portrait)'); if(mq.addEventListener) mq.addEventListener('change', alGirar); }
 })();
 </script>
 
